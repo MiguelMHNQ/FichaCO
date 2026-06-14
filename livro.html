@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primórdios — Livro do Sistema</title>
+<link rel="icon" href="Imagens/LogoT.png" type="image/png">
+<link rel="stylesheet" href="global.css">
+<link rel="stylesheet" href="tela1.css">
+<link rel="stylesheet" href="livro.css">
+</head>
+<body>
+
+<div id="navLogo" onclick="toggleMenu()">
+  <img src="Imagens/LogoT.png" alt="Primórdios">
+  <div id="navMenu">
+    <div class="nav-item" onclick="Sons.nav();window.location.href='inventario.html'"><span class="nav-item-icone">⚔</span> Inventário</div>
+    <div class="nav-item" onclick="Sons.nav();novoPersonagem()"><span class="nav-item-icone">✦</span> Novo Personagem</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='livro.html'"><span class="nav-item-icone">⁂</span> Livro</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='configuracoes.html'"><span class="nav-item-icone">⚙</span> Configurações</div>
+    <div class="nav-item nav-sair" onclick="Sons.back();sair()"><span class="nav-item-icone">↩</span> Sair</div>
+  </div>
+</div>
+
+<div class="livro-wrapper">
+
+  <!-- Cabeçalho -->
+  <div class="livro-header">
+    <div class="livro-header-titulo">⁂ Livro dos Primórdios</div>
+    <div class="livro-header-sub">Regras, classes, habilidades e equipamentos do sistema</div>
+    <div class="livro-pesquisa-wrapper">
+      <input id="campoPesquisa" class="livro-pesquisa" type="text" placeholder="Pesquisar no livro..." oninput="pesquisar(this.value)" autocomplete="off">
+      <span class="livro-pesquisa-icone">⌕</span>
+    </div>
+  </div>
+
+  <!-- Abas -->
+  <div class="livro-abas" id="libroAbas">
+    <button class="livro-aba ativo" onclick="mudarAba('termos', this)">Termos</button>
+    <button class="livro-aba" onclick="mudarAba('combate', this)">Combate</button>
+    <button class="livro-aba" onclick="mudarAba('condicoes', this)">Condições</button>
+    <button class="livro-aba" onclick="mudarAba('racas', this)">Raças</button>
+    <button class="livro-aba" onclick="mudarAba('linguas', this)">Línguas</button>
+    <button class="livro-aba" onclick="mudarAba('magias', this)">Magias</button>
+    <button class="livro-aba" onclick="mudarAba('ficha', this)">Ficha</button>
+    <button class="livro-aba" onclick="mudarAba('regras', this)">Regras</button>
+    <button class="livro-aba" onclick="mudarAba('classes', this)">Classes</button>
+    <button class="livro-aba" onclick="mudarAba('habilidades', this)">Habilidades</button>
+    <button class="livro-aba" onclick="mudarAba('armas', this)">Armas</button>
+    <button class="livro-aba" onclick="mudarAba('armaduras', this)">Armaduras</button>
+    <button class="livro-aba" onclick="mudarAba('acessorios', this)">Acessórios</button>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="livro-conteudo" id="livroConteudo"></div>
+
+</div>
+
+<script src="estado.js"></script>
+<script src="audio.js"></script>
+<script src="sons.js"></script>
+<script src="itens.js"></script>
+<script src="habilidades.js"></script>
+<script src="livro-dados.js"></script>
+<script>
+  // ===== NAVBAR =====
+  const logoImg = document.querySelector('#navLogo img');
+  logoImg.classList.add('logo-entrada');
+  logoImg.addEventListener('animationend', () => {
+    logoImg.classList.remove('logo-entrada');
+    logoImg.classList.remove('logo-girar');
+  });
+  function toggleMenu() {
+    Sons.toggle();
+    logoImg.classList.remove('logo-girar');
+    void logoImg.offsetWidth;
+    logoImg.classList.add('logo-girar');
+    document.getElementById('navMenu').classList.toggle('aberto');
+  }
+  document.addEventListener('click', e => {
+    if (!document.getElementById('navLogo').contains(e.target))
+      document.getElementById('navMenu').classList.remove('aberto');
+  });
+  function sair() { sessionStorage.removeItem('primordios_logado'); window.location.href = 'tela0.html'; }
+  function novoPersonagem() { sessionStorage.removeItem('primordios_estado'); window.location.href = 'tela1.html'; }
+
+  // ===== DADOS DAS ABAS =====
+  let abaAtiva = 'termos';
+
+  const REGRAS = [
+    {
+      titulo: 'Atributos & Constâncias',
+      texto: `O sistema usa 6 atributos principais: <strong>Vigor, Destreza, Sabedoria, Inteligência, Força e Carisma</strong>. Cada atributo concede um bônus calculado pela fórmula: <em>bônus = ⌊pontos ÷ 2⌋</em> (mínimo 0, somente com 2+ pontos).<br><br>
+      As <strong>Constâncias</strong> são habilidades derivadas de cada atributo — por exemplo, Carisma engloba Persuasão, Lábia, Enganação, Vontade, Atuação e Intimidação. O valor de uma constância é igual ao bônus do atributo pai, somado ao Bônus de Classe quando aplicável.<br><br>
+      Constâncias são os conhecimentos acumulados de uma criatura, áreas específicas de seu conhecimento, onde podem se especializar e melhorar ao longo do tempo. Algumas constâncias possuem efeitos especiais dependendo do grau de treinamento.<br><br>
+
+      <div style="font-size:0.65rem;letter-spacing:3px;color:#c9a84c;margin:14px 0 6px;">CARISMA — Persuasão · Lábia · Enganação · Vontade · Atuação · Intimidação</div>
+      <em style="font-size:0.72rem;color:#666;">Capacidade de influenciar os outros por presença, eloquência, empatia ou imponência.</em><br><br>
+
+      <strong>Atuação</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Encenação:</span> CD 14+ para público comum, CD 17+ para plateias cultas ou hostis.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Personificação:</span> Se passar por outra pessoa. CD 17; CD 20 se o alvo tiver motivo para desconfiar.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Ritmo Cativante:</span> Alterar o humor do público após 1 min. CD 17 em grupos pequenos, CD 20+ em multidões.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Eco de Máscaras (Profissional):</span> Mantém falsa persona por 1 cena, +2 em testes de Carisma relacionados ao papel.<br><br>
+
+      <strong>Enganação</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Mentir:</span> CD 14 para simples, CD 17 para elaboradas, CD 20+ para contraditórias.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Falsificação Verbal:</span> Imitar estilo de fala ou simular emoção falsa. CD 16+. Pode ser resistido por Intuição.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Ludibriar:</span> Distrair alguém com palavras enquanto realiza outra ação. CD 18+ para alvos focados.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Lábia de Prata (Mestre):</span> 1×/descanso curto, transforma uma falha em sucesso simples em teste de enganação verbal.<br><br>
+
+      <strong>Intimidação</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Ameaça:</span> CD 16 para civis, CD 19+ para figuras treinadas ou resistentes.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Olhar Imponente:</span> Apenas com presença, sem fala. CD 16 ao alvo.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Quebrar Moral:</span> Hesitação ou rendição em combate. CD 18+. Não afeta criaturas sem mente ou medo.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Aura Amedrontadora (Profissional):</span> 1×/descanso — todos inimigos a 9m fazem Sabedoria CD = 10 + bônus de Intimidação ou ficam amedrontados por 1 rodada.<br><br>
+
+      <strong>Lábia</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Papo Mole:</span> Suavizar tensões ou sair de enrascadas. CD 15 para NPCs comuns, CD 18+ com hostis.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Negociação:</span> Melhores condições em barganhas. CD 16–20 conforme a situação.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Sedução Verbal:</span> Encantar ou seduzir um alvo. CD baseada na resistência do alvo (10+).<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Palavra de Açúcar (Aspirante):</span> 1×/descanso, vantagem em Lábia ao convencer um único alvo em conversa particular.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Encanto Desarmante (Mestre):</span> 1×/cena — alvo faz Vontade CD = 8 + Lábia (sua) ou fica relutante em atacar por 1 rodada.<br><br>
+
+      <strong>Persuasão</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Convencimento:</span> CD 14 para simples, CD 18 para difíceis, CD 20+ para arriscados.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Controlar Emoções:</span> Desarmar conflitos. CD 16 normal, CD 20 se prestes a estourar.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Acalmar:</span> CD 13 para conforto leve, CD 16 para restaurar foco de aliado em crise.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Voz do Pacto (Aspirante):</span> Convencer criaturas hostis a ouvir por 1 rodada mesmo em combate. CD 20+.<br><br>
+
+      <strong>Vontade</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Resistência Social:</span> Resistir a intimidação, sedução ou manipulação verbal. CD igual ao teste de quem tentou te afetar.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Foco:</span> Manter concentração sob pressão mental. CD 15+ conforme a intensidade.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Espírito Resoluto (Profissional):</span> 1×/descanso longo — negar qualquer condição mental no início do turno com Vontade CD 18.<br><br>
+
+      <div style="font-size:0.65rem;letter-spacing:3px;color:#c9a84c;margin:14px 0 6px;">DESTREZA — Reflexo · Acrobacia · Iniciativa · Pontaria · Furtividade · Prestidigitação</div>
+      <em style="font-size:0.72rem;color:#666;">Agilidade, reflexo e precisão. Essencial para equilíbrio, esquiva e furtividade.</em><br><br>
+
+      <strong>Acrobacia</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Equilíbrio:</span> Superfícies estreitas (menos de 30cm). CD 18 padrão, CD 22 se instável ou molhada.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Amortecer:</span> Reduz dano de queda — resultado do teste ÷ 2 = dano reduzido.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Escapar de Amarras:</span> 5 minutos + CD 18 para amarras comuns, CD 24 para reforçadas ou mágicas.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Esgueirar:</span> Passagens muito estreitas. CD 15 em movimento; automático se parado e o espaço for viável.<br><br>
+
+      <strong>Furtividade</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Esconder-se:</span> CD 12 com cobertura favorável, CD 16 em local aberto. Contra alvo que lhe busca: Furtividade vs. Percepção.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Mover-se em Silêncio:</span> CD 13 em terreno normal, CD 17+ em superfícies barulhentas. Contra alvos: Percepção deles vs. sua Furtividade.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Fugir de Rastreamento (Aspirante):</span> CD 15 em campo aberto, CD 18 em áreas vigiadas ou com sensores mágicos.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Desvanecer (Profissional):</span> 1×/descanso longo — desaparece da percepção não-mágica por 1 minuto mesmo se mover. Criaturas mágicas: Percepção CD 18.<br><br>
+
+      <strong>Iniciativa</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Turnos em Combate:</span> Determina a ordem das ações. Alto valor permite agir antes e aproveitar oportunidades.<br><br>
+
+      <strong>Pontaria</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Atirar:</span> CD 10 se parado e próximo, CD 13 em movimento, CD 15+ se distante ou parcialmente coberto.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Acertar Pontos Específicos:</span> Disparos em partes específicas do alvo. Penalidade de −2 no acerto.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Desarmar à Distância (Profissional):</span> Penalidade −2 se visível, −4 se parcialmente coberto. Causa dano mínimo ao acertar.<br><br>
+
+      <strong>Prestidigitação</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Furtar ou Plantar:</span> CD 13+ para distraídos. Contra alvos atentos: Prestidigitação vs. Percepção.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Sacar ou Esconder:</span> CD 10 para simples, CD 15+ em ambiente hostil ou sob vigilância.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Mãos de Ladrão (Aspirante):</span> Ações manuais como parte de ação de movimento. Não chama atenção salvo Percepção CD 15 ativa.<br><br>
+
+      <strong>Reflexo</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Evitar Perigos Repentinos:</span> Armadilhas, explosões, magias de área. CD 10 para leves, CD 15 para médias, CD 20 para intensas.<br><br>
+
+      <div style="font-size:0.65rem;letter-spacing:3px;color:#c9a84c;margin:14px 0 6px;">FORÇA — Combate · Atletismo</div>
+      <em style="font-size:0.72rem;color:#666;">Capacidade física bruta — potência muscular e habilidades em combate corpo a corpo.</em><br><br>
+
+      <strong>Atletismo</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Saltar:</span> CD 14 para saltos medianos, CD 18+ para desafios difíceis.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Escalar:</span> CD 15 para superfícies razoáveis, CD 20+ para verticais lisas ou escorregadias.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Nadar:</span> CD 16 para correntes leves, CD 19+ para águas turbulentas.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Corpo de Atleta (Aspirante):</span> Se um teste de Atletismo falhar, pode ser refeito 1×/cena.<br><br>
+
+      <strong>Combate</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Golpes:</span> Ataques com armas corpo a corpo, de arremesso ou mãos nuas conforme a situação.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Punho de Ferro (Aspirante):</span> +2 em testes de Combate ao usar ataques desarmados.<br><br>
+
+      <div style="font-size:0.65rem;letter-spacing:3px;color:#c9a84c;margin:14px 0 6px;">INTELIGÊNCIA — Investigação · Natureza · Arcanismo · História</div>
+      <em style="font-size:0.72rem;color:#666;">Aprender, raciocinar, memorizar e compreender conceitos complexos.</em><br><br>
+
+      <strong>Arcanismo</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Utilização Mágica:</span> Lançar feitiços e magias conforme os testes da própria magia.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Leitura de Runas:</span> CD 13 para escolas conhecidas, CD 17+ para linguagens perdidas ou encantamentos complexos.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Diagnóstico Arcano:</span> CD 15 para magias simples, CD 18+ para feitiços disfarçados ou efeitos antigos.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Conhecimento Planar:</span> Reconhecer criaturas e fenômenos de outros planos. CD 16+.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Encantar (Aspirante):</span> Realizar procedimentos de encantamento de itens.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Criar Magia (Profissional):</span> Criar magias a partir de fusões ou do zero.<br><br>
+
+      <strong>História</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Recordar Fatos:</span> CD 12 para o comum, CD 15+ para temas raros.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Pontos Históricos:</span> Relacionar eventos desconexos para entender padrões. CD 16+.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Identificação Histórica:</span> Reconhecer artefatos, brasões ou estilos de construção. CD 14+.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Cronista Silencioso (Profissional):</span> Nunca esquece fatos históricos após 1h de estudo. Aliados ganham +1 em testes sociais com quem respeita aquela cultura.<br><br>
+
+      <strong>Investigação</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Busca Minuciosa:</span> CD 14 para objetos escondidos ou armadilhas, CD 17+ em locais caóticos ou disfarçados.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Rastreamento Dedutivo:</span> CD 15 em pistas recentes, CD 18+ para acontecimentos antigos ou mascarados.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Reconstrução Analítica:</span> Recriar funcionamento de armadilha ou cena de crime. CD 16+.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Olho Clínico (Aspirante):</span> Encontra pistas em 1 turno (5s). Vantagem na primeira Investigação por cena.<br><br>
+
+      <strong>Natureza</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Reconhecimento:</span> CD 13 para criaturas comuns, CD 16+ para raridades.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Sobrevivência Teórica:</span> CD 14 para rotas seguras, CD 17+ em ambientes hostis.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Herbologia:</span> Identificar plantas, cogumelos e venenos. CD 13 em áreas conhecidas, CD 16+ em exóticas.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Enciclopédico (Aspirante):</span> Sabe informações básicas sem rolagem. +1 em testes difíceis com 1 min para pensar.<br><br>
+
+      <div style="font-size:0.65rem;letter-spacing:3px;color:#c9a84c;margin:14px 0 6px;">SABEDORIA — Conjurar · Medicina · Percepção · Intuição · Sobrevivência</div>
+      <em style="font-size:0.72rem;color:#666;">Percepção, intuição, senso de perigo e conexão espiritual.</em><br><br>
+
+      <strong>Conjurar</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Invocação Básica:</span> Chamar pequenos espíritos ou manifestar efeitos elementais simples. CD varia conforme a criatura.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Canalizar Energia Mágica:</span> CD 13 em situações simples, CD 17+ em fontes instáveis ou artefatos.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Controle Espiritual:</span> CD 16 para controle, CD 18+ para banimento ou afastamento.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Mestre da Invocação (Profissional):</span> 1×/descanso curto — estende duração de invocações em 50% ou alcance em 30%. Dura a cena completa.<br><br>
+
+      <strong>Intuição</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Detectar Mentiras:</span> CD 13 para pessoas comuns, CD 16+ para mentirosos experientes.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Julgar Intenções:</span> CD 13 normal, CD 18 se o alvo for contido ou teatral.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Leitura Perfeita (Mestre):</span> 1×/descanso longo — resposta direta sobre a real intenção de alguém sem teste.<br><br>
+
+      <strong>Medicina</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Primeiros Socorros:</span> Estabilizar aliado inconsciente. CD 20 normal, CD 22 se sob ataque.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Diagnóstico Oficial:</span> Identificar doenças, venenos ou efeitos anômalos. CD 13+ conforme gravidade.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Tratamentos Emergenciais (Profissional):</span> CD 15 com kit, CD 17 improvisado.<br><br>
+
+      <strong>Percepção</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Observar o Ambiente:</span> CD 13 para alterações sutis, CD 17 para armadilhas bem ocultas.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Ouvir ou Ver:</span> CD 10 para sons claros, CD 13 com ruído ambiente, CD 15+ para inimigos furtivos.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Sentir Presenças Próximas:</span> CD 16+ normal, CD 20+ para seres ocultos por magia.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Sentido Aguçado (Profissional):</span> 1×/cena — percebe automaticamente um detalhe oculto a até 9m sem teste.<br><br>
+
+      <strong>Sobrevivência</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Montar e Recolher:</span> CD 10 em floresta, CD 15 em terrenos hostis, CD 18+ em ambientes extremos.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Prever Condições Naturais:</span> CD 13 para eventos próximos, CD 17+ para tempestades ou mudanças bruscas.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Rastrear:</span> CD 14 em terreno macio, CD 16+ em áreas urbanas, áridas ou após chuvas.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Rastro Impecável (Mestre):</span> Guia até 4 pessoas por terreno difícil sem deixar rastros. Dura 6h, 1×/descanso longo.<br><br>
+
+      <div style="font-size:0.65rem;letter-spacing:3px;color:#c9a84c;margin:14px 0 6px;">VIGOR — Constituição</div>
+      <em style="font-size:0.72rem;color:#666;">Resistência física, saúde e capacidade de suportar esforços prolongados.</em><br><br>
+
+      <strong>Constituição</strong><br>
+      <span style="font-size:0.78rem;color:#aaa;">Recuperação:</span> CD 16 para melhoras visíveis, CD 20+ para curas mais rápidas.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Resistência Condicional:</span> CD 15 para venenos leves, CD 20+ para toxinas fortes ou doenças graves.<br>
+      <span style="font-size:0.78rem;color:#aaa;">Resistência Física:</span> CD 14 para atividades normais, CD 18+ para condições extremas.<br>
+      <span style="font-size:0.78rem;color:#c9a84c88;">✦ Fortaleza (Mestre):</span> 1×/descanso longo — ignora completamente um efeito debilitante (envenenamento, fadiga severa etc.).`
+    },
+    {
+      titulo: 'Bônus de Classe',
+      texto: `O <strong>Bônus de Classe (BC)</strong> representa a maestria geral do personagem e cresce com o nível:<br><br>
+      <table class="livro-tabela">
+        <tr><th>Nível</th><th>BC</th></tr>
+        <tr><td>1–4</td><td>+2</td></tr>
+        <tr><td>5–9</td><td>+3</td></tr>
+        <tr><td>10–14</td><td>+4</td></tr>
+        <tr><td>15–20</td><td>+5</td></tr>
+      </table><br>
+      O BC é somado às Constâncias que o personagem possui proficiência (fixas da classe ou escolhidas).`
+    },
+    {
+      titulo: 'Pontos de Vida & Energia',
+      texto: `<strong>Pontos de Vida (PV)</strong> representam a resistência física do personagem. Ao chegar a 0 PV, o personagem entra em <em>estado de morrendo</em>.<br><br>
+      <strong>Pontos de Energia (PE)</strong> são o combustível para habilidades ativas. Cada habilidade tem um custo de PE baseado no nível mínimo para aprendê-la:<br><br>
+      <table class="livro-tabela">
+        <tr><th>Nível da Hab.</th><th>Custo PE</th></tr>
+        <tr><td>1–2</td><td>1</td></tr>
+        <tr><td>3–4</td><td>2</td></tr>
+        <tr><td>5–6</td><td>4</td></tr>
+        <tr><td>7–8</td><td>6</td></tr>
+        <tr><td>9–10</td><td>8</td></tr>
+        <tr><td>11–12</td><td>10</td></tr>
+        <tr><td>13–14</td><td>12</td></tr>
+        <tr><td>15+</td><td>14+</td></tr>
+      </table>`
+    },
+    {
+      titulo: 'Classe de Armadura (CA)',
+      texto: `A <strong>Classe de Armadura</strong> representa a dificuldade de acertar o personagem. O valor base é:<br><br>
+      <code>CA = 10 + bônus de Destreza + bônus da armadura equipada</code><br><br>
+      Escudos e itens mágicos podem conceder bônus adicionais. Para acertar um ataque, o atacante deve rolar <em>igual ou acima</em> da CA do alvo.`
+    },
+    {
+      titulo: 'Distribuição de Pontos',
+      texto: `Ao criar o personagem, você distribui pontos de atributo conforme seu nível:<br><br>
+      <table class="livro-tabela">
+        <tr><th>Nível</th><th>Pontos totais</th></tr>
+        <tr><td>1</td><td>12</td></tr>
+        <tr><td>3</td><td>14</td></tr>
+        <tr><td>5</td><td>16</td></tr>
+        <tr><td>7</td><td>18</td></tr>
+        <tr><td>9</td><td>20</td></tr>
+        <tr><td>...</td><td>+2 a cada 2 níveis</td></tr>
+      </table><br>
+      No nível 1, nenhum atributo pode ultrapassar 7. A partir do nível 2, o limite é 20.`
+    },
+    {
+      titulo: 'Talentos',
+      texto: `<strong>Talentos</strong> são bônus passivos ou habilidades especiais adicionais. O número de slots de talento cresce com o nível:<br><br>
+      <table class="livro-tabela">
+        <tr><th>Nível</th><th>Slots</th></tr>
+        <tr><td>1–4</td><td>0</td></tr>
+        <tr><td>5–9</td><td>1</td></tr>
+        <tr><td>10–14</td><td>2</td></tr>
+        <tr><td>15+</td><td>3</td></tr>
+      </table><br>
+      Alguns talentos possuem <em>Evolução</em>, que se ativa automaticamente ao atingir o nível indicado.`
+    },
+    {
+      titulo: 'Caminhos',
+      texto: `A partir do <strong>Nível 6</strong>, cada personagem escolhe um <strong>Caminho</strong> — uma especialização dentro de sua classe que concede habilidades únicas e proficiências adicionais.<br><br>
+      O caminho define o estilo de jogo do personagem a longo prazo. Suas habilidades são desbloqueadas progressivamente conforme o nível avança (6, 9, 13, 17 e 20).`
+    },
+    {
+      titulo: 'Experiência & Nivelamento',
+      texto: `O personagem ganha XP ao completar desafios, derrotar inimigos e cumprir objetivos. Ao acumular XP suficiente, sobe de nível automaticamente e o XP zera:<br><br>
+      <table class="livro-tabela">
+        <tr><th>Nível</th><th>XP necessário</th></tr>
+        <tr><td>1→2</td><td>100</td></tr>
+        <tr><td>2→3</td><td>300</td></tr>
+        <tr><td>3→4</td><td>500</td></tr>
+        <tr><td>4→5</td><td>700</td></tr>
+        <tr><td>5→6</td><td>900</td></tr>
+        <tr><td>6→7</td><td>1100</td></tr>
+        <tr><td>...</td><td>+200 por nível</td></tr>
+        <tr><td>19→20</td><td>4000</td></tr>
+      </table>`
+    },
+    {
+      titulo: 'Ações em Combate',
+      texto: `Em cada turno, o personagem pode realizar:<br><br>
+      <strong>Ação Padrão</strong> — Atacar, usar uma habilidade, interagir com objeto.<br>
+      <strong>Ação Bônus</strong> — Habilidades específicas marcadas como "Ação Bônus".<br>
+      <strong>Ação de Movimento</strong> — Mover-se até seu deslocamento base (geralmente 9m).<br>
+      <strong>Reação</strong> — Uma por rodada, fora do turno, em resposta a um gatilho.<br>
+      <strong>Turno Completo / Ação Completa</strong> — Consome Ação Padrão + Ação Bônus.`
+    },
+  ];
+
+  // ===== RENDER FUNÇÕES =====
+  function renderTermos(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro ? LIVRO_TERMOS.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_TERMOS;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = lista.map(r => `
+      <div class="livro-card">
+        <div class="livro-card-titulo">${destacar(r.titulo, filtro)}</div>
+        <div class="livro-card-texto">${destacar(r.texto, filtro)}</div>
+      </div>`).join('');
+  }
+
+  function renderCombate(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro ? LIVRO_COMBATE.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_COMBATE;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = lista.map(r => {
+      if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>${r.texto ? `<p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:12px;">${r.texto}</p>` : ''}`;
+      return `<div class="livro-card livro-card-sm"><div class="livro-card-titulo" style="font-size:0.88rem;">${destacar(r.titulo, filtro)}</div><div class="livro-card-texto" style="margin-top:6px;">${destacar(r.texto, filtro)}</div></div>`;
+    }).join('');
+  }
+
+  function renderCondicoes(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro ? LIVRO_CONDICOES.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_CONDICOES;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = lista.map(r => {
+      if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>${r.texto ? `<p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:12px;">${r.texto}</p>` : ''}`;
+      return `<div class="livro-card livro-card-sm"><div class="livro-card-titulo" style="font-size:0.88rem;">${destacar(r.titulo, filtro)}</div><div class="livro-card-texto" style="margin-top:6px;">${destacar(r.texto, filtro)}</div></div>`;
+    }).join('');
+  }
+
+  function renderRacas(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro ? LIVRO_RACAS.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_RACAS;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = lista.map(r => {
+      if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>`;
+      return `<div class="livro-card"><div class="livro-card-titulo">${destacar(r.titulo, filtro)}</div><div class="livro-card-texto" style="margin-top:8px;">${destacar(r.texto, filtro)}</div></div>`;
+    }).join('');
+  }
+
+  function renderLinguas(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro ? LIVRO_LINGUAS.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_LINGUAS;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = lista.map(r => {
+      if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div><p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:16px;">${r.texto}</p>`;
+      return `<div class="livro-card livro-card-sm"><div class="livro-card-titulo" style="font-size:0.88rem;">${destacar(r.titulo, filtro)}</div><div class="livro-card-texto" style="margin-top:6px;">${destacar(r.texto, filtro)}</div></div>`;
+    }).join('');
+  }
+
+  function renderMagias(filtro) {
+    const c = document.getElementById('livroConteudo');
+
+    const ELEMENTOS = [
+      { nome: 'Fogo',        img: 'Imagens/Simbolos/Fogo-removebg-preview.png' },
+      { nome: 'Água',        img: 'Imagens/Simbolos/Agua-removebg-preview.png' },
+      { nome: 'Terra',       img: 'Imagens/Simbolos/Terra-removebg-preview.png' },
+      { nome: 'Ar',          img: 'Imagens/Simbolos/Ar-removebg-preview.png' },
+      { nome: 'Gelo',        img: 'Imagens/Simbolos/Gelo-removebg-preview.png' },
+      { nome: 'Magma',       img: 'Imagens/Simbolos/Magma-removebg-preview.png' },
+      { nome: 'Eletricidade',img: 'Imagens/Simbolos/Eletricidade-removebg-preview.png' },
+      { nome: 'Sangue',      img: 'Imagens/Simbolos/Sangue-removebg-preview.png' },
+      { nome: 'Flora',       img: 'Imagens/Simbolos/Flora-removebg-preview.png' },
+      { nome: 'Corrosão',    img: 'Imagens/Simbolos/Corros%C3%A3o-removebg-preview.png' },
+      { nome: 'Essência',    img: 'Imagens/Simbolos/Essencia-removebg-preview.png' },
+      { nome: 'Espaço',      img: 'Imagens/Simbolos/Espa%C3%A7o-removebg-preview.png' },
+      { nome: 'Luz',         img: 'Imagens/Simbolos/Luz-removebg-preview.png' },
+      { nome: 'Escuridão',   img: 'Imagens/Simbolos/Escurid%C3%A3o-removebg-preview.png' },
+      { nome: 'Psíquico',    img: 'Imagens/Simbolos/Psiquico-removebg-preview.png' },
+    ];
+
+    // Símbolos de modo
+    const MODO_SIMBOLO = { 'Controlado': '☐', 'Disparo': '△', 'Contínuo': '◯', 'Continuo': '◯' };
+
+    // Parseia o texto da magia e monta cards verticais
+    function parseMagia(r, filtro) {
+      // Separa a tag de ação do restante do texto
+      const textoRaw = r.texto;
+
+      // Extrai o conteúdo da span livro-tag-acao
+      const tagMatch = textoRaw.match(/<span class="livro-tag livro-tag-acao">([^<]+)<\/span>/);
+      const tagVol   = textoRaw.match(/<span class="livro-tag livro-tag-nivel">([^<]+)<\/span>/);
+
+      // Descrição vem após o primeiro <br><br>
+      const brIdx = textoRaw.indexOf('<br><br>');
+      const descRaw = brIdx !== -1 ? textoRaw.slice(brIdx + 8) : '';
+
+      // Separa Acender da descrição
+      const acenderMatch = descRaw.match(/(?:<br>\s*)?<em>Acender:<\/em>(.+)$|(?:<br>\s*)?<em>Acender:<\/em>(.+)/s);
+      let descPrincipal = descRaw;
+      let acenderDesc = '';
+      if (acenderMatch) {
+        const acenderPos = descRaw.search(/(?:<br>\s*)?<em>Acender:<\/em>/);
+        descPrincipal = descRaw.slice(0, acenderPos);
+        acenderDesc = (acenderMatch[1] || acenderMatch[2] || '').trim();
+      }
+
+      // Parseia os campos da tag de ação: "Modo · Ação · Alcance · Área · Duração · Alvos"
+      let campos = [];
+      if (tagMatch) {
+        const partes = tagMatch[1].split('·').map(s => s.trim());
+        // Identifica cada parte
+        const MODOS   = ['Controlado','Disparo','Contínuo','Continuo','Controle','Invocação','Concentrado','Manipulação','Área','Massivo','Campo'];
+        const ACOES   = ['Padrão','Bônus','Movimento','Reação','Completa'];
+        const ALCANCES= ['Pessoal','Toque','Curto','Médio','Longo','Imenso','Ilimitado','Distância Mágica','Distância Mirável'];
+        const DURACOES= [/\d+s$/,/\d+min$/,/\d+ min/,/\d+ turnos?$/,/\d+h$/,/turno/,/minuto/,/segundo/,/cena/];
+        const AREAS   = [/Área/i,/Raio/i,/Linha/i,/Cone/i,/Esfera/i];
+        const ALVOS   = [/\d+ (ser|alvo|criatura|objeto|pilar)/i,/Até \d+/i,/até \d+/i];
+
+        partes.forEach(p => {
+          if (MODOS.includes(p))            campos.push({ label: 'Modo', val: p });
+          else if (ACOES.includes(p))       campos.push({ label: 'Ação', val: p });
+          else if (ALCANCES.includes(p))    campos.push({ label: 'Alcance', val: p });
+          else if (DURACOES.some(re => re.test(p))) campos.push({ label: 'Duração', val: p });
+          else if (AREAS.some(re => re.test(p)))    campos.push({ label: 'Área', val: p });
+          else if (ALVOS.some(re => re.test(p)))    campos.push({ label: 'Alvos', val: p });
+          else if (/^\d+m$/.test(p) || /\d+m ×/.test(p) || /\d+m$/.test(p)) campos.push({ label: 'Alcance', val: p });
+          else                              campos.push({ label: 'Info', val: p });
+        });
+      }
+
+      // Volume
+      const vol = tagVol ? tagVol[1] : '';
+
+      // Símbolo do modo
+      const modoObj = campos.find(c => c.label === 'Modo');
+      const modoNome = modoObj ? modoObj.val : '';
+      const modoSimb = MODO_SIMBOLO[modoNome] || '';
+
+      // Título com símbolo de modo
+      const tituloHtml = `<div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:0.95rem;letter-spacing:2px;color:#e0d6c8;text-transform:uppercase;">${destacar(r.titulo, filtro)}</span>
+        ${modoSimb ? `<span style="font-size:0.9rem;color:#8888aa;opacity:0.8;">${modoSimb}</span>` : ''}
+      </div>`;
+
+      // Linha de volume
+      const volHtml = vol ? `<div style="font-size:0.6rem;letter-spacing:2px;color:#c9a84c;margin-bottom:8px;">${vol}</div>` : '';
+
+      // Campos verticais
+      const camposHtml = campos.map(({label, val}) => {
+        const labelColor = label === 'Modo' ? '#8888aa' : label === 'Alcance' ? '#7799bb' : label === 'Duração' ? '#88aa77' : label === 'Área' ? '#aa8877' : label === 'Alvos' ? '#aa88bb' : '#666';
+        return `<div style="display:flex;align-items:baseline;gap:6px;margin-bottom:3px;">
+          <span style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:${labelColor};min-width:52px;">${label}</span>
+          <span style="font-size:0.75rem;color:#aaa;">${val}</span>
+        </div>`;
+      }).join('');
+
+      // Descrição principal
+      const descHtml = descPrincipal ? `<div style="font-size:0.78rem;color:#888;line-height:1.8;margin-top:8px;">${destacar(descPrincipal, filtro)}</div>` : '';
+
+      // Caixinha Acender
+      const acenderHtml = acenderDesc ? `
+        <div style="margin-top:10px;border:1px solid #c9a84c33;border-radius:3px;padding:8px 12px;background:#1a1520;">
+          <div style="font-size:0.58rem;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin-bottom:4px;">Acender</div>
+          <div style="font-size:0.75rem;color:#c9a84c88;line-height:1.7;">${destacar(acenderDesc, filtro)}</div>
+        </div>` : '';
+
+      return `<div class="livro-card livro-card-sm">
+        ${tituloHtml}
+        ${volHtml}
+        <div style="margin-top:6px;">${camposHtml}</div>
+        ${descHtml}
+        ${acenderHtml}
+      </div>`;
+    }
+
+    const todasComElemento = [];
+    let elemAtual = 'Outros';
+    const tudo = [...LIVRO_MAGIAS, ...LIVRO_MAGIAS_V1, ...LIVRO_MAGIAS_V2, ...LIVRO_MAGIAS_V3,
+      ...LIVRO_MAGIAS_V4, ...LIVRO_MAGIAS_V5, ...LIVRO_MAGIAS_V6, ...LIVRO_MAGIAS_V7,
+      ...LIVRO_MAGIAS_V8, ...LIVRO_MAGIAS_V9];
+
+    tudo.forEach(r => {
+      if (r.subtitulo) {
+        const t = r.titulo;
+        if (t.includes('Truques') || t.includes('Modos') || t.includes('Alcance') || t.includes('Custo') || t.includes('Mana')) {
+          elemAtual = '_info';
+        } else {
+          const match = t.match(/—\s*(?:Elemental|Orgânico|Místico)\s+(.+)$/);
+          if (match) elemAtual = match[1].trim();
+        }
+      } else {
+        if (elemAtual !== '_info') todasComElemento.push({ ...r, elemento: elemAtual });
+      }
+    });
+
+    const filtradas = filtro
+      ? todasComElemento.filter(r => buscaTexto(r.titulo + r.texto, filtro))
+      : todasComElemento;
+
+    if (!filtradas.length) { c.innerHTML = semResultado(); return; }
+
+    const porElemento = {};
+    filtradas.forEach(r => {
+      if (!porElemento[r.elemento]) porElemento[r.elemento] = [];
+      porElemento[r.elemento].push(r);
+    });
+
+    const ordemElem = ELEMENTOS.map(e => e.nome);
+    const elemsOrdenados = Object.keys(porElemento).sort((a, b) => {
+      const ia = ordemElem.indexOf(a);
+      const ib = ordemElem.indexOf(b);
+      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    });
+
+    // ===== PAINEL DE REFERÊNCIA =====
+    const painelRef = `
+      <div style="margin-bottom:32px;display:flex;flex-direction:column;gap:10px;">
+
+        <div style="font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:#c9a84c;padding-bottom:8px;border-bottom:1px solid #2a2535;">Modos de Feitiços</div>
+
+        <div class="livro-card livro-card-sm" style="border-color:#25223399;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span style="font-size:1.1rem;color:#8888aa;">◯</span>
+            <span style="font-size:0.8rem;letter-spacing:2px;color:#e0d6c8;text-transform:uppercase;">Contínuo</span>
+          </div>
+          <div style="font-size:0.76rem;color:#888;line-height:1.8;">Utilizado com feitiços de marca contínua. Com a mesma ação base, após a primeira rodada a duração aumenta +1 turno a cada turno, gastando a mesma Mana. Máximo de 1 feitiço contínuo ativo.</div>
+          <div style="margin-top:10px;border:1px solid #33334455;border-radius:3px;padding:8px 12px;background:#111019;">
+            <div style="font-size:0.58rem;letter-spacing:2px;color:#8888aa;text-transform:uppercase;margin-bottom:6px;">Barra de Continuidade · 4 pontos</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:8px;align-items:baseline;"><span style="font-size:0.6rem;color:#555;min-width:80px;">Errar manter</span><span style="font-size:0.74rem;color:#aaa;">+1 ponto · feitiço desfeito</span></div>
+              <div style="display:flex;gap:8px;align-items:baseline;"><span style="font-size:0.6rem;color:#aa7755;min-width:80px;">2 pontos</span><span style="font-size:0.74rem;color:#aaa;">Adquire <strong style="color:#cc9966;">Cansaço</strong></span></div>
+              <div style="display:flex;gap:8px;align-items:baseline;"><span style="font-size:0.6rem;color:#cc4444;min-width:80px;">4 pontos</span><span style="font-size:0.74rem;color:#aaa;">Adquire <strong style="color:#dd5555;">Exausto</strong></span></div>
+              <div style="display:flex;gap:8px;align-items:baseline;"><span style="font-size:0.6rem;color:#cc4444;min-width:80px;">1 natural</span><span style="font-size:0.74rem;color:#aaa;">+2 pontos de uma vez</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="livro-card livro-card-sm" style="border-color:#25223399;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span style="font-size:1.1rem;color:#8888aa;">☐</span>
+            <span style="font-size:0.8rem;letter-spacing:2px;color:#e0d6c8;text-transform:uppercase;">Controlado</span>
+          </div>
+          <div style="font-size:0.76rem;color:#888;line-height:1.8;">Permite manipular a ativação do feitiço, guardando-o na manga após invocá-lo com a ação e PE correspondentes. Pode projetá-lo com uma <strong style="color:#aaa;">ação bônus</strong> quando necessário.</div>
+        </div>
+
+        <div class="livro-card livro-card-sm" style="border-color:#25223399;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span style="font-size:1.1rem;color:#8888aa;">△</span>
+            <span style="font-size:0.8rem;letter-spacing:2px;color:#e0d6c8;text-transform:uppercase;">Disparo</span>
+          </div>
+          <div style="font-size:0.76rem;color:#888;line-height:1.8;">Após a ativação o feitiço dispara automaticamente, sem segundas atuações.</div>
+        </div>
+
+        <div style="font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:#c9a84c;padding-bottom:8px;border-bottom:1px solid #2a2535;margin-top:8px;">Alcance do Feitiço</div>
+        <div class="livro-card livro-card-sm" style="border-color:#25223399;">
+          <div style="font-size:0.74rem;color:#888;line-height:1.8;margin-bottom:10px;">Distância em que os feitiços podem ser invocados ou seu alcance máximo.</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            ${[['Pessoal','Você mesmo ou objeto que esteja segurando.'],['Toque','Encostado no alvo.'],['Curto','9m · 6 blocos no mapa.'],['Médio','18m · 12 blocos no mapa.'],['Longo','36m · 24 blocos no mapa.'],['Imenso','90m · 60 blocos no mapa.'],['Ilimitado','Sem limite de alcance.']].map(([nome,desc]) =>
+              `<div style="display:flex;gap:10px;align-items:baseline;">
+                <span style="font-size:0.68rem;letter-spacing:1px;color:#7799bb;min-width:64px;">${nome}</span>
+                <span style="font-size:0.74rem;color:#666;">${desc}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <div style="font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:#c9a84c;padding-bottom:8px;border-bottom:1px solid #2a2535;margin-top:8px;">Níveis de Magia</div>
+        <div class="livro-card livro-card-sm" style="border-color:#25223399;">
+          <div style="font-size:0.74rem;color:#888;line-height:1.8;margin-bottom:10px;">Classificação das magias por volume, do Vol. 1 ao Vol. 9. Certos volumes possuem dificuldades em primeiro uso ou consequências descritas pelo livro.</div>
+        </div>
+
+        <div style="font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:#c9a84c;padding-bottom:8px;border-bottom:1px solid #2a2535;margin-top:8px;">Mana</div>
+        <div class="livro-card livro-card-sm" style="border-color:#25223399;">
+          <div style="font-size:0.74rem;color:#888;line-height:1.8;margin-bottom:10px;">Energia mágica necessária para utilizar uma magia. Varia de acordo com o volume.</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            ${[['Truque','0'],['Vol. 1','-2'],['Vol. 2','-4'],['Vol. 3','-6'],['Vol. 4','-10'],['Vol. 5','-14'],['Vol. 6','-18'],['Vol. 7','-24'],['Vol. 8','-30'],['Vol. 9','-36']].map(([vol,mana]) =>
+              `<div style="display:flex;gap:10px;align-items:baseline;">
+                <span style="font-size:0.68rem;letter-spacing:1px;color:#c9a84c88;min-width:64px;">${vol}</span>
+                <span style="font-size:0.78rem;color:#aaa;">${mana} Mana</span>
+              </div>`).join('')}
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    let html = painelRef;
+    elemsOrdenados.forEach(elem => {
+      const info = ELEMENTOS.find(e => e.nome === elem);
+      const img  = info ? `<img src="${info.img}" style="width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 8px #c9a84c55);" alt="${elem}">` : '';
+      html += `
+        <div style="display:flex;align-items:center;gap:16px;margin:36px 0 16px;padding-bottom:12px;border-bottom:2px solid #2a2535;">
+          ${img}
+          <div>
+            <div style="font-size:1.3rem;letter-spacing:5px;text-transform:uppercase;color:#e0d6c8;">${elem}</div>
+            <div style="font-size:0.65rem;letter-spacing:3px;color:#c9a84c;margin-top:2px;">${porElemento[elem].length} magia${porElemento[elem].length>1?'s':''}</div>
+          </div>
+        </div>`;
+      porElemento[elem].forEach(r => { html += parseMagia(r, filtro); });
+    });
+
+    c.innerHTML = html;
+  }
+
+  function renderFicha(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro ? LIVRO_FICHA.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_FICHA;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = lista.map(r => {
+      if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>${r.texto ? `<p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:12px;">${r.texto}</p>` : ''}`;
+      return `<div class="livro-card"><div class="livro-card-titulo">${destacar(r.titulo, filtro)}</div><div class="livro-card-texto" style="margin-top:8px;">${destacar(r.texto, filtro)}</div></div>`;
+    }).join('');
+  }
+
+  function renderRegras(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro
+      ? REGRAS.filter(r => buscaTexto(r.titulo + r.texto, filtro))
+      : REGRAS;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = lista.map(r => `
+      <div class="livro-card">
+        <div class="livro-card-titulo">${destacar(r.titulo, filtro)}</div>
+        <div class="livro-card-texto">${destacar(r.texto, filtro)}</div>
+      </div>`).join('');
+  }
+
+  function renderClasses(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const classes = Object.entries(CLASSES_PREVIEW).filter(([nome, d]) =>
+      !filtro || buscaTexto(nome + d.desc + d.famosos.join(' '), filtro));
+    if (!classes.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = classes.map(([nome, d]) => `
+      <div class="livro-card">
+        <div class="livro-card-titulo">${destacar(nome, filtro)}</div>
+        <div class="livro-card-texto">${destacar(d.desc, filtro)}</div>
+        <div class="livro-grid-2" style="margin-top:12px;">
+          <div>
+            <div class="livro-label">Vida</div>
+            <div class="livro-valor">${d.dadoVida} · Inicial: ${d.vidaInicial}</div>
+            <div class="livro-label" style="margin-top:8px;">Energia</div>
+            <div class="livro-valor">${d.energiaInicial} inicial</div>
+          </div>
+          <div>
+            <div class="livro-label">Constâncias Fixas</div>
+            <div class="livro-tags">${d.constanciasFixas.map(t => `<span class="livro-tag">${destacar(t, filtro)}</span>`).join('')}</div>
+            <div class="livro-label" style="margin-top:8px;">Armaduras</div>
+            <div class="livro-tags">${d.armaduras.map(t => `<span class="livro-tag">${t}</span>`).join('')}</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          <div class="livro-label">Armas</div>
+          <div class="livro-tags">${d.armas.map(t => `<span class="livro-tag">${t}</span>`).join('')}</div>
+        </div>
+        <div style="margin-top:10px;font-size:0.72rem;color:#555;font-style:italic;">
+          Famosos: ${destacar(d.famosos.join(', '), filtro)}
+        </div>
+      </div>`).join('');
+  }
+
+  function renderHabilidades(filtro) {
+    const c = document.getElementById('livroConteudo');
+    let html = '';
+    Object.entries(HABILIDADES).forEach(([classe, dados]) => {
+      const baseF = dados.base.filter(h => !filtro || buscaTexto(h.nome + h.desc + h.acao, filtro));
+      const caminhoEntries = Object.entries(dados.caminhos).map(([nome, cam]) => ({
+        nome,
+        habs: cam.habs.filter(h => !filtro || buscaTexto(h.nome + h.desc + h.acao + nome, filtro)),
+        proficiencias: cam.proficiencias
+      })).filter(c => c.habs.length);
+
+      if (!baseF.length && !caminhoEntries.length) return;
+      html += `<div class="livro-secao-titulo">${classe}</div>`;
+
+      if (baseF.length) {
+        html += baseF.map(h => habCard(h, filtro)).join('');
+      }
+      caminhoEntries.forEach(cam => {
+        html += `<div class="livro-caminho-titulo">Caminho: ${destacar(cam.nome, filtro)} <span style="font-size:0.65rem;color:#555;">· ${cam.proficiencias}</span></div>`;
+        html += cam.habs.map(h => habCard(h, filtro)).join('');
+      });
+    });
+
+    // Talentos
+    let tHtml = '';
+    Object.entries(TALENTOS).forEach(([classe, lista]) => {
+      const f = lista.filter(t => !filtro || buscaTexto(t.nome + t.desc, filtro));
+      if (!f.length) return;
+      tHtml += `<div class="livro-caminho-titulo" style="margin-top:20px;">Talentos — ${classe}</div>`;
+      tHtml += f.map(t => `
+        <div class="livro-card livro-card-sm">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+            <div class="livro-card-titulo" style="font-size:0.82rem;">${destacar(t.nome, filtro)}</div>
+            ${t.evoNivel ? `<span class="livro-tag livro-tag-evo">Evolui Nv ${t.evoNivel}</span>` : ''}
+          </div>
+          <div class="livro-card-texto" style="margin-top:6px;">${destacar(t.desc, filtro)}</div>
+          ${t.evo ? `<div class="livro-evo">↑ ${destacar(t.evo, filtro)}</div>` : ''}
+        </div>`).join('');
+    });
+    html += tHtml;
+
+    if (!html) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = html;
+  }
+
+  function habCard(h, filtro) {
+    return `
+      <div class="livro-card livro-card-sm">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div class="livro-card-titulo" style="font-size:0.85rem;">${destacar(h.nome, filtro)}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="livro-tag livro-tag-nivel">Nível ${h.nivel}</span>
+            <span class="livro-tag livro-tag-acao">${h.acao}</span>
+          </div>
+        </div>
+        <div class="livro-card-texto" style="margin-top:8px;">${destacar(h.desc, filtro)}</div>
+        ${h.evo ? `<div class="livro-evo">↑ ${destacar(h.evo, filtro)}</div>` : ''}
+      </div>`;
+  }
+
+  function renderArmas(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = filtro ? LIVRO_ARMAS_EXTRA.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_ARMAS_EXTRA;
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    let html = '';
+    let gridAberto = false;
+    lista.forEach(r => {
+      if (r.subtitulo) {
+        if (gridAberto) { html += '</div>'; gridAberto = false; }
+        html += `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>`;
+        html += '<div class="livro-grid-itens">';
+        gridAberto = true;
+      } else {
+        const partes = r.texto.split('<br><br><em>Passiva:</em>');
+        const stats = partes[0];
+        const passiva = partes[1] || '';
+        const getVal = (label) => {
+          const m = stats.match(new RegExp('<strong>' + label + ':<\/strong>\\s*([^·<]+)'));
+          return m ? m[1].trim() : '—';
+        };
+        html += `
+          <div class="livro-card livro-card-item">
+            <div class="livro-card-titulo">${destacar(r.titulo, filtro)}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;margin:6px 0;">
+              <span class="livro-tag livro-tag-tipo">⚔ ${getVal('Modo')} · ${getVal('Uso')}</span>
+              <span class="livro-tag livro-tag-nivel">${getVal('Dano')}</span>
+              <span class="livro-tag livro-tag-acao">${getVal('Tipo')}</span>
+              <span class="livro-tag">${getVal('Alcance')}</span>
+              <span class="livro-tag">${getVal('Crítico')}</span>
+              <span class="livro-tag">${getVal('Peso')}</span>
+            </div>
+            ${passiva ? `<div class="livro-card-texto" style="font-size:0.75rem;margin-top:4px;"><em>${destacar(passiva, filtro)}</em></div>` : ''}
+          </div>`;
+      }
+    });
+    if (gridAberto) html += '</div>';
+    c.innerHTML = html;
+  }
+
+  function renderArmaduras(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = ARMADURAS.filter(a => !filtro || buscaTexto(a.nome + a.tipo + a.dano + a.desc, filtro));
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = `<div class="livro-grid-itens">${lista.map(a => `
+      <div class="livro-card livro-card-item">
+        <div class="livro-card-titulo">${destacar(a.nome, filtro)}</div>
+        <div class="livro-tag livro-tag-tipo">${a.tipo}</div>
+        <div class="livro-item-dano">🛡 ${destacar(a.dano, filtro)}</div>
+        <div class="livro-card-texto">${destacar(a.desc, filtro)}</div>
+      </div>`).join('')}</div>`;
+  }
+
+  function renderAcessorios(filtro) {
+    const c = document.getElementById('livroConteudo');
+    const lista = ACESSORIOS.filter(a => !filtro || buscaTexto(a.nome + a.tipo + a.desc + (a.raridade||''), filtro));
+    if (!lista.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = `<div class="livro-grid-itens">${lista.map(a => `
+      <div class="livro-card livro-card-item">
+        <div class="livro-card-titulo">${destacar(a.nome, filtro)}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0;">
+          <span class="livro-tag livro-tag-tipo">${a.tipo}</span>
+          ${a.raridade ? `<span class="livro-tag livro-tag-rar">${a.raridade}</span>` : ''}
+          ${a.acao ? `<span class="livro-tag livro-tag-acao">${a.acao}</span>` : ''}
+          ${a.carga ? `<span class="livro-tag">${a.carga}✦ carga</span>` : ''}
+        </div>
+        <div class="livro-card-texto">${destacar(a.desc, filtro)}</div>
+        ${a.recarga ? `<div style="font-size:0.68rem;color:#555;margin-top:6px;">Recarga: ${a.recarga}</div>` : ''}
+      </div>`).join('')}</div>`;
+  }
+
+  // ===== UTILITÁRIOS =====
+  function buscaTexto(str, filtro) {
+    return str.toLowerCase().includes(filtro.toLowerCase());
+  }
+
+  function destacar(str, filtro) {
+    if (!filtro) return str;
+    const re = new RegExp(`(${filtro.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return str.replace(re, '<mark class="livro-mark">$1</mark>');
+  }
+
+  function semResultado() {
+    return '<div class="livro-sem-resultado">⁂ Nenhum resultado encontrado.</div>';
+  }
+
+  const RENDERS = {
+    termos:      renderTermos,
+    combate:     renderCombate,
+    condicoes:   renderCondicoes,
+    racas:       renderRacas,
+    linguas:     renderLinguas,
+    magias:      renderMagias,
+    ficha:       renderFicha,
+    regras:      renderRegras,
+    classes:     renderClasses,
+    habilidades: renderHabilidades,
+    armas:       renderArmas,
+    armaduras:   renderArmaduras,
+    acessorios:  renderAcessorios,
+  };
+
+  function mudarAba(aba, btn) {
+    Sons.click();
+    abaAtiva = aba;
+    document.querySelectorAll('.livro-aba').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    document.getElementById('campoPesquisa').value = '';
+    RENDERS[aba]('');
+  }
+
+  function pesquisar(valor) {
+    const c = document.getElementById('livroConteudo');
+    if (valor.trim().length > 0) {
+      document.querySelectorAll('.livro-aba').forEach(b => b.classList.remove('ativo'));
+      abaAtiva = '_pesquisa';
+      const abas = ['termos','combate','condicoes','racas','linguas','magias','ficha','regras','classes','habilidades','armas','armaduras','acessorios'];
+      const labels = { termos:'Termos', combate:'Combate', condicoes:'Condições', racas:'Raças', linguas:'Línguas', magias:'Magias', ficha:'Ficha', regras:'Regras', classes:'Classes', habilidades:'Habilidades', armas:'Armas', armaduras:'Armaduras', acessorios:'Acessórios' };
+      let html = '';
+      abas.forEach(aba => {
+        RENDERS[aba](valor);
+        const inner = c.innerHTML;
+        if (!inner.includes('livro-sem-resultado')) {
+          html += `<div class="livro-secao-titulo">${labels[aba]}</div>${inner}`;
+        }
+      });
+      c.innerHTML = html || semResultado();
+    } else {
+      abaAtiva = 'termos';
+      document.querySelectorAll('.livro-aba')[0].classList.add('ativo');
+      RENDERS['termos']('');
+    }
+  }
+
+  // ===== INIT =====
+  window.addEventListener('load', () => {
+    const user = JSON.parse(sessionStorage.getItem('primordios_logado') || 'null');
+    if (!user) { window.location.href = 'tela0.html'; return; }
+    renderTermos('');
+  });
+</script>
+</body>
+</html>

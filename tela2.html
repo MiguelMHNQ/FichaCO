@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragmentados — Construa seu Personagem</title>
+<link rel="icon" href="Imagens/LogoT.png" type="image/png">
+<link rel="stylesheet" href="global.css">
+<link rel="stylesheet" href="tela2.css">
+</head>
+<body>
+
+<section class="tela">
+  <h1 class="titulo-tela">Construa seu Personagem</h1>
+  <p class="subtitulo-tela">Defina seu nível e distribua seus pontos</p>
+
+  <div class="t2-grid">
+    <div class="t2-bloco" style="max-width:220px;text-align:center;">
+      <h3>Nível</h3>
+      <div class="nivel-selector">
+        <button class="nivel-btn" onclick="alterarNivel(-1)">−</button>
+        <div class="nivel-valor" id="nivelValor">1</div>
+        <button class="nivel-btn" onclick="alterarNivel(1)">+</button>
+      </div>
+      <div class="nivel-label">Nível atual</div>
+      <div style="margin-top:20px;border-top:1px solid #2a2535;padding-top:16px;">
+        <div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin-bottom:8px;">NOME <span style="color:#ff4444;">*</span></div>
+        <input id="nomePersonagem" type="text" placeholder="Obrigatório..." maxlength="30"
+          style="width:100%;font-family:'Georgia',serif;background:transparent;border:none;border-bottom:1px solid #3a3550;color:#e0d6c8;font-size:0.9rem;text-align:center;padding:4px 0;outline:none;"
+          oninput="estado.nomePersonagem=this.value.trim();salvarEstado();validarNome();">
+        <div id="nomeAviso" style="font-size:0.68rem;color:#ff4444;margin-top:4px;min-height:14px;"></div>
+      </div>
+    </div>
+
+    <div class="t2-bloco">
+      <h3>Atributos — <span id="pontosRestantes">12</span> pontos restantes</h3>
+      <div id="constanciasContainer"></div>
+      <div class="pontos-restantes">Total distribuído: <span id="totalDist">0</span> / <span id="totalMax">12</span></div>
+    </div>
+  </div>
+
+  <div style="width:100%;max-width:900px;margin-top:30px;display:flex;gap:30px;flex-wrap:wrap;">
+    <div class="t2-bloco" style="min-width:260px;flex:1;padding:0;overflow:hidden;">
+      <!-- Metade superior: Raça -->
+      <div style="padding:20px 24px 16px;">
+        <h3 style="margin-bottom:12px;">Raça <span style="color:#ff4444;">*</span></h3>
+        <div class="caminhos-grid" id="racasContainer"></div>
+        <div id="racaAviso" style="font-size:0.68rem;color:#ff4444;margin-top:4px;min-height:14px;"></div>
+        <div id="raca-info-box" style="display:none;margin-top:12px;background:#0e0c16;border:1px solid #2a2535;border-radius:3px;padding:10px 12px;font-size:0.72rem;color:#aaa;line-height:1.6;"></div>
+      </div>
+      <!-- Divisor -->
+      <div class="t2-divisor"></div>
+      <!-- Metade inferior: Caminho -->
+      <div style="padding:16px 24px 20px;">
+        <h3 style="margin-bottom:12px;">Caminho</h3>
+        <div class="caminhos-grid" id="caminhosContainer"></div>
+      </div>
+    </div>
+    <div class="t2-bloco" style="flex:2;min-width:300px;">
+      <h3>Habilidades</h3>
+      <div class="hab-lista" id="habContainer"></div>
+    </div>
+  </div>
+
+  <div id="constanciasEscolhaWrapper" style="width:100%;max-width:900px;margin-top:30px;display:none;">
+    <div class="t2-bloco">
+      <h3 id="constanciasEscolhaTitulo">Constâncias Selecionáveis</h3>
+      <div id="constanciasEscolhaContainer" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+  </div>
+
+  <div id="truquesBlocoWrapper" style="width:100%;max-width:900px;margin-top:30px;display:none;">
+    <div class="t2-bloco">
+      <h3>Truques — <span id="truquesSlotInfo"></span></h3>
+      <div id="truquesContainer"></div>
+    </div>
+  </div>
+
+  <div id="talentosBlocoWrapper" style="width:100%;max-width:900px;margin-top:30px;display:none;">
+    <div class="t2-bloco">
+      <h3>Talentos — <span id="talentosSlotInfo"></span></h3>
+      <div id="talentosContainer"></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:16px;margin-top:40px;">
+    <button class="btn-avancar habilitado" onclick="Sons.back();window.location.href='tela1.html'">← Voltar</button>
+    <button class="btn-avancar habilitado" onclick="avancar()">Continuar →</button>
+  </div>
+</section>
+
+<script src="estado.js"></script>
+<script src="audio.js"></script>
+<script src="sons.js"></script>
+<script src="habilidades.js"></script>
+<script>
+  function validarNome() {
+    const aviso = document.getElementById('nomeAviso');
+    const vazio = !estado.nomePersonagem || estado.nomePersonagem.trim() === '';
+    if (aviso) aviso.textContent = vazio ? 'Nome é obrigatório.' : '';
+    return !vazio;
+  }
+
+  function validarRaca() {
+    const aviso = document.getElementById('racaAviso');
+    const vazio = !estado.raca;
+    if (aviso) aviso.textContent = vazio ? 'Escolha uma raça antes de continuar.' : '';
+    return !vazio;
+  }
+
+  function avancar() {
+    if (!validarNome()) { Sons.error(); document.getElementById('nomePersonagem').focus(); return; }
+    if (!validarRaca()) { Sons.error(); document.getElementById('racasContainer').scrollIntoView({ behavior: 'smooth' }); return; }
+    Sons.confirm();
+    window.location.href = 'tela3.html';
+  }
+
+  window.addEventListener('load', () => {
+    carregarEstadoBase();
+    document.getElementById('nivelValor').textContent = estado.nivel;
+    const ni = document.getElementById('nomePersonagem');
+    if (ni) ni.value = estado.nomePersonagem || '';
+    renderConstancias();
+    renderConstanciasEscolha();
+    renderRacas();
+    renderCaminhos();
+    renderHabilidades();
+    renderTruques();
+    renderTalentos();
+  });
+
+  function alterarNivel(delta) {
+    estado.nivel = Math.min(20, Math.max(1, estado.nivel + delta));
+    document.getElementById('nivelValor').textContent = estado.nivel;
+    const lim = limiteAtributo();
+    CONSTANCIAS.forEach(c => { if (estado.constancias[c] > lim) estado.constancias[c] = lim; });
+    renderConstancias();
+    renderConstanciasEscolha();
+    renderRacas();
+    renderCaminhos();
+    renderHabilidades();
+    renderTruques();
+    renderTalentos();
+    salvarEstado();
+  }
+
+  function renderConstancias() {
+    const container = document.getElementById('constanciasContainer');
+    container.innerHTML = '';
+    CONSTANCIAS.forEach(c => {
+      const bonus = calcBonus(estado.constancias[c]);
+      const racaBonus = totalBonusRaca(c);
+      const row = document.createElement('div');
+      row.className = 'constancia-row';
+      const racaTag = racaBonus > 0 ? `<span style="font-size:0.6rem;color:#7ecfb3;letter-spacing:1px;margin-left:4px;">+${racaBonus} raça</span>` : '';
+      row.innerHTML = `
+        <span class="constancia-nome">${c}${racaTag}</span>
+        <div class="constancia-controles">
+          <button class="c-btn" onclick="alterarConstancia('${c}',-1)">−</button>
+          <span class="c-valor" id="c-${c}">${estado.constancias[c]}</span>
+          <button class="c-btn" onclick="alterarConstancia('${c}',1)">+</button>
+        </div>
+        <span class="constancia-bonus ${bonus === 0 ? 'vazio' : ''}" id="b-${c}">${bonus === 0 ? '—' : '+' + bonus}</span>`;
+      container.appendChild(row);
+    });
+    atualizarPontos();
+  }
+
+  function alterarConstancia(nome, delta) {
+    const total = Object.values(estado.constancias).reduce((a,b) => a+b, 0);
+    const max = pontosTotal();
+    const lim = limiteAtributo();
+    if (delta > 0 && total >= max) return;
+    if (delta > 0 && estado.constancias[nome] >= lim) return;
+    if (delta < 0 && estado.constancias[nome] <= 0) return;
+    estado.constancias[nome] += delta;
+    document.getElementById('c-' + nome).textContent = estado.constancias[nome];
+    const bonus = calcBonus(estado.constancias[nome]);
+    const bEl = document.getElementById('b-' + nome);
+    if (bEl) {
+      bEl.textContent = bonus === 0 ? '—' : '+' + bonus;
+      bEl.className = 'constancia-bonus' + (bonus === 0 ? ' vazio' : '');
+    }
+    atualizarPontos();
+    salvarEstado();
+  }
+
+  function atualizarPontos() {
+    const total = Object.values(estado.constancias).reduce((a,b) => a+b, 0);
+    const max = pontosTotal();
+    const restEl = document.getElementById('pontosRestantes');
+    const distEl = document.getElementById('totalDist');
+    const maxEl  = document.getElementById('totalMax');
+    if (restEl) restEl.textContent = max - total;
+    if (distEl) distEl.textContent = total;
+    if (maxEl)  maxEl.textContent  = max;
+  }
+
+  function renderConstanciasEscolha() {
+    const wrapper = document.getElementById('constanciasEscolhaWrapper');
+    const container = document.getElementById('constanciasEscolhaContainer');
+    const titulo = document.getElementById('constanciasEscolhaTitulo');
+    if (!wrapper || !container) return;
+    const info = CLASSES_PREVIEW[estado.classe];
+    if (!info || !info.constanciasEscolha) { wrapper.style.display = 'none'; return; }
+    wrapper.style.display = 'block';
+    const qtd = info.constanciasEscolhaQtd || 2;
+    const escolhidas = estado.constanciasEscolhidas || [];
+    titulo.textContent = `Constâncias Selecionáveis — ${escolhidas.length} / ${qtd} escolhidas`;
+    container.innerHTML = '';
+    info.constanciasEscolha.forEach(c => {
+      const ativo = escolhidas.includes(c);
+      const bloqueado = !ativo && escolhidas.length >= qtd;
+      const btn = document.createElement('button');
+      btn.className = 'caminho-btn' + (ativo ? ' ativo' : '') + (bloqueado ? ' bloqueado' : '');
+      btn.textContent = c;
+      btn.title = bloqueado ? `Limite de ${qtd} atingido` : '';
+      btn.onclick = () => {
+        if (bloqueado) return;
+        if (ativo) estado.constanciasEscolhidas = escolhidas.filter(x => x !== c);
+        else estado.constanciasEscolhidas = [...escolhidas, c];
+        renderConstanciasEscolha();
+        salvarEstado();
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  function renderRacas() {
+    const container = document.getElementById('racasContainer');
+    const infoBox = document.getElementById('raca-info-box');
+    if (!container) return;
+    container.innerHTML = '';
+    Object.keys(RACAS).forEach(nome => {
+      const btn = document.createElement('button');
+      btn.className = 'caminho-btn' + (estado.raca === nome ? ' ativo' : '');
+      btn.textContent = nome;
+      btn.onclick = () => {
+        // Limpar escolhas anteriores
+        if (estado.raca !== nome) estado.racaEscolhas = {};
+        estado.raca = nome;
+        Sons.click();
+        renderRacas();
+        renderConstancias();
+        renderHabilidades();
+        salvarEstado();
+      };
+      container.appendChild(btn);
+    });
+    if (estado.raca && RACAS[estado.raca]) {
+      const r = RACAS[estado.raca];
+      const ba = r.bonusAtributos;
+      let escolhaHtml = '';
+      const qtdLivre = qtdEscolhaRaca();
+      if (qtdLivre > 0) {
+        const qtd = qtdLivre;
+        const escolhidos = estado.racaEscolhas || {};
+        const totalEsc = Object.values(escolhidos).reduce((a,b)=>a+b,0);
+        escolhaHtml = `<div style="margin-top:8px;font-size:0.68rem;color:#c9a84c;letter-spacing:1px;">Distribua +${qtd} pontos de atributo:</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">`;
+        CONSTANCIAS.forEach(attr => {
+          const val = escolhidos[attr] || 0;
+          escolhaHtml += `<div style="display:flex;align-items:center;gap:4px;">
+            <span style="font-size:0.7rem;color:#aaa;">${attr.slice(0,3).toUpperCase()}</span>
+            <button style="background:transparent;border:1px solid #3a3550;color:#aaa;width:18px;height:18px;font-size:0.7rem;cursor:pointer;border-radius:2px;" onclick="alterarEscolhaRaca('${attr}',-1)">-</button>
+            <span style="font-size:0.75rem;color:${val>0?'#7ecfb3':'#555'};min-width:12px;text-align:center;">${val}</span>
+            <button style="background:transparent;border:1px solid #3a3550;color:#aaa;width:18px;height:18px;font-size:0.7rem;cursor:pointer;border-radius:2px;" onclick="alterarEscolhaRaca('${attr}',1)">+</button>
+          </div>`;
+        });
+        escolhaHtml += `</div><div style="font-size:0.65rem;color:#666;margin-top:4px;">${totalEsc}/${qtd} distribuídos</div>`;
+      }
+      infoBox.style.display = 'block';
+      infoBox.innerHTML = `<div style="color:#c9a84c;font-size:0.75rem;letter-spacing:1px;margin-bottom:6px;">${estado.raca}</div><div style="color:#7ecfb3;margin-bottom:6px;">${r.info}</div><div style="color:#888;">${r.descricao}</div>${escolhaHtml}`;
+    } else {
+      infoBox.style.display = 'none';
+    }
+  }
+
+  function alterarEscolhaRaca(attr, delta) {
+    const max = qtdEscolhaRaca();
+    if (max === 0) return;
+    if (!estado.racaEscolhas) estado.racaEscolhas = {};
+    const atual = estado.racaEscolhas[attr] || 0;
+    const total = Object.values(estado.racaEscolhas).reduce((a,b)=>a+b,0);
+    if (delta > 0 && total >= max) return;
+    if (delta < 0 && atual <= 0) return;
+    estado.racaEscolhas[attr] = atual + delta;
+    renderRacas();
+    renderConstancias();
+    renderHabilidades();
+    salvarEstado();
+  }
+
+  function renderCaminhos() {
+    const container = document.getElementById('caminhosContainer');
+    if (!container) return;
+    const dados = HABILIDADES[estado.classe];
+    if (!dados) { container.innerHTML = '<span style="color:#666;font-size:0.8rem;">Selecione um personagem primeiro.</span>'; return; }
+    container.innerHTML = '';
+    Object.keys(dados.caminhos).forEach(nome => {
+      const bloqueado = estado.nivel < 6;
+      const btn = document.createElement('button');
+      btn.className = 'caminho-btn' + (estado.caminho === nome ? ' ativo' : '');
+      btn.textContent = nome;
+      if (bloqueado) {
+        btn.style.opacity = '0.45';
+        btn.style.cursor = 'not-allowed';
+        btn.title = 'Requer Nível 6';
+      }
+      btn.onclick = () => {
+        if (bloqueado) {
+          Sons.error();
+          const aviso = document.getElementById('caminho-aviso');
+          if (aviso) { aviso.textContent = 'Requer Nível 6 para escolher um caminho.'; setTimeout(() => aviso.textContent = '', 2000); }
+          return;
+        }
+        Sons.click();
+        estado.caminho = nome;
+        renderCaminhos();
+        renderHabilidades();
+        salvarEstado();
+      };
+      container.appendChild(btn);
+    });
+    // Aviso de nível
+    if (!document.getElementById('caminho-aviso')) {
+      const aviso = document.createElement('div');
+      aviso.id = 'caminho-aviso';
+      aviso.style.cssText = 'font-size:0.72rem;color:#ff9944;margin-top:8px;min-height:16px;font-style:italic;';
+      container.parentElement.appendChild(aviso);
+    }
+  }
+
+  function renderHabilidades() {
+    const container = document.getElementById('habContainer');
+    if (!container) return;
+    const dados = HABILIDADES[estado.classe];
+    if (!dados) return;
+    container.innerHTML = '';
+    // Seção Raça
+    if (estado.raca && RACAS[estado.raca] && RACAS[estado.raca].habilidades.length > 0) {
+      const sepRaca = document.createElement('div');
+      sepRaca.style = 'margin:0 0 10px;font-size:0.7rem;letter-spacing:3px;color:#7ecfb3;text-transform:uppercase;';
+      sepRaca.textContent = '— Raça: ' + estado.raca + ' —';
+      container.appendChild(sepRaca);
+      RACAS[estado.raca].habilidades.forEach(h => criarHabItem(container, {...h, nivel: 1}, 'raca'));
+      const sep = document.createElement('div');
+      sep.style = 'margin:12px 0 10px;font-size:0.7rem;letter-spacing:3px;color:#c9a84c;text-transform:uppercase;';
+      sep.textContent = '— Habilidades de Classe —';
+      container.appendChild(sep);
+    }
+    dados.base.forEach(h => criarHabItem(container, h));
+    if (estado.caminho && dados.caminhos[estado.caminho]) {
+      const caminho = dados.caminhos[estado.caminho];
+      const sep = document.createElement('div');
+      sep.style = 'margin:16px 0 10px;font-size:0.7rem;letter-spacing:3px;color:#c9a84c;text-transform:uppercase;';
+      sep.textContent = '— Caminho: ' + estado.caminho + ' — Proficiências: ' + caminho.proficiencias;
+      container.appendChild(sep);
+      caminho.habs.forEach(h => criarHabItem(container, h));
+    }
+  }
+
+  function criarHabItem(container, h, tipo) {
+    const desbloqueada = tipo === 'raca' || estado.nivel >= h.nivel;
+    const tagColor = tipo === 'raca' ? '#7ecfb3' : (desbloqueada ? '' : '');
+    const item = document.createElement('div');
+    item.className = 'hab-item';
+    item.innerHTML = `
+      <div class="hab-header" onclick="toggleHab(this)">
+        <span class="hab-nome">${h.nome}</span>
+        <span class="hab-nivel-tag ${desbloqueada ? '' : 'bloqueada'}" style="${tipo==='raca'?'background:#7ecfb322;color:#7ecfb3;border-color:#7ecfb344;':''}">${ tipo === 'raca' ? 'Raça' : 'Nível ' + h.nivel}</span>
+      </div>
+      <div class="hab-corpo">
+        ${desbloqueada
+          ? `<p>${h.desc}</p><p style="color:#666;font-size:0.72rem;">${h.acao}</p>${h.evo ? '<p class="evo">↑ ' + h.evo + '</p>' : ''}`
+          : '<p class="bloq-msg">Não possui nível suficiente.</p>'}
+      </div>`;
+    container.appendChild(item);
+  }
+
+  function toggleHab(header) {
+    header.nextElementSibling.classList.toggle('aberto');
+  }
+
+  function renderTruques() {
+    const wrapper = document.getElementById('truquesBlocoWrapper');
+    const container = document.getElementById('truquesContainer');
+    const slotInfo = document.getElementById('truquesSlotInfo');
+    if (!wrapper || !container) return;
+    const lista = TRUQUES[estado.classe] || [];
+    if (!estado.classe || lista.length === 0) { wrapper.style.display = 'none'; return; }
+    wrapper.style.display = 'block';
+    const maxT = estado.nivel >= 5 ? 1 + Math.floor((Math.min(estado.nivel,17) - 5) / 4) : 0;
+    const escolhidos = estado.truques || [];
+    slotInfo.textContent = maxT === 0 ? 'Disponível a partir do Nível 5' : `${escolhidos.length} / ${maxT} escolhidos`;
+    container.innerHTML = '';
+    lista.forEach(t => {
+      const semSlot = maxT === 0;
+      const ativo = escolhidos.includes(t.nome);
+      const semVaga = !ativo && escolhidos.length >= maxT && maxT > 0;
+      const evoAtiva = t.evo && estado.nivel >= (t.evoNivel || 99);
+      const div = document.createElement('div');
+      div.style.cssText = `border:1px solid ${ativo ? '#7ecfb3' : '#2a2535'};border-radius:3px;margin-bottom:8px;overflow:hidden;background:${ativo ? '#7ecfb311' : '#13111c'};opacity:${semSlot ? '0.45' : '1'};`;
+      div.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:${semSlot || semVaga ? 'not-allowed' : 'pointer'};" onclick="toggleTruqueTela('${t.nome}')">
+          <span style="font-size:0.85rem;color:${ativo ? '#7ecfb3' : '#e0d6c8'};letter-spacing:1px;">${t.nome}</span>
+          <span style="font-size:0.65rem;color:${ativo ? '#7ecfb3' : '#555'};letter-spacing:2px;">${ativo ? '◆ ESCOLHIDO' : semSlot ? 'BLOQUEADO' : 'ESCOLHER'}</span>
+        </div>
+        <div style="padding:0 14px 10px;font-size:0.78rem;color:#aaa;line-height:1.7;">${t.desc}${evoAtiva ? `<div style="color:#7ecfb388;font-style:italic;margin-top:6px;">⇑ Evolução (Nível ${t.evoNivel}): ${t.evo}</div>` : ''}</div>`;
+      container.appendChild(div);
+    });
+  }
+
+  function toggleTruqueTela(nome) {
+    const maxT = estado.nivel >= 5 ? 1 + Math.floor((Math.min(estado.nivel,17) - 5) / 4) : 0;
+    if (maxT === 0) { Sons.error(); return; }
+    if (!estado.truques) estado.truques = [];
+    const idx = estado.truques.indexOf(nome);
+    if (idx !== -1) { Sons.click(); estado.truques.splice(idx, 1); }
+    else if (estado.truques.length < maxT) { Sons.click(); estado.truques.push(nome); }
+    else { Sons.error(); return; }
+    salvarEstado();
+    renderTruques();
+  }
+
+  function renderTalentos() {
+    const wrapper = document.getElementById('talentosBlocoWrapper');
+    const container = document.getElementById('talentosContainer');
+    const slotInfo = document.getElementById('talentosSlotInfo');
+    if (!wrapper || !container) return;
+    const lista = [...(TALENTOS[estado.classe] || []), ...TALENTOS_GERAIS];
+    // Mostra o bloco sempre que houver talentos, independente de slots
+    if (!estado.classe || lista.length === 0) { wrapper.style.display = 'none'; return; }
+    wrapper.style.display = 'block';
+    const slots = slotsDisponiveis();
+    const escolhidos = estado.talentos || [];
+    if (slots === 0) {
+      slotInfo.textContent = 'Disponível a partir do Nível 5';
+    } else {
+      slotInfo.textContent = `${escolhidos.length} / ${slots} escolhidos`;
+    }
+    container.innerHTML = '';
+    lista.forEach(t => {
+      const isGeral = TALENTOS_GERAIS.some(g => g.nome === t.nome);
+      const semSlot = slots === 0;
+      const ativo = escolhidos.indexOf(t.nome) !== -1;
+      const semVaga = !ativo && escolhidos.length >= slots && slots > 0;
+      // separador entre talentos de classe e gerais
+      const classeLen = (TALENTOS[estado.classe] || []).length;
+      const idx2 = lista.indexOf(t);
+      if (isGeral && idx2 === classeLen) {
+        const sep = document.createElement('div');
+        sep.style.cssText = 'font-size:0.62rem;letter-spacing:2px;color:#c9a84c88;margin:14px 0 8px;padding-top:10px;border-top:1px solid #2a2535;';
+        sep.textContent = '— TALENTOS GERAIS —';
+        container.appendChild(sep);
+      }
+      const div = document.createElement('div');
+      div.style = `border:1px solid ${ativo ? '#c9a84c' : '#2a2535'};border-radius:3px;margin-bottom:8px;overflow:hidden;background:${ativo ? '#c9a84c11' : '#13111c'};opacity:${semSlot ? '0.45' : '1'};`;
+      const evoAtiva = t.evo && estado.nivel >= (t.evoNivel || 10);
+      const nivelTag = semSlot ? `<span style="font-size:0.6rem;color:#ff9944;letter-spacing:1px;">NÍVEL 5+</span>` : '';
+      div.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:${semSlot || semVaga ? 'not-allowed' : 'pointer'};" onclick="toggleTalento('${t.nome}')">
+          <span style="font-size:0.85rem;color:${ativo ? '#c9a84c' : '#e0d6c8'};letter-spacing:1px;">${t.nome} ${nivelTag}</span>
+          <span style="font-size:0.65rem;color:${ativo ? '#c9a84c' : '#555'};letter-spacing:2px;">${ativo ? '✦ ESCOLHIDO' : semSlot ? 'BLOQUEADO' : 'ESCOLHER'}</span>
+        </div>
+        <div style="padding:0 14px 10px;font-size:0.78rem;color:#aaa;line-height:1.7;">${t.desc}${evoAtiva ? `<div style="color:#c9a84c88;font-style:italic;margin-top:6px;">↑ Evolução (Nível ${t.evoNivel}): ${t.evo}</div>` : ''}</div>`;
+      container.appendChild(div);
+    });
+  }
+
+  function toggleTalento(nome) {
+    const slots = slotsDisponiveis();
+    if (slots === 0) { Sons.error(); return; }
+    const idx = estado.talentos.indexOf(nome);
+    if (idx !== -1) { Sons.click(); estado.talentos.splice(idx, 1); }
+    else if (estado.talentos.length < slots) { Sons.click(); estado.talentos.push(nome); }
+    else { Sons.error(); return; }
+    salvarEstado();
+    renderTalentos();
+  }
+</script>
+</body>
+</html>

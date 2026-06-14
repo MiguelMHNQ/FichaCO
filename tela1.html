@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragmentados — Escolha sua Classe</title>
+<link rel="icon" href="Imagens/LogoT.png" type="image/png">
+<link rel="stylesheet" href="global.css">
+<link rel="stylesheet" href="tela1.css">
+</head>
+<body>
+
+<div id="navLogo" onclick="toggleMenu()">
+  <img src="Imagens/LogoT.png" alt="Primórdios">
+  <div id="navMenu">
+    <div class="nav-item" onclick="Sons.nav();window.location.href='inventario.html'"><span class="nav-item-icone">⚔</span> Inventário</div>
+    <div class="nav-item" onclick="Sons.nav();novoPersonagem()"><span class="nav-item-icone">✦</span> Novo Personagem</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='livro.html'"><span class="nav-item-icone">⁂</span> Livro</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='configuracoes.html'"><span class="nav-item-icone">⚙</span> Configurações</div>
+    <div class="nav-item nav-sair" onclick="Sons.back();sair()"><span class="nav-item-icone">↩</span> Sair</div>
+  </div>
+</div>
+
+<section class="tela">
+  <h1 class="titulo-tela">Escolha sua Classe</h1>
+  <p class="subtitulo-tela">Selecione aquele que carregará sua história</p>
+
+  <div class="personagens-grid">
+
+    <div class="card-personagem" data-personagem="Gustavo" data-classe="Guerreiro" onclick="abrirPreviewClasse('Guerreiro', this)">
+      <span class="selecionado-badge">✦ Escolhido</span>
+      <div class="card-info">
+        <div class="card-nome">Guerreiro</div>
+        <div class="card-desc">Um combatente nato, forjado em batalha. Domina o controle do campo e inspira aliados com sua presença inabalável.</div>
+      </div>
+    </div>
+
+    <div class="card-personagem" data-personagem="Bartolomeu" data-classe="Obscuro" onclick="abrirPreviewClasse('Obscuro', this)">
+      <span class="selecionado-badge">✦ Escolhido</span>
+      <div class="card-info">
+        <div class="card-nome">Obscuro</div>
+        <div class="card-desc">Mestre das sombras e das feras que habitam o vazio. Manipula a escuridão como extensão de sua própria vontade.</div>
+      </div>
+    </div>
+
+    <div class="card-personagem" data-personagem="Kuruhj" data-classe="Bardo" onclick="abrirPreviewClasse('Bardo', this)">
+      <span class="selecionado-badge">✦ Escolhido</span>
+      <div class="card-info">
+        <div class="card-nome">Bardo</div>
+        <div class="card-desc">Sua voz e sua música moldam o campo de batalha. Cura, inspira e aterroriza com o poder do som e das palavras.</div>
+      </div>
+    </div>
+
+    <div class="card-personagem" data-personagem="Espadachim" data-classe="Espadachim" onclick="abrirPreviewClasse('Espadachim', this)">
+      <span class="selecionado-badge">✦ Escolhido</span>
+      <div class="card-info">
+        <div class="card-nome">Espadachim</div>
+        <div class="card-desc">Um artista da lâmina, forjado em duelos e disciplina. Lê o movimento do inimigo e responde com precisão e velocidade cirúrgica.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="btn-avancar" id="btn1" onclick="Sons.confirm();window.location.href='tela2.html'">Continuar →</button>
+</section>
+
+<!-- POPUP PRÉVIA DE CLASSE -->
+<div id="popupClasse">
+  <div class="popup-classe-box">
+    <div class="popup-classe-titulo" id="pcNome"></div>
+    <div class="popup-classe-sub" id="pcDesc"></div>
+    <div id="pcCorpo"></div>
+    <div class="popup-acoes">
+      <button class="popup-btn-fechar" onclick="Sons.back();fecharPreviewClasse()">Voltar</button>
+      <button class="popup-btn-selecionar" onclick="Sons.confirm();confirmarClassePopup()">✦ Selecionar esta Classe</button>
+    </div>
+  </div>
+</div>
+
+<script src="estado.js"></script>
+<script src="audio.js"></script>
+<script src="sons.js"></script>
+<script>
+  const logoImg = document.querySelector('#navLogo img');
+  logoImg.classList.add('logo-entrada');
+  logoImg.addEventListener('animationend', () => {
+    logoImg.classList.remove('logo-entrada');
+    logoImg.classList.remove('logo-girar');
+  });
+
+  function toggleMenu() {
+    Sons.toggle();
+    logoImg.classList.remove('logo-girar');
+    void logoImg.offsetWidth;
+    logoImg.classList.add('logo-girar');
+    document.getElementById('navMenu').classList.toggle('aberto');
+  }
+
+  // Fecha menu ao clicar fora
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('navLogo');
+    if (!nav.contains(e.target)) document.getElementById('navMenu').classList.remove('aberto');
+  });
+
+  function sair() {
+    sessionStorage.removeItem('primordios_logado');
+    window.location.href = 'tela0.html';
+  }
+
+  function novoPersonagem() {
+    Object.assign(estado, {
+      personagem: null, classe: null, nivel: 1, caminho: null,
+      constancias: { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 },
+      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, talentos: [], nomePersonagem: ''
+    });
+    salvarEstado();
+    window.location.href = 'tela1.html';
+  }
+  let _cardPendente = null;
+
+  // Restaura seleção visual se já tinha classe salva
+  window.addEventListener('load', () => {
+    carregarEstadoBase();
+    // Limpa estado apenas se vier de criação nova (sem personagem salvo intacto)
+    estado.personagem = null;
+    estado.classe = null;
+    estado.nivel = 1;
+    estado.caminho = null;
+    estado.raca = null;
+    estado.racaEscolhas = {};
+    estado.constancias = { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 };
+    estado.constanciasEscolhidas = [];
+    estado.arma = null;
+    estado.armadura = null;
+    estado.acessorio = null;
+    estado.talentos = [];
+    estado.truques = [];
+    estado.nomePersonagem = '';
+    salvarEstado();
+    const card = document.querySelector('.card-personagem.selecionado');
+    if (card) { card.classList.remove('selecionado'); }
+    document.getElementById('btn1').classList.remove('habilitado');
+  });
+
+  function abrirPreviewClasse(classe, card) {
+    _cardPendente = card;
+    const d = CLASSES_PREVIEW[classe];
+    if (!d) return;
+    if (estado.classe !== classe) estado.constanciasEscolhidas = [];
+    document.getElementById('pcNome').textContent = classe;
+    document.getElementById('pcDesc').textContent = d.desc;
+    const corpo = document.getElementById('pcCorpo');
+    corpo.innerHTML = `
+      <div class="popup-secao">Dados de Vida & Energia</div>
+      <div class="popup-linha"><span>Dado de vida</span><span>${d.dadoVida}</span></div>
+      <div class="popup-linha"><span>Vida inicial</span><span>${d.vidaInicial}</span></div>
+      <div class="popup-linha"><span>Vida por nível</span><span>${d.vidaNivel}</span></div>
+      <div class="popup-linha"><span>Energia inicial</span><span>${d.energiaInicial}</span></div>
+      <div class="popup-linha"><span>Energia por nível</span><span>${d.energiaNivel}</span></div>
+
+      <div class="popup-secao">Constâncias</div>
+      <div class="popup-linha"><span>Fixas</span><span>${d.constanciasFixas.join(', ')}</span></div>
+      <div class="popup-linha" style="flex-direction:column;gap:6px;">
+        <span style="color:#aaa;">Escolha ${d.constanciasEscolhaQtd} entre:</span>
+        <div class="popup-tag-lista" id="pcConstanciasEscolha">${d.constanciasEscolha.map(c => {
+          const ativo = (estado.constanciasEscolhidas || []).includes(c);
+          return `<span class="popup-tag" style="cursor:pointer;border-color:${ativo ? '#c9a84c' : '#3a3550'};color:${ativo ? '#c9a84c' : '#aaa'};background:${ativo ? '#c9a84c18' : 'transparent'};transition:all 0.2s;" onclick="toggleConstanciaPopup('${c}')">${c}</span>`;
+        }).join('')}</div>
+        <div id="pcConstanciasAviso" style="font-size:0.7rem;color:#555;font-style:italic;"></div>
+      </div>
+
+      <div class="popup-secao">Proficiências</div>
+      <div class="popup-linha" style="flex-direction:column;gap:6px;">
+        <span style="color:#aaa;">Armas:</span>
+        <div class="popup-tag-lista">${d.armas.map(a => `<span class="popup-tag">${a}</span>`).join('')}</div>
+      </div>
+      <div class="popup-linha" style="flex-direction:column;gap:6px;">
+        <span style="color:#aaa;">Armaduras:</span>
+        <div class="popup-tag-lista">${d.armaduras.map(a => `<span class="popup-tag">${a}</span>`).join('')}</div>
+      </div>
+
+      <div class="popup-secao">Famosos</div>
+      <div class="popup-famosos">${d.famosos.map(f => `<div><span class="popup-famoso-nome-link" onclick="Sons.click();abrirFamoso(event,'${f.replace(/'/g,'&#39;')}')">✦ ${f}</span></div>`).join('')}</div>
+    `;
+    document.getElementById('popupClasse').classList.add('aberto');
+  }
+
+  function toggleConstanciaPopup(c) {
+    const classe = document.getElementById('pcNome').textContent;
+    const d = CLASSES_PREVIEW[classe];
+    if (!d) return;
+    const qtd = d.constanciasEscolhaQtd || 2;
+    const lista = estado.constanciasEscolhidas || [];
+    const idx = lista.indexOf(c);
+    if (idx !== -1) {
+      estado.constanciasEscolhidas = lista.filter(x => x !== c);
+    } else {
+      if (lista.length >= qtd) {
+        const aviso = document.getElementById('pcConstanciasAviso');
+        if (aviso) { aviso.textContent = `Limite de ${qtd} atingido.`; setTimeout(() => aviso.textContent = '', 1500); }
+        return;
+      }
+      estado.constanciasEscolhidas = [...lista, c];
+    }
+    salvarEstado();
+    d.constanciasEscolha.forEach(op => {
+      const ativo = estado.constanciasEscolhidas.includes(op);
+      document.querySelectorAll('#pcConstanciasEscolha .popup-tag').forEach(tag => {
+        if (tag.textContent === op) {
+          tag.style.borderColor = ativo ? '#c9a84c' : '#3a3550';
+          tag.style.color = ativo ? '#c9a84c' : '#aaa';
+          tag.style.background = ativo ? '#c9a84c18' : 'transparent';
+        }
+      });
+    });
+  }
+
+  // ===== FAMOSOS =====
+  const FAMOSOS_DATA = {
+    'Darton': { titulo: 'O Quebrador de Destinos', historia: ['Conta-se que Darton enfrentou um exército inteiro para impedir a execução de seu irmão.','No caminho, derrubou muralhas, pontes e portões que tentavam barrá-lo.','Mas o feito que lhe deu fama não foi esse.','Ao encontrar o rei responsável pela condenação, Darton recebeu uma profecia:','“Seu irmão morrerá hoje, e nada poderá mudar isso.”','Darton respondeu com uma martelada tão poderosa que rachou o salão do trono de ponta a ponta.','Seu irmão sobreviveu.','O rei morreu.','E a profecia falhou.','Desde então dizem que Darton não quebrava pedras.','Quebrava destinos.'] },
+    'Maldivan': { titulo: 'O Último Bastião', historia: ['Durante a Invasão Carmesim, uma fortaleza inteira caiu em apenas dois dias.','Uma segunda caiu em uma semana.','A terceira jamais caiu.','Maldivan permaneceu sozinho no portão principal por três dias e três noites.','Quando os reforços chegaram encontraram milhares de corpos diante dos muros.','E Maldivan.','Ainda de pé.','Ainda segurando seu escudo.','Dizem que seu coração já havia parado horas antes.','Mas sua determinação se recusou a morrer.'] },
+    'Garruk': { titulo: 'O Matador de Reis', historia: ['Derrotou um soberano conhecido como Rei de Ferro.','Um guerreiro coberto por relíquias mágicas e protegido pelos melhores encantamentos da época.','Garruk chegou sem espada. Sem armadura. Sem magia.','Quando lhe perguntaram depois como venceu, respondeu:','“Ele acreditava na armadura.','Eu acreditava nos meus punhos.”','Nenhuma outra explicação foi dada.'] },
+    'Seraphine': { titulo: 'A Mulher Atrás da Névoa', historia: ['Quando aldeias inteiras desapareceram sem deixar rastros, um único detalhe aparecia em todos os relatos.','Uma mulher observando à distância. Vestida de negro. Envolta por névoa.','Muitos a culparam pelas tragédias.','Outros acreditam que ela apenas testemunhava algo pior.','Até hoje, ninguém sabe se Seraphine era a causa do desastre...','Ou sua única sobrevivente.'] },
+    'Vael': { titulo: 'O Senhor da Última Porta', historia: ['Vael era um estudioso obcecado por aquilo que existia além da morte.','Após décadas de pesquisas, desapareceu em uma ruína esquecida.','Meses depois retornou.','Diferente.','Seus olhos pareciam enxergar algo distante. Algo impossível.','Quando lhe perguntavam o que encontrou, respondia:','“Nada.”','Mas cada vez que falava essa palavra, tochas se apagavam.','Sombras se alongavam.','E pessoas sentiam um frio impossível.'] },
+    'Serin': { titulo: 'A Voz que Nunca Foi Ouvida', historia: ['Nenhum registro menciona Serin falando. Nem uma única palavra.','Ainda assim, guerras terminaram por sua causa.','Rebeliões surgiram por sua influência.','Reis mudaram decisões após encontros privados com ela.','Seu método permanece desconhecido.','Alguns dizem que se comunicava por magia.','Outros acreditam que seu olhar dizia mais do que qualquer discurso.'] },
+    'Lyren': { titulo: 'O Homem que Cantou uma Guerra ao Fim', historia: ['Quando dois impérios marcharam rumo à destruição mútua, Lyren atravessou sozinho o campo de batalha.','Carregava apenas seu instrumento.','Tocou durante toda a noite.','Ao amanhecer, soldados dos dois lados haviam abandonado as armas.','Ninguém recorda a melodia.','Mas todos lembram da paz.'] },
+    'Belldona': { titulo: 'A Voz de Ouro', historia: ['Sua fama se espalhou pelos continentes por um motivo simples: ninguém conseguia esquecer sua voz.','Dizem que reis choraram durante suas apresentações.','Generais desistiram de campanhas.','E uma vez, uma criatura ancestral interrompeu sua caçada apenas para ouvi-la cantar.','Até hoje bardos tentam reproduzir suas canções.','Nenhum chegou perto.'] },
+    'Bren': { titulo: 'O Cantor das Sombras', historia: ['Bren nunca se apresentou em palácios. Nunca buscou fama. Nunca reuniu multidões.','Ainda assim, suas músicas são conhecidas em todo o mundo.','Porque ninguém as aprende. Elas simplesmente aparecem.','Um viajante canta um trecho. Um pescador conhece o refrão. Uma criança sabe a melodia.','Como se as próprias sombras carregassem suas canções pelos ventos.','A lenda diz que Bren morreu há séculos.','O problema é que novas músicas continuam surgindo até hoje.'] },
+  };
+
+  function abrirFamoso(e, nome) {
+    e.stopPropagation();
+    const chave = Object.keys(FAMOSOS_DATA).find(k => nome.includes(k));
+    const d = chave ? FAMOSOS_DATA[chave] : null;
+    if (!d) return;
+    document.getElementById('pfNome').textContent = nome;
+    document.getElementById('pfTitulo').textContent = d.titulo;
+    const hist = document.getElementById('pfHistoria');
+    hist.innerHTML = '';
+    d.historia.forEach((linha, i) => {
+      setTimeout(() => {
+        const p = document.createElement('p');
+        p.textContent = linha;
+        p.style.cssText = 'opacity:0;transform:translateY(6px);transition:opacity 0.4s ease,transform 0.4s ease;margin:0 0 10px;';
+        hist.appendChild(p);
+        requestAnimationFrame(() => { p.style.opacity = '1'; p.style.transform = 'translateY(0)'; });
+      }, i * 80);
+    });
+    document.getElementById('popupFamoso').classList.add('aberto');
+  }
+
+  function fecharFamoso() {
+    const popup = document.getElementById('popupFamoso');
+    popup.classList.add('saindo');
+    setTimeout(() => { popup.classList.remove('aberto','saindo'); }, 350);
+  }
+
+  document.getElementById('popupFamoso').addEventListener('click', function(e) {
+    if (e.target === this) fecharFamoso();
+  });
+
+  function fecharPreviewClasse() {
+    document.getElementById('popupClasse').classList.remove('aberto');
+    _cardPendente = null;
+  }
+
+  function confirmarClassePopup() {
+    if (_cardPendente) selecionarPersonagem(_cardPendente);
+    fecharPreviewClasse();
+  }
+
+  function selecionarPersonagem(card) {
+    document.querySelectorAll('.card-personagem').forEach(c => c.classList.remove('selecionado'));
+    card.classList.add('selecionado');
+    estado.personagem = card.dataset.classe;
+    estado.classe = card.dataset.classe;
+    document.getElementById('btn1').classList.add('habilitado');
+    salvarEstado();
+  }
+</script>
+<!-- POPUP FAMOSO -->
+<div id="popupFamoso">
+  <div class="popup-famoso-box">
+    <div class="popup-famoso-brilho"></div>
+    <button class="popup-famoso-fechar" onclick="fecharFamoso()">&#x2715;</button>
+    <div class="popup-famoso-nome" id="pfNome"></div>
+    <div class="popup-famoso-titulo" id="pfTitulo"></div>
+    <div class="popup-famoso-divider"></div>
+    <div class="popup-famoso-historia" id="pfHistoria"></div>
+  </div>
+</div>
+
+<style>
+#popupFamoso {
+  display:none;
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,0.82);
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+#popupFamoso.aberto { display:flex; animation:famoso-in 0.35s cubic-bezier(0.2,0,0,1) both; }
+#popupFamoso.saindo { animation:famoso-out 0.3s ease forwards; }
+
+@keyframes famoso-in {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+@keyframes famoso-out {
+  to { opacity:0; }
+}
+
+.popup-famoso-box {
+  position:relative;
+  background:#0e0c16;
+  border:1px solid #c9a84c44;
+  border-radius:6px;
+  padding:40px 36px 32px;
+  max-width:480px;
+  width:90%;
+  max-height:80vh;
+  overflow-y:auto;
+  box-shadow:0 0 60px #c9a84c22, 0 0 120px #00000099;
+  animation:box-in 0.4s cubic-bezier(0.2,0,0,1) both;
+}
+@keyframes box-in {
+  from { opacity:0; transform:translateY(24px) scale(0.96); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.popup-famoso-brilho {
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60%;height:1px;
+  background:linear-gradient(90deg,transparent,#c9a84c88,transparent);
+  border-radius:50%;
+  box-shadow:0 0 20px 4px #c9a84c44;
+}
+
+.popup-famoso-fechar {
+  position:absolute;top:14px;right:16px;
+  background:none;border:none;
+  color:#555;font-size:1rem;cursor:pointer;
+  transition:color 0.2s;
+}
+.popup-famoso-fechar:hover { color:#c9a84c; }
+
+.popup-famoso-nome {
+  font-size:1.2rem;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:#e0d6c8;
+  margin-bottom:6px;
+}
+
+.popup-famoso-titulo {
+  font-size:0.72rem;
+  letter-spacing:3px;
+  color:#c9a84c;
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+
+.popup-famoso-divider {
+  width:40px;height:1px;
+  background:linear-gradient(90deg,#c9a84c,transparent);
+  margin-bottom:20px;
+}
+
+.popup-famoso-historia {
+  font-size:0.82rem;
+  color:#888;
+  line-height:1.9;
+}
+.popup-famoso-historia p {
+  margin:0 0 10px;
+}
+
+.popup-famoso-nome-link, .popup-famoso-nome-link:visited {
+  cursor:pointer;
+  color:#aaa;
+  font-size:0.82rem;
+  letter-spacing:1px;
+  padding:3px 0;
+  border-bottom:1px dashed #3a3550;
+  display:inline-block;
+  margin-bottom:4px;
+  transition:color 0.2s,border-color 0.2s;
+}
+.popup-famoso-nome-link:hover { color:#c9a84c; border-color:#c9a84c55; }
+
+.popup-famoso-nome {
+  font-size:1.2rem;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:#e0d6c8;
+  margin-bottom:6px;
+}
+
+span.popup-famoso-nome { font-size:1.2rem; }
+</style>
+
+</body>
+</html>

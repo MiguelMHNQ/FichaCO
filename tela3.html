@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragmentados — Equipamentos</title>
+<link rel="icon" href="Imagens/LogoT.png" type="image/png">
+<link rel="stylesheet" href="global.css">
+<link rel="stylesheet" href="tela3.css">
+</head>
+<body>
+
+<section class="tela">
+  <h1 class="titulo-tela">Equipamentos</h1>
+  <p class="subtitulo-tela">Escolha sua arma, armadura e acessório</p>
+
+  <div class="t3-layout">
+
+    <!-- Painel esquerdo -->
+    <div class="t3-painel">
+      <div class="t3-abas">
+        <button class="t3-aba ativo" onclick="mudarAba('armas', this)">Armas</button>
+        <button class="t3-aba" onclick="mudarAba('armaduras', this)">Armaduras</button>
+        <button class="t3-aba" onclick="mudarAba('acessorios', this)">Acessórios</button>
+      </div>
+      <div class="t3-busca-wrap">
+        <input class="t3-busca" type="text" placeholder="Buscar..." oninput="filtrarLista(this.value)" autocomplete="off" id="campoBusca">
+      </div>
+      <div class="t3-lista" id="t3Lista"></div>
+    </div>
+
+    <!-- Painel direito -->
+    <div class="t3-detalhe" id="t3Detalhe"></div>
+
+  </div>
+
+  <div style="display:flex;gap:16px;margin-top:40px;">
+    <button class="btn-avancar habilitado" onclick="Sons.back();window.location.href='tela2.html'">← Voltar</button>
+    <button class="btn-avancar habilitado" onclick="Sons.confirm();iniciarLoading()">Finalizar →</button>
+  </div>
+</section>
+
+
+
+<script src="estado.js"></script>
+<script src="audio.js"></script>
+<script src="sons.js"></script>
+<script src="itens.js"></script>
+<script>
+  let abaAtiva = 'armas';
+  let buscaAtual = '';
+
+  window.addEventListener('load', () => {
+    carregarEstadoBase();
+    renderLista();
+    mostrarPreview();
+  });
+
+  function mudarAba(aba, btn) {
+    Sons.click();
+    abaAtiva = aba;
+    buscaAtual = '';
+    document.getElementById('campoBusca').value = '';
+    document.querySelectorAll('.t3-aba').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    renderLista();
+    mostrarPreview();
+  }
+
+  function filtrarLista(valor) {
+    buscaAtual = valor.toLowerCase();
+    renderLista();
+  }
+
+  function renderLista() {
+    const lista = document.getElementById('t3Lista');
+    lista.innerHTML = '';
+    const items = abaAtiva === 'armas' ? ARMAS
+                : abaAtiva === 'armaduras' ? ARMADURAS
+                : ACESSORIOS;
+    const estadoSel = abaAtiva === 'armas' ? estado.arma
+                    : abaAtiva === 'armaduras' ? estado.armadura
+                    : estado.acessorio;
+
+    // agrupa por categoria (tudo antes do ' — ')
+    const grupos = {};
+    items.forEach(item => {
+      if (buscaAtual && !item.nome.toLowerCase().includes(buscaAtual) && !(item.tipo||'').toLowerCase().includes(buscaAtual) && !(item.dano||'').toLowerCase().includes(buscaAtual) && !(item.desc||'').toLowerCase().includes(buscaAtual)) return;
+      const cat = item.tipo.split(' — ')[0];
+      if (!grupos[cat]) grupos[cat] = [];
+      grupos[cat].push(item);
+    });
+
+    const cats = Object.keys(grupos);
+    if (!cats.length) {
+      lista.innerHTML = '<div class="t3-vazio">➳ Nenhum resultado</div>';
+      return;
+    }
+
+    cats.forEach(cat => {
+      const catDiv = document.createElement('div');
+      catDiv.className = 't3-categoria';
+      catDiv.textContent = cat;
+      lista.appendChild(catDiv);
+      grupos[cat].forEach(item => {
+        const d = document.createElement('div');
+        d.className = 'item-linha' + (estadoSel === item.nome ? ' ativo' : '');
+        // extrai dano curto
+        const danoShort = item.dano ? item.dano.split(' ·')[0] : (item.dano || '');
+        d.innerHTML = `<span>${item.nome}</span><span class="item-linha-dano">${danoShort}</span>`;
+        d.onclick = () => {
+          Sons.click();
+          if (abaAtiva === 'armas')      estado.arma      = item.nome;
+          if (abaAtiva === 'armaduras') estado.armadura  = item.nome;
+          if (abaAtiva === 'acessorios') estado.acessorio = item.nome;
+          salvarEstado();
+          renderLista();
+          mostrarPreview();
+        };
+        lista.appendChild(d);
+      });
+    });
+  }
+
+  function mostrarPreview() {
+    const arma     = estado.arma      ? ARMAS.find(a => a.nome === estado.arma)           : null;
+    const armadura = estado.armadura  ? ARMADURAS.find(a => a.nome === estado.armadura)   : null;
+    const acess    = estado.acessorio ? ACESSORIOS.find(a => a.nome === estado.acessorio) : null;
+
+    const cardHtml = (label, i) => {
+      if (!i) return `<div class="sel-card vazio"><div class="sel-label">${label}</div><div class="sel-vazio">— nenhum selecionado —</div></div>`;
+      const ativo = (label==='Arma' && abaAtiva==='armas') || (label==='Armadura' && abaAtiva==='armaduras') || (label==='Acessório' && abaAtiva==='acessorios');
+      const extra = i.raridade ? `<div class="sel-extra">${i.raridade}${i.recarga?' · '+i.recarga:''}${i.acao?' · '+i.acao:''}</div>` : '';
+      const dano  = i.dano ? `<div class="sel-dano">⚔ ${i.dano}</div>` : '';
+      return `<div class="sel-card${ativo?' ativo':''}"><div class="sel-label">${label}</div><div class="sel-nome">${i.nome}</div><div class="sel-tipo">${i.tipo}</div>${extra}${dano}<div class="sel-desc">${i.desc}</div></div>`;
+    };
+
+    document.getElementById('t3Detalhe').innerHTML =
+      cardHtml('Arma', arma) + cardHtml('Armadura', armadura) + cardHtml('Acessório', acess);
+  }
+
+  function iniciarLoading() {
+    window.location.href = 'tela4.html';
+  }
+</script>
+</body>
+</html>

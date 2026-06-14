@@ -1,0 +1,277 @@
+:root {
+  --cor-principal: #c9a84c;
+  --cor-texto: #e0d6c8;
+}
+
+body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%); }
+
+/* ===== MODO EDIÇÃO ===== */
+#fichaEditToolbar.ativo { display: flex !important; }
+
+.ficha-bloco.editavel {
+  position: relative;
+  outline: 1px dashed var(--cor-principal, #c9a84c);
+  cursor: grab;
+  user-select: none;
+  min-width: 180px;
+  min-height: 60px;
+}
+.ficha-bloco.editavel:active { cursor: grabbing; }
+
+/* handles de resize */
+.resize-handle {
+  position: absolute;
+  background: var(--cor-principal, #c9a84c);
+  opacity: 0.7;
+  z-index: 20;
+  border-radius: 2px;
+}
+.resize-handle:hover { opacity: 1; }
+/* cantos */
+.rh-nw { top:-4px;  left:-4px;  width:10px; height:10px; cursor:nw-resize; }
+.rh-ne { top:-4px;  right:-4px; width:10px; height:10px; cursor:ne-resize; }
+.rh-sw { bottom:-4px; left:-4px;  width:10px; height:10px; cursor:sw-resize; }
+.rh-se { bottom:-4px; right:-4px; width:10px; height:10px; cursor:se-resize; }
+/* lados */
+.rh-n  { top:-3px;    left:14px; right:14px; height:6px; cursor:n-resize; }
+.rh-s  { bottom:-3px; left:14px; right:14px; height:6px; cursor:s-resize; }
+.rh-w  { left:-3px;   top:14px;  bottom:14px; width:6px; cursor:w-resize; }
+.rh-e  { right:-3px;  top:14px;  bottom:14px; width:6px; cursor:e-resize; }
+
+.bloco-edit-handle {
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.6rem;
+  color: var(--cor-principal, #c9a84c);
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border: 1px solid var(--cor-principal, #c9a84c);
+  border-radius: 2px;
+  background: #13111cdd;
+  cursor: grab;
+  z-index: 10;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.ficha-bloco.editavel .bloco-edit-handle { display: block; }
+
+.ficha-bloco.drag-over { outline: 1px solid var(--cor-principal, #c9a84c); background: #c9a84c08; }
+.ficha-bloco.dragging  { opacity: 0.45; }
+
+
+.tela { align-items: flex-start; padding: 40px; }
+
+.ficha-bloco {
+  background: #13111c;
+  border: 1px solid #2a2535;
+  border-radius: 4px;
+  padding: 20px 24px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.ficha-bloco h4 {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cor-principal);
+  margin-bottom: 14px;
+  border-bottom: 1px solid #2a2535;
+  padding-bottom: 8px;
+}
+
+.ficha-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #aaa;
+  margin-bottom: 8px;
+}
+.ficha-linha span:last-child { color: var(--cor-texto); }
+
+.ficha-hab-item {
+  font-size: 0.78rem;
+  color: #aaa;
+  padding: 6px 0;
+  border-bottom: 1px solid #1a1726;
+  line-height: 1.5;
+}
+.ficha-hab-item:last-child { border-bottom: none; }
+.ficha-hab-nome { color: var(--cor-texto); }
+
+.item-linha {
+  padding: 9px 12px;
+  border: 1px solid #2a2535;
+  border-radius: 3px;
+  margin-bottom: 7px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: #aaa;
+  transition: all 0.2s;
+}
+.item-linha:hover { border-color: var(--cor-principal); color: var(--cor-texto); }
+.item-linha.ativo { border-color: var(--cor-principal); color: var(--cor-principal); background: #c9a84c11; }
+
+/* Popups */
+#popupEquip, #popupAtributo {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0a0a0fcc;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#popupEquip.aberto, #popupAtributo.aberto { display: flex; }
+
+.popup-box {
+  background: #13111c;
+  border: 1px solid #2a2535;
+  border-radius: 4px;
+  padding: 28px;
+  min-width: 300px;
+  max-width: 420px;
+  width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #2a2535;
+  padding-bottom: 10px;
+}
+
+.popup-box-titulo {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cor-principal);
+}
+
+.popup-box-lista { overflow-y: auto; }
+
+/* Popup Caminho/Talentos */
+#popupCaminhoTalentos {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+}
+#popupCaminhoTalentos.aberto { display: block; pointer-events: all; }
+#popupCaminhoTalentos .popup-box {
+  min-width: 260px;
+  max-width: 360px;
+  max-height: 60vh;
+  padding: 18px 20px;
+  box-shadow: 0 8px 32px #00000088;
+}
+
+/* Badges de caminho e talentos no bloco de habilidades */
+.hab-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  padding: 3px 9px;
+  border-radius: 2px;
+  border: 1px solid;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.hab-badge:hover { opacity: 0.75; }
+.hab-badge-caminho  { color: var(--cor-principal); border-color: var(--cor-principal); background: #c9a84c11; }
+.hab-badge-talento  { color: #88aacc; border-color: #88aacc55; background: #88aacc11; }
+.hab-badge-escolher { color: var(--cor-principal); border-color: var(--cor-principal); background: transparent; animation: pulso-badge 1.6s ease-in-out infinite; }
+.hab-badge-bloqueado{ color: #444; border-color: #333; cursor: default; }
+
+@keyframes pulso-badge {
+  0%, 100% { box-shadow: none; }
+  50%       { box-shadow: 0 0 8px var(--cor-principal); }
+}
+
+.edit-label { font-size:0.68rem; letter-spacing:2px; color: var(--cor-principal); }
+.edit-btn-finalizar { color: var(--cor-principal) !important; border-color: var(--cor-principal) !important; }
+
+/* Estilo dinâmico de cores — sobrepõe inlines do ficha.js */
+#popupInfoClasse {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0a0a0fcc;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#popupInfoClasse.aberto { display:flex; }
+.pic-aba {
+  font-size:0.62rem;letter-spacing:1.5px;padding:4px 10px;
+  border:1px solid #2a2535;border-radius:3px;
+  background:transparent;color:#555;cursor:pointer;
+  font-family:'Georgia',serif;transition:all 0.18s;
+}
+.pic-aba:hover { border-color:#c9a84c55;color:#aaa; }
+.pic-aba.ativa { border-color:#c9a84c;color:#c9a84c;background:#c9a84c11; }
+
+/* ===== BOTÕES DE LAYOUT ===== */
+.layout-btn {
+  background: #1a1726;
+  border: 1px solid #3a3550;
+  border-radius: 3px;
+  color: #555;
+  cursor: pointer;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.layout-btn:hover { border-color: var(--cor-principal); color: var(--cor-principal); }
+.layout-btn.ativo  { border-color: var(--cor-principal); color: var(--cor-principal); background: #c9a84c11; }
+
+/* ===== LAYOUT 2 — PERGAMINHO ===== */
+#fichaConteudo.layout-2 {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+#fichaConteudo.layout-2 .ficha-bloco {
+  width: 100%;
+  min-width: unset;
+  max-width: unset;
+  flex: unset;
+  box-sizing: border-box;
+}
+#fichaConteudo.layout-2 .ficha-bloco h4 {
+  text-align: left;
+  letter-spacing: 4px;
+}
+/* equipamentos: 3 slots lado a lado */
+.l2-equip-slots {
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.l2-equip-slot {
+  flex: 1;
+  min-width: 160px;
+}
+
+/* ===== LAYOUT 3 — PAINEL LIVRE ===== */
+#fichaConteudo.layout-3 {
+  position: relative;
+  min-height: 100vh;
+  display: block;
+}
+#fichaConteudo.layout-3 .ficha-bloco {
+  position: absolute;
+  min-width: 220px;
+  width: 280px;
+  flex: unset;
+}

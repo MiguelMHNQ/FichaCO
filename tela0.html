@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primórdios</title>
+<link rel="icon" href="Imagens/LogoT.png" type="image/png">
+<link rel="stylesheet" href="global.css">
+<link rel="stylesheet" href="tela0.css">
+</head>
+<body>
+
+<div class="login-wrapper">
+
+  <!-- Logo / Título -->
+  <div class="login-header">
+    <img src="Imagens/LogoT.png" class="login-logo" alt="Primórdios">
+    <h1 class="login-titulo">Primórdios</h1>
+    <p class="login-sub">Entre para continuar sua jornada</p>
+  </div>
+
+  <!-- Formulário de Login -->
+  <form class="login-form" onsubmit="fazerLogin(event)">
+    <div class="campo-grupo">
+      <label class="campo-label">Usuário</label>
+      <input id="loginUsuario" type="text" class="campo-input" placeholder="Usuário" autocomplete="off">
+    </div>
+    <div class="campo-grupo">
+      <label class="campo-label">Senha</label>
+      <input id="loginSenha" type="password" class="campo-input" placeholder="••••••••">
+    </div>
+    <div id="loginErro" class="form-erro"></div>
+    <button type="submit" class="btn-login" onclick="Sons.click()">Entrar</button>
+    <div class="login-divisor"><span>ou</span></div>
+    <button type="button" class="btn-cadastro" onclick="Sons.click();abrirCadastro()">Criar uma conta</button>
+  </form>
+
+</div>
+
+<!-- ===== POPUP CADASTRO ===== -->
+<div id="popupCadastro">
+  <div class="popup-cadastro-box">
+
+    <div class="popup-cadastro-header">
+      <div>
+        <div class="popup-cadastro-titulo">Criar Conta</div>
+        <div class="popup-cadastro-sub">Junte-se aos Primórdios</div>
+      </div>
+      <button class="popup-fechar" onclick="Sons.back();fecharCadastro()">✕</button>
+    </div>
+
+    <form onsubmit="fazerCadastro(event)">
+      <div class="campo-grupo">
+        <label class="campo-label">Usuário</label>
+        <input id="cadUsuario" type="text" class="campo-input" placeholder="escolha um usuário" autocomplete="off">
+      </div>
+      <div class="campo-grupo">
+        <label class="campo-label">Email</label>
+        <input id="cadEmail" type="email" class="campo-input" placeholder="seu@email.com">
+      </div>
+      <div class="campo-grupo">
+        <label class="campo-label">Senha</label>
+        <input id="cadSenha" type="password" class="campo-input" placeholder="mínimo 6 caracteres">
+      </div>
+      <div class="campo-grupo">
+        <label class="campo-label">Confirmar Senha</label>
+        <input id="cadSenhaConf" type="password" class="campo-input" placeholder="repita a senha">
+      </div>
+      <div id="cadErro" class="form-erro"></div>
+      <div id="cadSucesso" class="form-sucesso"></div>
+      <button type="submit" class="btn-login" style="margin-top:8px;" onclick="Sons.click()">Criar Conta</button>
+    </form>
+
+  </div>
+</div>
+
+<script src="sons.js"></script>
+<script>
+  function getUsuarios() {
+    return JSON.parse(localStorage.getItem('primordios_usuarios') || '[]');
+  }
+  function salvarUsuarios(lista) {
+    localStorage.setItem('primordios_usuarios', JSON.stringify(lista));
+  }
+
+  function fazerLogin(e) {
+    e.preventDefault();
+    const usuario = document.getElementById('loginUsuario').value.trim();
+    const senha   = document.getElementById('loginSenha').value;
+    const erroEl  = document.getElementById('loginErro');
+
+    if (!usuario || !senha) { erroEl.textContent = 'Preencha todos os campos.'; return; }
+
+    const usuarios = getUsuarios();
+    const encontrado = usuarios.find(u => u.usuario === usuario && u.senha === senha);
+    if (!encontrado) { Sons.error(); erroEl.textContent = 'Usuário ou senha incorretos.'; return; }
+
+    erroEl.textContent = '';
+    Sons.success();
+    sessionStorage.setItem('primordios_logado', JSON.stringify({ usuario: encontrado.usuario }));
+    iniciarTransicao();
+  }
+
+  function iniciarTransicao() {
+    const wrapper = document.querySelector('.login-wrapper');
+    const logo    = document.querySelector('.login-logo');
+
+    // Pega posição atual da logo
+    const logoRect = logo.getBoundingClientRect();
+
+    // Clona a logo fora do wrapper para animar livremente
+    const logoClone = logo.cloneNode(true);
+    logoClone.id = 'logoAnimada';
+    logoClone.style.cssText = `
+      position: fixed;
+      top: ${logoRect.top}px;
+      left: ${logoRect.left}px;
+      width: ${logoRect.width}px;
+      height: ${logoRect.height}px;
+      margin: 0;
+      animation: none;
+      z-index: 9999;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px #c9a84c55);
+      transition: none;
+    `;
+    document.body.appendChild(logoClone);
+
+    // Fase 1: fade out do form + logo original some
+    wrapper.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    wrapper.style.opacity    = '0';
+    wrapper.style.transform  = 'scale(0.92)';
+
+    setTimeout(() => {
+      // Fase 2: logo desce até o centro
+      const centerX = window.innerWidth  / 2 - logoRect.width  / 2;
+      const centerY = window.innerHeight / 2 - logoRect.height / 2;
+
+      logoClone.style.transition = 'top 0.7s cubic-bezier(0.4,0,0.2,1), left 0.7s cubic-bezier(0.4,0,0.2,1)';
+      logoClone.style.top  = centerY + 'px';
+      logoClone.style.left = centerX + 'px';
+
+      setTimeout(() => {
+        // Fase 3: começa a girar acelerando
+        logoClone.style.transition = 'none';
+        logoClone.style.top  = centerY + 'px';
+        logoClone.style.left = centerX + 'px';
+        girarAcelerando(logoClone, centerX, centerY);
+      }, 750);
+
+    }, 500);
+  }
+
+  function girarAcelerando(el, cx, cy) {
+    let angulo     = 0;
+    let velocidade = 1.5;
+    const aceleracao = 1.05;
+    const maxVel     = 14;
+
+    function loop() {
+      angulo     += velocidade;
+      velocidade  = Math.min(velocidade * aceleracao, maxVel);
+      el.style.transform = `rotate(${angulo}deg)`;
+
+      if (velocidade < maxVel) {
+        requestAnimationFrame(loop);
+      } else {
+        let extra = 0;
+        function loopExtra() {
+          angulo += maxVel;
+          extra  += maxVel;
+          el.style.transform = `rotate(${angulo}deg)`;
+          if (extra < 540) requestAnimationFrame(loopExtra);
+          else pararEBrilhar(el, cx, cy);
+        }
+        requestAnimationFrame(loopExtra);
+      }
+    }
+    requestAnimationFrame(loop);
+  }
+
+  function pararEBrilhar(el, cx, cy) {
+    const tamanhoFinal = 48;
+    const escala = tamanhoFinal / parseFloat(el.style.width);
+
+    el.style.transition = 'transform 0.3s ease-out, filter 0.3s ease-out';
+    el.style.transform  = 'rotate(0deg) scale(1.15)';
+    el.style.filter     = 'drop-shadow(0 0 40px #c9a84c) drop-shadow(0 0 80px #c9a84caa) brightness(1.5)';
+
+    setTimeout(() => {
+      el.style.transition = 'transform 0.4s ease, filter 0.4s ease';
+      el.style.transform  = 'rotate(0deg) scale(1)';
+      el.style.filter     = 'drop-shadow(0 0 12px #c9a84c88) brightness(1.1)';
+
+      setTimeout(() => {
+        // Calcula posição final: canto superior esquerdo com tamanho 48px
+        const targetTop  = 16;
+        const targetLeft = 20;
+
+        el.style.transition = 'top 0.6s cubic-bezier(0.4,0,0.2,1), left 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s ease, filter 0.6s ease';
+        el.style.top       = targetTop  + 'px';
+        el.style.left      = targetLeft + 'px';
+        el.style.transform = `scale(${escala})`;
+        el.style.transformOrigin = 'top left';
+        el.style.filter    = 'drop-shadow(0 0 6px #c9a84c44) brightness(1)';
+
+        setTimeout(() => { window.location.href = 'tela1.html'; }, 700);
+      }, 450);
+    }, 400);
+  }
+
+  function abrirCadastro() {
+    document.getElementById('cadUsuario').value  = '';
+    document.getElementById('cadEmail').value    = '';
+    document.getElementById('cadSenha').value    = '';
+    document.getElementById('cadSenhaConf').value = '';
+    document.getElementById('cadErro').textContent    = '';
+    document.getElementById('cadSucesso').textContent = '';
+    document.getElementById('popupCadastro').classList.add('aberto');
+  }
+
+  function fecharCadastro() {
+    document.getElementById('popupCadastro').classList.remove('aberto');
+  }
+
+  function fazerCadastro(e) {
+    e.preventDefault();
+    const usuario  = document.getElementById('cadUsuario').value.trim();
+    const email    = document.getElementById('cadEmail').value.trim();
+    const senha    = document.getElementById('cadSenha').value;
+    const senhaC   = document.getElementById('cadSenhaConf').value;
+    const erroEl   = document.getElementById('cadErro');
+    const sucEl    = document.getElementById('cadSucesso');
+
+    erroEl.textContent = '';
+    sucEl.textContent  = '';
+
+    if (!usuario || !email || !senha || !senhaC) { Sons.error(); erroEl.textContent = 'Preencha todos os campos.'; return; }
+    if (usuario.length < 3)  { Sons.error(); erroEl.textContent = 'Usuário deve ter ao menos 3 caracteres.'; return; }
+    if (senha.length < 6)    { Sons.error(); erroEl.textContent = 'Senha deve ter ao menos 6 caracteres.'; return; }
+    if (senha !== senhaC)    { Sons.error(); erroEl.textContent = 'As senhas não coincidem.'; return; }
+
+    const usuarios = getUsuarios();
+    if (usuarios.find(u => u.usuario === usuario)) { Sons.error(); erroEl.textContent = 'Este usuário já existe.'; return; }
+    if (usuarios.find(u => u.email === email))     { Sons.error(); erroEl.textContent = 'Este email já está cadastrado.'; return; }
+
+    usuarios.push({ usuario, email, senha });
+    salvarUsuarios(usuarios);
+    Sons.success();
+    sucEl.textContent = '✦ Conta criada! Você já pode fazer login.';
+    setTimeout(() => fecharCadastro(), 1800);
+  }
+
+  // Fecha popup ao clicar fora
+  document.getElementById('popupCadastro').addEventListener('click', function(e) {
+    if (e.target === this) fecharCadastro();
+  });
+</script>
+</body>
+</html>

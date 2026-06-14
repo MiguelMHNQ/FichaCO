@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primórdios — Inventário</title>
+<link rel="icon" href="Imagens/LogoT.png" type="image/png">
+<link rel="stylesheet" href="global.css">
+<link rel="stylesheet" href="tela1.css">
+<link rel="stylesheet" href="inventario.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div id="navLogo" onclick="toggleMenu()">
+  <img src="Imagens/LogoT.png" alt="Primórdios">
+  <div id="navMenu">
+    <div class="nav-item" onclick="Sons.nav();window.location.href='inventario.html'"><span class="nav-item-icone">⚔</span> Inventário</div>
+    <div class="nav-item" onclick="Sons.nav();novoPersonagem()"><span class="nav-item-icone">✦</span> Novo Personagem</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='livro.html'"><span class="nav-item-icone">⁂</span> Livro</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='configuracoes.html'"><span class="nav-item-icone">⚙</span> Configurações</div>
+    <div class="nav-item nav-sair" onclick="Sons.back();sair()"><span class="nav-item-icone">↩</span> Sair</div>
+  </div>
+</div>
+
+<!-- Tela principal -->
+<section class="tela inv-tela">
+  <h1 class="titulo-tela">Inventário</h1>
+  <p class="subtitulo-tela">Seus personagens</p>
+
+  <div id="listaPersonagens" class="inv-grid"></div>
+</section>
+
+<!-- ===== POPUP CONFIRMAR DELETE ===== -->
+<div id="popupDelete">
+  <div class="popup-delete-box">
+    <div class="popup-delete-icone">⚠</div>
+    <div class="popup-delete-titulo">Tem certeza?</div>
+    <div class="popup-delete-sub">Esta ação é irreversível. O personagem será apagado permanentemente.</div>
+    <div class="popup-delete-acoes">
+      <button class="popup-delete-btn-cancelar" onclick="Sons.back();fecharDelete()">Cancelar</button>
+      <button class="popup-delete-btn-confirmar" onclick="Sons.del();confirmarDelete()">Apagar</button>
+    </div>
+  </div>
+</div>
+
+<script src="estado.js"></script>
+<script src="audio.js"></script>
+<script src="sons.js"></script>
+<script>
+  // ===== NAVBAR =====
+  const logoImg = document.querySelector('#navLogo img');
+  logoImg.classList.add('logo-entrada');
+  logoImg.addEventListener('animationend', () => {
+    logoImg.classList.remove('logo-entrada');
+    logoImg.classList.remove('logo-girar');
+  });
+
+  function toggleMenu() {
+    Sons.toggle();
+    logoImg.classList.remove('logo-girar');
+    void logoImg.offsetWidth;
+    logoImg.classList.add('logo-girar');
+    document.getElementById('navMenu').classList.toggle('aberto');
+  }
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('navLogo').contains(e.target))
+      document.getElementById('navMenu').classList.remove('aberto');
+  });
+
+  function sair() {
+    sessionStorage.removeItem('primordios_logado');
+    window.location.href = 'tela0.html';
+  }
+
+  // ===== PERSONAGENS =====
+  function getUsuarioLogado() {
+    const s = sessionStorage.getItem('primordios_logado');
+    return s ? JSON.parse(s).usuario : null;
+  }
+
+  function getPersonagens() {
+    const user = getUsuarioLogado();
+    if (!user) return [];
+    return JSON.parse(localStorage.getItem('primordios_personagens_' + user) || '[]');
+  }
+
+  function salvarPersonagens(lista) {
+    const user = getUsuarioLogado();
+    if (!user) return;
+    localStorage.setItem('primordios_personagens_' + user, JSON.stringify(lista));
+  }
+
+  // ===== RENDER LISTA =====
+  function renderLista() {
+    const container = document.getElementById('listaPersonagens');
+    const personagens = getPersonagens();
+    container.innerHTML = '';
+
+    if (personagens.length === 0) {
+      container.innerHTML = `
+        <div class="inv-vazio">
+          <div class="inv-vazio-icone">✦</div>
+          <div class="inv-vazio-texto">Nenhum personagem criado ainda.</div>
+          <div class="inv-vazio-sub">Clique em "Novo Personagem" para começar.</div>
+        </div>`;
+      return;
+    }
+
+    personagens.forEach((p, idx) => {
+      const card = document.createElement('div');
+      card.className = 'inv-card';
+      card.innerHTML = `
+        <div class="inv-card-foto" onclick="abrirFicha(${idx})">
+          ${p.foto
+            ? `<img src="${p.foto}" alt="${p.nomePersonagem}">`
+            : `<div class="inv-card-foto-vazia">✦</div>`}
+        </div>
+        <div class="inv-card-info" onclick="abrirFicha(${idx})">
+          <div class="inv-card-nome">${p.nomePersonagem || '—'}</div>
+          <div class="inv-card-classe">${p.classe || ''} ${p.nivel ? '· Nível ' + p.nivel : ''}</div>
+          <div class="inv-card-desc">${p.desc || 'Sem descrição.'}</div>
+        </div>
+        <div class="inv-card-acoes">
+          <button class="inv-btn-ver" onclick="Sons.confirm();abrirFicha(${idx})">Ver Ficha</button>
+          <button class="inv-btn-del" onclick="Sons.del();abrirDelete(${idx})">✕</button>
+        </div>`;
+      container.appendChild(card);
+    });
+  }
+
+  // ===== FICHA =====
+  function abrirFicha(idx) {
+    const personagens = getPersonagens();
+    const p = personagens[idx];
+    if (!p || !p.estadoCompleto || !p.estadoCompleto.classe) return;
+
+    sessionStorage.setItem('primordios_estado', JSON.stringify(p.estadoCompleto));
+    if (p.foto)  sessionStorage.setItem('fragmentados_foto', p.foto);  else sessionStorage.removeItem('fragmentados_foto');
+    if (p.desc)  sessionStorage.setItem('fragmentados_desc', p.desc);  else sessionStorage.removeItem('fragmentados_desc');
+    if (p.pvMax) sessionStorage.setItem('fragmentados_pvmax', p.pvMax);
+    if (p.peMax) sessionStorage.setItem('fragmentados_pemax', p.peMax);
+    if (p.pv)    sessionStorage.setItem('fragmentados_pv', p.pv);
+    if (p.pe)    sessionStorage.setItem('fragmentados_pe', p.pe);
+    if (p.ca)    sessionStorage.setItem('fragmentados_ca', p.ca);
+    if (p.xp)    sessionStorage.setItem('fragmentados_xp', p.xp);
+
+    window.location.href = 'tela5.html';
+  }
+
+  // ===== DELETE =====
+  let _idxParaDeletar = null;
+
+  function abrirDelete(idx) {
+    _idxParaDeletar = idx;
+    document.getElementById('popupDelete').classList.add('aberto');
+  }
+
+  function fecharDelete() {
+    _idxParaDeletar = null;
+    document.getElementById('popupDelete').classList.remove('aberto');
+  }
+
+  function confirmarDelete() {
+    if (_idxParaDeletar === null) return;
+    const lista = getPersonagens();
+    lista.splice(_idxParaDeletar, 1);
+    salvarPersonagens(lista);
+    fecharDelete();
+    renderLista();
+  }
+
+  document.getElementById('popupDelete').addEventListener('click', function(e) {
+    if (e.target === this) fecharDelete();
+  });
+
+function novoPersonagem() {
+    sessionStorage.removeItem('primordios_estado');
+    window.location.href = 'tela1.html';
+  }
+
+  window.addEventListener('load', () => {
+    if (!getUsuarioLogado()) { window.location.href = 'tela0.html'; return; }
+    renderLista();
+  });
+</script>
+</body>
+</html>

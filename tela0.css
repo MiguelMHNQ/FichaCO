@@ -1,0 +1,223 @@
+body {
+  background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== WRAPPER ===== */
+.login-wrapper {
+  width: 100%;
+  max-width: 380px;
+  padding: 20px;
+  animation: fadeIn 0.6s ease;
+}
+
+/* ===== HEADER ===== */
+.login-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.login-logo {
+  width: 140px;
+  height: auto;
+  margin-bottom: 12px;
+  animation: pulso 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px #c9a84c55);
+}
+
+@keyframes pulso {
+  0%, 100% { filter: drop-shadow(0 0 6px #c9a84c44) brightness(1); }
+  50%       { filter: drop-shadow(0 0 20px #c9a84ccc) brightness(1.15); }
+}
+
+.login-titulo {
+  font-size: 2.4rem;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  text-shadow: 0 0 20px #c9a84c66;
+  margin-bottom: 8px;
+}
+
+.login-sub {
+  font-size: 0.78rem;
+  color: #555;
+  letter-spacing: 2px;
+}
+
+/* ===== FORM ===== */
+.login-form {
+  background: #13111c;
+  border: 1px solid #2a2535;
+  border-radius: 4px;
+  padding: 32px;
+}
+
+.campo-grupo {
+  margin-bottom: 20px;
+}
+
+.campo-label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 8px;
+}
+
+.campo-input {
+  width: 100%;
+  background: #0d0b14;
+  border: 1px solid #2a2535;
+  border-radius: 3px;
+  color: #e0d6c8;
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.campo-input::placeholder { color: #3a3550; }
+.campo-input:focus { border-color: #c9a84c; }
+
+/* ===== BOTÕES ===== */
+.btn-login {
+  width: 100%;
+  padding: 13px;
+  background: transparent;
+  border: 2px solid #c9a84c;
+  color: #c9a84c;
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.3s;
+  margin-top: 4px;
+}
+.btn-login:hover {
+  background: #c9a84c;
+  color: #0a0a0f;
+  box-shadow: 0 0 20px #c9a84c55;
+}
+
+.login-divisor {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+.login-divisor::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #2a2535;
+}
+.login-divisor span {
+  position: relative;
+  background: #13111c;
+  padding: 0 12px;
+  font-size: 0.7rem;
+  color: #3a3550;
+  letter-spacing: 2px;
+}
+
+.btn-cadastro {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid #3a3550;
+  color: #666;
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.btn-cadastro:hover { border-color: #c9a84c; color: #c9a84c; }
+
+/* ===== MENSAGENS ===== */
+.form-erro {
+  font-size: 0.75rem;
+  color: #ff6666;
+  margin-bottom: 10px;
+  min-height: 18px;
+  letter-spacing: 0.5px;
+}
+
+.form-sucesso {
+  font-size: 0.75rem;
+  color: #c9a84c;
+  margin-bottom: 10px;
+  min-height: 18px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== POPUP CADASTRO ===== */
+#popupCadastro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0a0a0fdd;
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#popupCadastro.aberto { display: flex; }
+
+.popup-cadastro-box {
+  background: #13111c;
+  border: 1px solid #3a3550;
+  border-radius: 4px;
+  padding: 30px;
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.3s ease;
+}
+
+.popup-cadastro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #2a2535;
+  padding-bottom: 16px;
+}
+
+.popup-cadastro-titulo {
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  text-shadow: 0 0 12px #c9a84c55;
+}
+
+.popup-cadastro-sub {
+  font-size: 0.7rem;
+  color: #555;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+.popup-fechar {
+  background: transparent;
+  border: 1px solid #3a3550;
+  color: #666;
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.popup-fechar:hover { border-color: #aaa; color: #aaa; }

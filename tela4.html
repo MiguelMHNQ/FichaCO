@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragmentados — Carregando...</title>
+<link rel="icon" href="Imagens/LogoT.png" type="image/png">
+<link rel="stylesheet" href="global.css">
+<style>
+  body { background: #0a0a0f; }
+  .tela { justify-content: center; }
+</style>
+</head>
+<body>
+
+<section class="tela">
+  <div style="text-align:center;">
+    <div id="loadingNome" style="font-size:1.4rem;letter-spacing:4px;color:#c9a84c;margin-bottom:30px;"></div>
+    <div style="width:300px;height:2px;background:#1a1726;border-radius:2px;overflow:hidden;margin:0 auto 20px;">
+      <div id="loadingBar" style="height:100%;width:0%;background:#c9a84c;transition:width 0.1s linear;"></div>
+    </div>
+    <div id="loadingMsg" style="font-size:0.75rem;letter-spacing:3px;color:#555;"></div>
+  </div>
+</section>
+
+<script src="estado.js"></script>
+<script>
+  const LOADING_MSGS = [
+    'Invocando as sombras...',
+    'Afinando as cordas...',
+    'Temperando o aço...',
+    'Consultando os oráculos...',
+    'Selando o pacto...',
+    'Preparando o campo de batalha...',
+    'Escrevendo seu destino...'
+  ];
+
+  window.addEventListener('load', () => {
+    carregarEstadoBase();
+    // Reseta dados de progresso do personagem anterior
+    sessionStorage.removeItem('fragmentados_pvmax');
+    sessionStorage.removeItem('fragmentados_pemax');
+    sessionStorage.removeItem('fragmentados_pv');
+    sessionStorage.removeItem('fragmentados_pe');
+    sessionStorage.removeItem('fragmentados_ca');
+    sessionStorage.removeItem('fragmentados_xp');
+    sessionStorage.removeItem('fragmentados_foto');
+    sessionStorage.removeItem('fragmentados_desc');
+    sessionStorage.removeItem('fragmentados_inventario');
+    sessionStorage.removeItem('fragmentados_pesomax');
+    sessionStorage.removeItem('fragmentados_constancias_vals');
+    sessionStorage.removeItem('fragmentados_layout');
+    const nome = document.getElementById('loadingNome');
+    const bar  = document.getElementById('loadingBar');
+    const msg  = document.getElementById('loadingMsg');
+    nome.textContent = (estado.nomePersonagem || estado.classe || '').toUpperCase();
+    let pct = 0, mi = 0;
+    msg.textContent = LOADING_MSGS[0];
+    const iv = setInterval(() => {
+      pct += 2;
+      bar.style.width = pct + '%';
+      if (pct % 15 === 0) { mi = (mi + 1) % LOADING_MSGS.length; msg.textContent = LOADING_MSGS[mi]; }
+      if (pct >= 100) { clearInterval(iv); setTimeout(() => window.location.href = 'tela5.html', 400); }
+    }, 40);
+  });
+</script>
+</body>
+</html>
