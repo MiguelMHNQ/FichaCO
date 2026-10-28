@@ -304,7 +304,7 @@ const TALENTOS_GERAIS = [
   { nome: 'Fugitivo Esperto', desc: 'Ao sofrer ataque que reduza sua vida a menos da metade, gaste sua Reação para mover até 4,5m sem provocar ataques de oportunidade e fazer teste de Furtividade instantâneo para se esconder.' },
   { nome: 'Nova Tentativa', desc: 'Sempre que tirar 1 em um teste, pode gastar 2 PE para refazer o teste. Deve aceitar o novo resultado.' },
   { nome: 'Reação Adicional', desc: 'Você recebe uma reação especial por turno.' },
-  { nome: 'Versatilidade', desc: 'Escolha um atributo entre Carisma, Inteligência ou Sabedoria. Sempre que fizer um teste com esse atributo como base, pode gastar 2 PE para receber +1d4 no resultado.' },
+  { nome: 'Versatilidade de Atributo', desc: 'Escolha um atributo entre Carisma, Inteligência ou Sabedoria. Sempre que fizer um teste com esse atributo como base, pode gastar 2 PE para receber +1d4 no resultado.' },
 ];
 
 // ===== TALENTOS =====

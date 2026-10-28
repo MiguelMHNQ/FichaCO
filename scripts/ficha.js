@@ -1639,10 +1639,10 @@ function renderFicha() {
       });
     }
     if (estado.talentos && estado.talentos.length > 0) {
-      const listaTalentos = [...(TALENTOS[estado.classe] || []), ...TALENTOS_GERAIS];
+      const listaTalentos = obterListaTalentos();
       habHtml += `<div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin:12px 0 6px;">TALENTOS</div>`;
       estado.talentos.forEach(nome => {
-        const t = listaTalentos.find(x => x.nome === nome);
+        const t = resolverTalento(nome);
         if (!t) return;
         const evoAtiva = t.evo && estado.nivel >= (t.evoNivel || 10);
         habHtml += `<div class="ficha-hab-item"><span class="ficha-hab-nome">${t.nome}</span> — ${t.desc}${evoAtiva ? `<span style="color:#c9a84c;font-style:italic;font-size:0.74rem;"> ❆ ${t.evo}</span>` : ''}</div>`;
@@ -1756,60 +1756,100 @@ function escolherCaminho(nome) {
   sincronizarPersonagem();
 }
 
-function abrirPopupTalentos() {
-  const lista  = [...(TALENTOS[estado.classe] || []), ...TALENTOS_GERAIS];
-  const max    = slotsDisponiveis();
-  const popup  = document.getElementById('popupCaminhoTalentos');
+function idTalentoClasse(classe, nome) {
+  return `classe:${classe}:${nome}`;
+}
+
+function temVersatilidadeBardo() {
+  return estado.classe === 'Bardo' && (estado.talentos || []).includes('Versatilidade');
+}
+
+function obterListaTalentos() {
+  const lista = [...(TALENTOS[estado.classe] || []), ...TALENTOS_GERAIS];
+  if (!temVersatilidadeBardo()) return lista;
+  const proibidas = new Set(['Bardo', 'Obscuro', 'Feitiçeiro', 'Sonoriante', 'Aspectomante', 'Mago']);
+  Object.entries(TALENTOS).forEach(([classe, talentos]) => {
+    if (proibidas.has(classe)) return;
+    talentos.forEach(t => lista.push({
+      ...t,
+      nome: `${classe} — ${t.nome}`,
+      id: idTalentoClasse(classe, t.nome),
+      origem: classe
+    }));
+  });
+  return lista;
+}
+
+function limiteTalentos() {
+  return slotsDisponiveis() + (temVersatilidadeBardo() ? 1 : 0);
+}
+
+function resolverTalento(idOuNome) {
+  const encontrado = obterListaTalentos().find(t => (t.id || t.nome) === idOuNome);
+  if (encontrado) return encontrado;
+  for (const [classe, talentos] of Object.entries(TALENTOS)) {
+    const talento = talentos.find(t => idTalentoClasse(classe, t.nome) === idOuNome);
+    if (talento) return { ...talento, nome: `${classe} — ${talento.nome}`, id: idOuNome, origem: classe };
+  }
+  return [...TALENTOS_GERAIS, ...(TALENTOS[estado.classe] || [])].find(t => t.nome === idOuNome);
+}
+
+function renderizarPopupTalentos() {
+  const lista = obterListaTalentos();
+  const max = limiteTalentos();
   const titulo = document.getElementById('popupCTTitulo');
-  const cont   = document.getElementById('popupCTLista');
-  titulo.textContent = `Talentos (${(estado.talentos||[]).length}/${max})`;
-  cont.innerHTML = max === 0
-    ? '<div style="font-size:0.78rem;color:#555;padding:8px 0;">Talentos disponíveis a partir do nível 5.</div>'
-    : lista.map((t, idx) => {
-        const ativo   = (estado.talentos || []).includes(t.nome);
-        const cheio   = (estado.talentos || []).length >= max && !ativo;
-        const classeLen = (TALENTOS[estado.classe] || []).length;
-        const sep = idx === classeLen ? '<div style="font-size:0.62rem;letter-spacing:2px;color:#c9a84c88;margin:10px 0 6px;padding-top:8px;border-top:1px solid #2a2535;">— TALENTOS GERAIS —</div>' : '';
-        return sep + `<div class="item-linha${ativo ? ' ativo' : ''}" style="${cheio ? 'opacity:0.45;cursor:default;' : 'cursor:pointer;'}" onclick="${cheio ? '' : `toggleTalento('${t.nome}')`}">
-          <div style="font-size:0.85rem;">${t.nome} ${ativo ? '✔' : ''}</div>
-          <div style="font-size:0.72rem;color:#666;margin-top:2px;line-height:1.5;">${t.desc}</div>
-        </div>`;
-      }).join('');
+  const cont = document.getElementById('popupCTLista');
+  titulo.textContent = `Talentos (${(estado.talentos || []).length}/${max})`;
+  if (max === 0) {
+    cont.innerHTML = '<div style="font-size:0.78rem;color:#555;padding:8px 0;">Talentos disponíveis a partir do nível 5.</div>';
+    return;
+  }
+  const classeLen = (TALENTOS[estado.classe] || []).length;
+  const geraisInicio = classeLen;
+  let crossInicio = classeLen + TALENTOS_GERAIS.length;
+  cont.innerHTML = lista.map((t, idx) => {
+    const id = t.id || t.nome;
+    const ativo = (estado.talentos || []).includes(id);
+    const cheio = (estado.talentos || []).length >= max && !ativo;
+    let sep = idx === geraisInicio
+      ? '<div style="font-size:0.62rem;letter-spacing:2px;color:#c9a84c88;margin:10px 0 6px;padding-top:8px;border-top:1px solid #2a2535;">— TALENTOS GERAIS —</div>'
+      : '';
+    if (t.origem && (idx === crossInicio || lista[idx - 1]?.origem !== t.origem)) {
+      sep += `<div style="font-size:0.62rem;letter-spacing:2px;color:#7ecfb3;margin:10px 0 6px;padding-top:8px;border-top:1px solid #2a2535;">— TALENTOS DE ${t.origem.toUpperCase()} —</div>`;
+    }
+    return sep + `<div class="item-linha${ativo ? ' ativo' : ''}" style="${cheio ? 'opacity:0.45;cursor:default;' : 'cursor:pointer;'}" onclick="${cheio ? '' : `toggleTalento('${encodeURIComponent(id)}')`}">
+      <div style="font-size:0.85rem;">${t.nome} ${ativo ? '✔' : ''}</div>
+      <div style="font-size:0.72rem;color:#666;margin-top:2px;line-height:1.5;">${t.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+function abrirPopupTalentos() {
+  renderizarPopupTalentos();
   const badge = event.currentTarget || event.target;
   _posicionarPopupCT(badge);
 }
 
-function toggleTalento(nome) {
+function toggleTalento(idCodificado) {
+  const id = decodeURIComponent(idCodificado);
   if (!estado.talentos) estado.talentos = [];
-  const idx = estado.talentos.indexOf(nome);
-  if (idx !== -1) estado.talentos.splice(idx, 1);
-  else if (estado.talentos.length < slotsDisponiveis()) estado.talentos.push(nome);
+  const idx = estado.talentos.indexOf(id);
+  if (idx !== -1) {
+    estado.talentos.splice(idx, 1);
+    if (id === 'Versatilidade' && estado.classe === 'Bardo') {
+      estado.talentos = estado.talentos.filter(x => !String(x).startsWith('classe:'));
+    }
+  } else if (estado.talentos.length < limiteTalentos()) {
+    estado.talentos.push(id);
+  }
   salvarEstado();
-  // reposiciona o popup no mesmo badge de talentos após re-render
   const popup = document.getElementById('popupCaminhoTalentos');
-  const savedTop  = popup.style.top;
+  const savedTop = popup.style.top;
   const savedLeft = popup.style.left;
   renderFicha();
   sincronizarPersonagem();
-  // reabre no mesmo lugar
-  const titulo = document.getElementById('popupCTTitulo');
-  const cont   = document.getElementById('popupCTLista');
-  const max    = slotsDisponiveis();
-  const lista  = [...(TALENTOS[estado.classe] || []), ...TALENTOS_GERAIS];
-  titulo.textContent = `Talentos (${(estado.talentos||[]).length}/${max})`;
-  cont.innerHTML = max === 0
-    ? '<div style="font-size:0.78rem;color:#555;padding:8px 0;">Talentos disponíveis a partir do nível 5.</div>'
-    : lista.map((t, idx) => {
-        const ativo = (estado.talentos || []).includes(t.nome);
-        const cheio = (estado.talentos || []).length >= max && !ativo;
-        const classeLen = (TALENTOS[estado.classe] || []).length;
-        const sep = idx === classeLen ? '<div style="font-size:0.62rem;letter-spacing:2px;color:#c9a84c88;margin:10px 0 6px;padding-top:8px;border-top:1px solid #2a2535;">— TALENTOS GERAIS —</div>' : '';
-        return sep + `<div class="item-linha${ativo ? ' ativo' : ''}" style="${cheio ? 'opacity:0.45;cursor:default;' : 'cursor:pointer;'}" onclick="${cheio ? '' : `toggleTalento('${t.nome}')`}">
-          <div style="font-size:0.85rem;">${t.nome} ${ativo ? '✔' : ''}</div>
-          <div style="font-size:0.72rem;color:#666;margin-top:2px;line-height:1.5;">${t.desc}</div>
-        </div>`;
-      }).join('');
-  popup.style.top  = savedTop;
+  renderizarPopupTalentos();
+  popup.style.top = savedTop;
   popup.style.left = savedLeft;
   popup.classList.add('aberto');
 }
