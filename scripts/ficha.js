@@ -1305,7 +1305,7 @@ function renderFicha() {
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;">
           <div style="position:relative;width:100px;height:100px;border:2px dashed #3a3550;border-radius:4px;overflow:hidden;cursor:pointer;" onclick="document.getElementById('fotoInput').click()">
             ${fotoSalva
-              ? `<img src="${fotoSalva}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+              ? `<img src="${fotoSalva}" style="width:100%;height:100%;object-fit:contain;object-position:center;display:block;">`
               : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;"><span style="font-size:1.4rem;color:#3a3550;">&#128247;</span><span style="font-size:0.65rem;color:#555;letter-spacing:1px;">FOTO</span></div>`}
             <input id="fotoInput" type="file" accept="image/*" style="display:none;" onchange="carregarFoto(this)">
           </div>
