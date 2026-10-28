@@ -785,6 +785,12 @@ function usarAcessorio(nome = estado.acessorio) {
     return;
   }
 
+  if (acessorio.nome === 'Cura Aprimorada') {
+    if (!consumirCargaAcessorio(acessorio)) return;
+    alert('Cura Aprimorada: aplique +1d do tipo da cura usada. A carga foi consumida e o colar precisa de um descanso curto para recarregar.');
+    return;
+  }
+
   if (acessorio.nome === 'Membrana Pendente') {
     if (!consumirCargaAcessorio(acessorio)) return;
     const aplicado = ajustarRecursoFicha('pv', 18);
