@@ -4,12 +4,52 @@
   padding: 100px 40px 60px;
 }
 
-.inv-acoes {
+.inv-controles {
   width: 100%;
   max-width: 900px;
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 30px;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.inv-controles[hidden] { display: none; }
+.inv-busca,
+.inv-ordenacao {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #888;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.inv-busca { flex: 1; }
+.inv-busca input,
+.inv-ordenacao select {
+  min-height: 40px;
+  padding: 9px 12px;
+  background: #0d0b14;
+  border: 1px solid #2a2535;
+  border-radius: 2px;
+  color: #e0d6c8;
+  font-family: 'Georgia', serif;
+  font-size: 0.8rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.inv-busca input:focus,
+.inv-ordenacao select:focus {
+  outline: 1px solid #c9a84c;
+  border-color: #c9a84c;
+}
+.inv-busca input::placeholder { color: #555; }
+.inv-ordenacao select { min-width: 190px; }
+.inv-resumo {
+  min-width: 110px;
+  padding-bottom: 11px;
+  color: #c9a84c;
+  font-size: 0.72rem;
+  text-align: right;
 }
 
 .inv-btn-novo {
@@ -284,3 +324,15 @@
   transition: all 0.2s;
 }
 .popup-delete-btn-confirmar:hover { background: #ff4444; color: #0a0a0f; }
+
+@media (max-width: 640px) {
+  .inv-tela { padding: 90px 20px 40px; }
+  .inv-controles { align-items: stretch; flex-direction: column; gap: 12px; }
+  .inv-ordenacao select { width: 100%; }
+  .inv-resumo { padding: 0; text-align: left; }
+  .inv-card { gap: 14px; padding: 16px; }
+  .inv-card-foto { width: 64px; height: 64px; }
+  .inv-card-acoes { gap: 6px; }
+  .inv-btn-ver,
+  .inv-btn-del { padding: 8px 10px; font-size: 0.68rem; }
+}

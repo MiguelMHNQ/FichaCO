@@ -277,16 +277,34 @@
     });
   }
 
-  function rolarDados() {
-    if (!_diceQueue.length) return;
+  function rolarDados(bonus = 0, descricao = '', aoConcluir = null) {
+    if (!_diceQueue.length && !bonus) return;
     const resultados = _diceQueue.map(d => ({ d, v: Math.floor(Math.random() * d) + 1 }));
-    const soma = resultados.reduce((s, r) => s + r.v, 0);
+    const soma = resultados.reduce((s, r) => s + r.v, 0) + bonus;
     const rollsEl = document.getElementById('diceRolls');
     const sumEl   = document.getElementById('diceSum');
     const resEl   = document.getElementById('diceResult');
     rollsEl.innerHTML = '';
     resEl.style.display = 'block';
     sumEl.textContent = '';
+    if (descricao) {
+      const titulo = document.createElement('div');
+      titulo.textContent = descricao;
+      titulo.style.cssText = 'color:#c9a84c;font-size:0.72rem;margin-bottom:6px;';
+      rollsEl.appendChild(titulo);
+    }
+    if (bonus) {
+      const modificador = document.createElement('div');
+      modificador.textContent = `Bônus: +${bonus}`;
+      modificador.style.cssText = 'color:#aaa;font-size:0.72rem;margin-bottom:4px;';
+      rollsEl.appendChild(modificador);
+    }
+    if (!_diceQueue.length) {
+      const fixo = document.createElement('div');
+      fixo.textContent = 'Dano fixo';
+      fixo.style.cssText = 'color:#aaa;font-size:0.72rem;';
+      rollsEl.appendChild(fixo);
+    }
     // aparece cada resultado com stagger
     resultados.forEach((r, i) => {
       const span = document.createElement('span');
@@ -313,17 +331,27 @@
     });
     // contador animado na soma
     const delay = resultados.length * 80 + 120;
-    setTimeout(() => _animarSoma(sumEl, soma), delay);
+    setTimeout(() => _animarSoma(sumEl, soma, aoConcluir), delay);
     _doShimmer();
   }
 
-  function _animarSoma(el, alvo) {
+  function rolagemRapida(dados, bonus, descricao, aoConcluir = null) {
+    _diceQueue = [...dados];
+    renderQueue(false);
+    if (!_diceOpen) toggleDice();
+    rolarDados(bonus, descricao, aoConcluir);
+  }
+
+  function _animarSoma(el, alvo, aoConcluir = null) {
     let cur = 0;
     const step = Math.max(1, Math.floor(alvo / 18));
     const iv = setInterval(() => {
       cur = Math.min(cur + step, alvo);
       el.textContent = '= ' + cur;
-      if (cur >= alvo) clearInterval(iv);
+      if (cur >= alvo) {
+        clearInterval(iv);
+        if (aoConcluir) aoConcluir(alvo);
+      }
     }, 28);
   }
 </script>
@@ -333,6 +361,7 @@
 <script src="../scripts/sons.js"></script>
 <script src="../scripts/itens.js"></script>
 <script src="../scripts/habilidades.js"></script>
+<script src="../scripts/livro-dados.js"></script>
 <script src="../scripts/ficha.js"></script>
 <script>
   const logoImg = document.querySelector('#navLogo img');
@@ -364,7 +393,7 @@
     Object.assign(estado, {
       personagem: null, classe: null, nivel: 1, caminho: null,
       constancias: { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 },
-      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, talentos: [], nomePersonagem: ''
+      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, acessoriosEquipados: {}, acessoriosCargas: {}, talentos: [], nomePersonagem: ''
     });
     salvarEstado();
     window.location.href = 'tela1.html';

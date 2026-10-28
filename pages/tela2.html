@@ -76,6 +76,15 @@
     </div>
   </div>
 
+  <div id="grimorioWrapper" style="width:100%;max-width:900px;margin-top:30px;display:none;">
+    <div class="t2-bloco">
+      <h3>Grimório — <span id="grimorioSlotInfo"></span></h3>
+      <p style="font-size:0.75rem;color:#888;margin:0 0 12px;">Escolha 3 magias de volume 1 para iniciar sua jornada.</p>
+      <div id="grimorioContainer" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      <div id="grimorioAviso" style="font-size:0.68rem;color:#ff4444;margin-top:8px;min-height:14px;"></div>
+    </div>
+  </div>
+
   <div id="talentosBlocoWrapper" style="width:100%;max-width:900px;margin-top:30px;display:none;">
     <div class="t2-bloco">
       <h3>Talentos — <span id="talentosSlotInfo"></span></h3>
@@ -93,6 +102,7 @@
 <script src="../scripts/audio.js"></script>
 <script src="../scripts/sons.js"></script>
 <script src="../scripts/habilidades.js"></script>
+<script src="../scripts/livro-dados.js"></script>
 <script>
   function validarNome() {
     const aviso = document.getElementById('nomeAviso');
@@ -111,6 +121,12 @@
   function avancar() {
     if (!validarNome()) { Sons.error(); document.getElementById('nomePersonagem').focus(); return; }
     if (!validarRaca()) { Sons.error(); document.getElementById('racasContainer').scrollIntoView({ behavior: 'smooth' }); return; }
+    if (estado.classe === 'Mago' && (estado.magiasGrimorio || []).length !== 3) {
+      Sons.error();
+      document.getElementById('grimorioAviso').textContent = 'Escolha exatamente 3 magias para o grimório inicial.';
+      document.getElementById('grimorioWrapper').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
     Sons.confirm();
     window.location.href = 'tela3.html';
   }
@@ -126,6 +142,7 @@
     renderCaminhos();
     renderHabilidades();
     renderTruques();
+    renderGrimorio();
     renderTalentos();
   });
 
@@ -140,6 +157,7 @@
     renderCaminhos();
     renderHabilidades();
     renderTruques();
+    renderGrimorio();
     renderTalentos();
     salvarEstado();
   }
@@ -422,6 +440,52 @@
     renderTruques();
   }
 
+  function renderGrimorio() {
+    const wrapper = document.getElementById('grimorioWrapper');
+    const container = document.getElementById('grimorioContainer');
+    const slotInfo = document.getElementById('grimorioSlotInfo');
+    if (!wrapper || !container) return;
+    if (estado.classe !== 'Mago') {
+      wrapper.style.display = 'none';
+      return;
+    }
+
+    wrapper.style.display = 'block';
+    const magias = LIVRO_MAGIAS_V1.filter(magia => !magia.subtitulo && magia.texto.includes('Vol. 1'));
+    const escolhidas = estado.magiasGrimorio || [];
+    slotInfo.textContent = `${escolhidas.length} / 3 escolhidas`;
+    container.innerHTML = '';
+    magias.forEach(magia => {
+      const ativo = escolhidas.includes(magia.titulo);
+      const bloqueada = !ativo && escolhidas.length >= 3;
+      const botao = document.createElement('button');
+      botao.type = 'button';
+      botao.textContent = `${magia.titulo}${ativo ? ' ✓' : ''}`;
+      botao.title = magia.texto.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      botao.style.cssText = `background:${ativo ? '#c9a84c22' : 'transparent'};border:1px solid ${ativo ? '#c9a84c' : '#3a3550'};border-radius:3px;color:${ativo ? '#c9a84c' : '#aaa'};padding:8px 10px;cursor:${bloqueada ? 'not-allowed' : 'pointer'};opacity:${bloqueada ? '0.45' : '1'};font-family:'Georgia',serif;font-size:0.72rem;`;
+      botao.disabled = bloqueada;
+      botao.addEventListener('click', () => toggleMagiaGrimorio(magia.titulo));
+      container.appendChild(botao);
+    });
+  }
+
+  function toggleMagiaGrimorio(nome) {
+    if (!estado.magiasGrimorio) estado.magiasGrimorio = [];
+    const indice = estado.magiasGrimorio.indexOf(nome);
+    if (indice >= 0) {
+      estado.magiasGrimorio.splice(indice, 1);
+    } else if (estado.magiasGrimorio.length < 3) {
+      estado.magiasGrimorio.push(nome);
+    } else {
+      Sons.error();
+      return;
+    }
+    Sons.click();
+    document.getElementById('grimorioAviso').textContent = '';
+    salvarEstado();
+    renderGrimorio();
+  }
+
   function renderTalentos() {
     const wrapper = document.getElementById('talentosBlocoWrapper');
     const container = document.getElementById('talentosContainer');
@@ -480,5 +544,3 @@
 </script>
 </body>
 </html>
-
-

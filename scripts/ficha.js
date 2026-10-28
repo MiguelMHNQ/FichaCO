@@ -46,7 +46,7 @@ function calcularPV() {
   const info = CLASSES_PREVIEW[estado.classe];
   const dado = info ? info.dadoVidaNum : 8;
   const vidaAtrib = info ? info.vidaAtributo : 'Vigor';
-  const vigor = calcBonus(estado.constancias[vidaAtrib] || 0);
+  const vigor = calcBonus((estado.constancias[vidaAtrib] || 0) + bonusAcessorioConstancia(vidaAtrib));
   let total = (info ? info.vidaBase : dado) + vigor;
   for (let i = 1; i < estado.nivel; i++) total += Math.floor(Math.random() * dado) + 1 + vigor;
   return total;
@@ -55,8 +55,9 @@ function calcularPV() {
 function calcularPE() {
   const info = CLASSES_PREVIEW[estado.classe];
   const atribs = info ? info.energiaAtributos : ['Sabedoria', 'Vigor'];
-  const energiaInicial = atribs.reduce((s, a) => s + calcBonus(estado.constancias[a] || 0), 0);
-  const bonusNivel = bonusDeClasse() + calcBonus(estado.constancias[atribs[0]] || 0);
+  const energiaInicial = atribs.reduce((s, a) => s + calcBonus((estado.constancias[a] || 0) + bonusAcessorioConstancia(a)), 0);
+  const atribNivel = info ? (info.energiaNivelAtributo || atribs[0]) : 'Sabedoria';
+  const bonusNivel = bonusDeClasse() + calcBonus((estado.constancias[atribNivel] || 0) + bonusAcessorioConstancia(atribNivel));
   let total = energiaInicial;
   for (let i = 1; i < estado.nivel; i++) total += bonusNivel;
   return Math.max(1, total);
@@ -65,9 +66,22 @@ function calcularPE() {
 function alterarCA(delta) {
   const el = document.getElementById('caValor');
   if (!el) return;
-  let val = Math.max(0, parseInt(el.textContent) + delta);
-  el.textContent = val;
-  sessionStorage.setItem('fragmentados_ca', val);
+  const bonusEscama = sessionStorage.getItem('fragmentados_anel_escama_ativo') === 'true' ? 2 : 0;
+  const base = Number.parseInt(sessionStorage.getItem('fragmentados_ca') ?? String(Number.parseInt(el.textContent, 10) - bonusEscama), 10);
+  definirCAFicha(Math.max(0, base + delta));
+}
+
+function definirCAFicha(valor) {
+  const caBase = Number.parseInt(valor, 10);
+  if (!Number.isFinite(caBase)) return;
+  sessionStorage.setItem('fragmentados_ca', caBase);
+  const el = document.getElementById('caValor');
+  if (el) {
+    const bonusEscama = sessionStorage.getItem('fragmentados_anel_escama_ativo') === 'true' ? 2 : 0;
+    el.textContent = caBase + bonusEscama;
+  }
+  const ajuste = document.getElementById('caAjuste');
+  if (ajuste) ajuste.value = caBase;
   sincronizarPersonagem();
 }
 
@@ -91,6 +105,193 @@ function alterarPE(delta) {
   el.style.color = val <= 0 ? '#ff4444' : val <= max * 0.3 ? '#ff9944' : '#e0d6c8';
   sessionStorage.setItem('fragmentados_pe', val);
   sincronizarPersonagem();
+}
+
+const _timersFeedbackPE = new WeakMap();
+
+function animarFeedbackPE(el, classe) {
+  if (!el) return;
+  el.classList.remove(classe);
+  void el.offsetWidth;
+  el.classList.add(classe);
+  clearTimeout(_timersFeedbackPE.get(el));
+  _timersFeedbackPE.set(el, setTimeout(() => {
+    el.classList.remove(classe);
+    if (classe === 'pe-gasto') el.removeAttribute('data-gasto');
+    _timersFeedbackPE.delete(el);
+  }, 1300));
+}
+
+function gastarPE(custo, recurso = 'PE', botao = null) {
+  const el = document.getElementById('peAtual');
+  if (!el || !Number.isFinite(custo) || custo <= 0) return false;
+  const peAtual = parseInt(sessionStorage.getItem('fragmentados_pe') ?? el.textContent, 10);
+  if (!Number.isFinite(peAtual)) {
+    alert(`Não foi possível identificar seus ${recurso} atuais.`);
+    return false;
+  }
+  if (peAtual < custo) {
+    alert(`${recurso} insuficiente. Esta habilidade requer ${custo} ${recurso}; você tem ${peAtual} ${recurso}.`);
+    return false;
+  }
+  alterarPE(-custo);
+  el.dataset.gasto = `−${custo} ${recurso}`;
+  animarFeedbackPE(el, 'pe-gasto');
+  animarFeedbackPE(botao, 'habilidade-usada');
+  return true;
+}
+
+function gastarPV(custo) {
+  const el = document.getElementById('pvAtual');
+  if (!el || !Number.isFinite(custo) || custo <= 0) return false;
+  const pvAtual = parseInt(sessionStorage.getItem('fragmentados_pv') ?? el.textContent, 10);
+  if (!Number.isFinite(pvAtual)) {
+    alert('Não foi possível identificar seus PV atuais.');
+    return false;
+  }
+  if (pvAtual < custo) {
+    alert(`PV insuficiente. Esta magia requer ${custo} PV; você tem ${pvAtual} PV.`);
+    return false;
+  }
+  alterarPV(-custo);
+  return true;
+}
+
+function obterMagiaDoLivro(nome) {
+  return obterListaMagiasDoLivro().find(magia => magia.titulo === nome) || null;
+}
+
+function obterListaMagiasDoLivro() {
+  const volumes = [
+    LIVRO_MAGIAS_V1, LIVRO_MAGIAS_V2, LIVRO_MAGIAS_V3, LIVRO_MAGIAS_V4,
+    LIVRO_MAGIAS_V5, LIVRO_MAGIAS_V6, LIVRO_MAGIAS_V7, LIVRO_MAGIAS_V8,
+    LIVRO_MAGIAS_V9
+  ];
+  const unicas = new Map();
+  volumes.flat().forEach(magia => {
+    if (!magia.subtitulo && /livro-tag-nivel">Vol\.\s*\d+/.test(magia.texto) && !unicas.has(magia.titulo)) {
+      unicas.set(magia.titulo, magia);
+    }
+  });
+  return [...unicas.values()];
+}
+
+function capacidadeGrimorio() {
+  const checks = JSON.parse(sessionStorage.getItem('fragmentados_const_checks') || '{}');
+  const arcanismo = calcBonus((estado.constancias['Inteligência'] || 0) + totalBonusRaca('Inteligência'))
+    + bonusDeClasse() + (checks.Arcanismo || 0);
+  return Math.max(0, estado.nivel + arcanismo);
+}
+
+function adicionarMagiaGrimorio(nome) {
+  if (estado.classe !== 'Mago' || !obterMagiaDoLivro(nome)) return;
+  if (!estado.magiasGrimorio) estado.magiasGrimorio = [];
+  if (estado.magiasGrimorio.includes(nome)) return;
+  const termoAtual = document.getElementById('grimorioBusca')?.value || '';
+  const limite = capacidadeGrimorio();
+  if (estado.magiasGrimorio.length >= limite) {
+    alert(`Grimório cheio. O limite atual é ${limite} magias.`);
+    return;
+  }
+  estado.magiasGrimorio.push(nome);
+  salvarEstado();
+  renderFicha();
+  sincronizarPersonagem();
+  abrirPopupGerenciarGrimorio(document.getElementById('btnGerenciarGrimorio'));
+  const busca = document.getElementById('grimorioBusca');
+  if (busca) {
+    busca.value = termoAtual;
+    busca.dispatchEvent(new Event('input'));
+  }
+}
+
+function removerMagiaGrimorio(indice) {
+  if (estado.classe !== 'Mago' || !Array.isArray(estado.magiasGrimorio)) return;
+  estado.magiasGrimorio.splice(indice, 1);
+  salvarEstado();
+  renderFicha();
+  sincronizarPersonagem();
+}
+
+function abrirPopupGerenciarGrimorio(anchorEl) {
+  if (estado.classe !== 'Mago' || !anchorEl) return;
+  const escolhidas = estado.magiasGrimorio || [];
+  const limite = capacidadeGrimorio();
+  const titulo = document.getElementById('popupCTTitulo');
+  const cont = document.getElementById('popupCTLista');
+  titulo.textContent = `Adicionar magia (${escolhidas.length}/${limite})`;
+  cont.innerHTML = `
+    <input id="grimorioBusca" type="search" placeholder="Buscar magia pelo nome..."
+      style="box-sizing:border-box;width:100%;margin-bottom:8px;padding:7px 9px;background:#0e0c16;border:1px solid #3a3550;border-radius:3px;color:#e0d6c8;font-family:'Georgia',serif;">
+    <div id="grimorioResultados" style="overflow-y:auto;max-height:45vh;"></div>`;
+  const busca = document.getElementById('grimorioBusca');
+  const resultados = document.getElementById('grimorioResultados');
+
+  const renderResultados = () => {
+    if (escolhidas.length >= limite) {
+      resultados.innerHTML = '<div style="font-size:0.75rem;color:#888;padding:8px 2px;">Limite do grimório atingido. Exclua uma magia antes de adicionar outra.</div>';
+      return;
+    }
+    const termo = busca.value.trim().toLocaleLowerCase('pt-BR');
+    const disponiveis = obterListaMagiasDoLivro().filter(magia =>
+      !escolhidas.includes(magia.titulo) && magia.titulo.toLocaleLowerCase('pt-BR').includes(termo)
+    );
+    resultados.innerHTML = '';
+    if (!disponiveis.length) {
+      resultados.innerHTML = '<div style="font-size:0.75rem;color:#666;padding:8px 2px;">Nenhuma magia disponível com esse nome.</div>';
+      return;
+    }
+    disponiveis.slice(0, 40).forEach(magia => {
+      const volume = magia.texto.match(/livro-tag-nivel">Vol\.\s*(\d+)/)?.[1];
+      const linha = document.createElement('div');
+      linha.className = 'item-linha';
+      linha.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;';
+      const nome = document.createElement('span');
+      nome.textContent = magia.titulo;
+      const detalhe = document.createElement('span');
+      detalhe.style.cssText = 'flex-shrink:0;font-size:0.65rem;color:#9d8bdb;';
+      detalhe.textContent = `Vol. ${volume || '?'}`;
+      linha.append(nome, detalhe);
+      linha.title = magia.texto.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      linha.onclick = () => adicionarMagiaGrimorio(magia.titulo);
+      resultados.appendChild(linha);
+    });
+    if (disponiveis.length > 40) {
+      const aviso = document.createElement('div');
+      aviso.style.cssText = 'font-size:0.68rem;color:#666;padding:4px 2px;';
+      aviso.textContent = 'Refine a busca para ver mais resultados.';
+      resultados.appendChild(aviso);
+    }
+  };
+
+  busca.addEventListener('input', renderResultados);
+  renderResultados();
+  _posicionarPopupCT(anchorEl);
+}
+
+function custoManaMagia(magia) {
+  const volume = magia.texto.match(/livro-tag-nivel">Vol\.\s*(\d+)/);
+  if (!volume) return /livro-tag-nivel">Truque/i.test(magia.texto) ? 0 : null;
+  return [0, 2, 4, 6, 10, 14, 18, 24, 30, 36][parseInt(volume[1], 10)] ?? null;
+}
+
+function conjurarMagiaDoGrimorio(indice) {
+  const nome = estado.magiasGrimorio?.[indice];
+  const magia = nome && obterMagiaDoLivro(nome);
+  if (estado.classe !== 'Mago' || !magia) {
+    alert('Não foi possível encontrar esta magia no grimório.');
+    return;
+  }
+
+  const custo = custoManaMagia(magia);
+  if (custo === null) {
+    alert(`Não foi possível identificar o custo de ${nome}.`);
+    return;
+  }
+  const usaPV = /Usa PV em vez de PE/i.test(magia.texto);
+  const gastoConcluido = custo === 0 || (usaPV ? gastarPV(custo) : gastarPE(custo, 'Mana'));
+  if (!gastoConcluido) return;
+  alert(`${nome} conjurada. ${custo} ${usaPV ? 'PV' : 'Mana'} gastos.`);
 }
 
 function calcularPCEMax() {
@@ -148,11 +349,11 @@ function _ganhoNivel() {
   const info = CLASSES_PREVIEW[estado.classe];
   if (!info) return;
   const dado      = info.dadoVidaNum || 8;
-  const vigor     = calcBonus(estado.constancias[info.vidaAtributo] || 0);
+  const vigor     = calcBonus((estado.constancias[info.vidaAtributo] || 0) + bonusAcessorioConstancia(info.vidaAtributo));
   const rolado    = Math.floor(Math.random() * dado) + 1;
   const ganhoPV   = rolado + vigor;
-  const atribPE   = info.energiaAtributos ? info.energiaAtributos[0] : 'Sabedoria';
-  const bonusPE   = bonusDeClasse() + calcBonus(estado.constancias[atribPE] || 0);
+  const atribPE   = info.energiaNivelAtributo || (info.energiaAtributos ? info.energiaAtributos[0] : 'Sabedoria');
+  const bonusPE   = bonusDeClasse() + calcBonus((estado.constancias[atribPE] || 0) + bonusAcessorioConstancia(atribPE));
 
   const pvMaxAtual = parseInt(sessionStorage.getItem('fragmentados_pvmax')) || 1;
   const peMaxAtual = parseInt(sessionStorage.getItem('fragmentados_pemax')) || 1;
@@ -203,7 +404,7 @@ function fichaAlterarAtributo(nome, delta) {
   if (delta < 0 && estado.constancias[nome] <= 0)  return;
   estado.constancias[nome] += delta;
   salvarEstado();
-  const racaBonus = totalBonusRaca(nome);
+  const racaBonus = totalBonusRaca(nome) + bonusAcessorioConstancia(nome);
   const vTotal = estado.constancias[nome] + racaBonus;
   const el = document.getElementById('fa-' + nome);
   if (el) el.textContent = vTotal;
@@ -255,7 +456,7 @@ function atualizarConstanciasFicha() {
     if (!el) return;
     const atrib = map[c];
     const base = atrib ? (estado.constancias[atrib] || 0) : 0;
-    const racaB = atrib ? totalBonusRaca(atrib) : 0;
+    const racaB = atrib ? totalBonusRaca(atrib) + bonusAcessorioConstancia(atrib) : 0;
     const bonusAtrib = calcBonus(base + racaB);
     el.textContent = '+' + (bonusAtrib + bc + (checks[c] || 0));
   });
@@ -275,7 +476,7 @@ function toggleConstCheck(cn, idx) {
     Object.entries(CONSTANCIAS_MAP).forEach(([a, lista]) => lista.forEach(c => map[c] = a));
     const atrib = map[cn];
     const base  = atrib ? (estado.constancias[atrib] || 0) : 0;
-    const racaB = atrib ? totalBonusRaca(atrib) : 0;
+    const racaB = atrib ? totalBonusRaca(atrib) + bonusAcessorioConstancia(atrib) : 0;
     fichaEl.textContent = '+' + (calcBonus(base + racaB) + bonusDeClasse() + novo);
   }
   // atualiza boxes no popup
@@ -290,17 +491,204 @@ function toggleConstCheck(cn, idx) {
     Object.entries(CONSTANCIAS_MAP).forEach(([a, lista]) => lista.forEach(c => map[c] = a));
     const atrib = map[cn];
     const base  = atrib ? (estado.constancias[atrib] || 0) : 0;
-    const racaB = atrib ? totalBonusRaca(atrib) : 0;
+    const racaB = atrib ? totalBonusRaca(atrib) + bonusAcessorioConstancia(atrib) : 0;
     const bonusBase = calcBonus(base + racaB);
     popEl.textContent = '+' + (bonusBase + novo);
   }
 }
 
 function limparEquip(slot) {
+  if (slot === 'acessorio') {
+    estado.acessoriosEquipados = {};
+  }
   estado[slot] = null;
   salvarEstado();
   renderFicha();
   sincronizarPersonagem();
+}
+
+const SLOTS_ACESSORIOS = [
+  { id: 'cabeca', nome: 'Cabeça', aceitos: ['coroa', 'tiara', 'óculos', 'monóculo'] },
+  { id: 'pescoco', nome: 'Pescoço', aceitos: ['colar', 'amuleto'] },
+  { id: 'costas', nome: 'Costas', aceitos: ['capa', 'manto'] },
+  { id: 'maos', nome: 'Mãos · 1 par', aceitos: ['luvas', 'dados', 'laço'] },
+  { id: 'dedo1', nome: 'Dedo · mão esquerda', aceitos: ['anel', 'anéis', 'dedo falso'] },
+  { id: 'dedo2', nome: 'Dedo · mão direita', aceitos: ['anel', 'anéis', 'dedo falso'] },
+  { id: 'cintura', nome: 'Cintura', aceitos: ['bolsa', 'bússola'] },
+  { id: 'pes', nome: 'Pés · 1 par', aceitos: ['botas', 'sapatilhas'] },
+  { id: 'pulsos', nome: 'Pulsos · opcional', aceitos: ['bracelete'] }
+];
+
+function slotCompativelAcessorio(item, slot) {
+  const categoria = (item.tipo || '').split(' — ').pop().trim().toLocaleLowerCase('pt-BR');
+  return slot.aceitos.some(tipo => categoria.includes(tipo));
+}
+
+function encontrarSlotAcessorio(item) {
+  return SLOTS_ACESSORIOS.find(slot =>
+    slotCompativelAcessorio(item, slot) &&
+    !estado.acessoriosEquipados[slot.id]
+  ) || null;
+}
+
+function normalizarAcessoriosEquipados() {
+  const slots = Object.fromEntries(SLOTS_ACESSORIOS.map(slot => [slot.id, null]));
+  if (estado.acessoriosEquipados && typeof estado.acessoriosEquipados === 'object') {
+    Object.entries(estado.acessoriosEquipados).forEach(([id, nome]) => {
+      if (id in slots && typeof nome === 'string' && ACESSORIOS.some(item => item.nome === nome)) {
+        slots[id] = nome;
+      }
+    });
+  }
+  estado.acessoriosEquipados = slots;
+
+  const legado = ACESSORIOS.find(item => item.nome === estado.acessorio);
+  if (legado && !Object.values(slots).includes(legado.nome)) {
+    const slot = encontrarSlotAcessorio(legado);
+    if (slot) slots[slot.id] = legado.nome;
+  }
+  estado.acessorio = Object.values(slots).find(Boolean) || null;
+}
+
+function acessorioEstaEquipado(nome) {
+  return Object.values(estado.acessoriosEquipados || {}).includes(nome) || estado.acessorio === nome;
+}
+
+function equiparAcessorioSlot(slotId, nome) {
+  const slot = SLOTS_ACESSORIOS.find(item => item.id === slotId);
+  if (!slot) return;
+  const anterior = estado.acessoriosEquipados[slotId];
+  const acessorio = nome ? ACESSORIOS.find(item => item.nome === nome) : null;
+  if (nome && (!acessorio || !slotCompativelAcessorio(acessorio, slot))) {
+    console.error(`Acessório incompatível com o espaço ${slot.nome}: ${nome}`);
+    return;
+  }
+  if (acessorio && Object.entries(estado.acessoriosEquipados).some(([id, equipado]) => id !== slotId && equipado === nome)) {
+    alert('Esse acessório já está equipado em outro espaço.');
+    renderFicha();
+    return;
+  }
+
+  if (anterior === 'Anel de Escama Endurecida' && anterior !== nome) {
+    sessionStorage.setItem('fragmentados_anel_escama_ativo', 'false');
+  }
+  estado.acessoriosEquipados[slotId] = acessorio ? acessorio.nome : null;
+  estado.acessorio = Object.values(estado.acessoriosEquipados).find(Boolean) || null;
+  salvarEstado();
+  renderFicha();
+  sincronizarPersonagem();
+}
+
+function bonusAcessorioConstancia(nome) {
+  return nome === 'Destreza' && acessorioEstaEquipado('Anel de Adrenalina') ? 2 : 0;
+}
+
+function inicializarCargasAcessorio(nome, chave, quantidade) {
+  if (acessorioEstaEquipado(nome) && sessionStorage.getItem(chave) === null) {
+    sessionStorage.setItem(chave, quantidade);
+  }
+}
+
+function obterCargasAcessorio(item) {
+  if (!estado.acessoriosCargas || typeof estado.acessoriosCargas !== 'object') {
+    estado.acessoriosCargas = {};
+  }
+  const salvo = estado.acessoriosCargas[item.nome];
+  if (!Number.isInteger(salvo) || salvo < 0 || salvo > item.carga) {
+    estado.acessoriosCargas[item.nome] = item.carga;
+    salvarEstado();
+    return item.carga;
+  }
+  return salvo;
+}
+
+function definirCargasAcessorio(item, quantidade) {
+  estado.acessoriosCargas[item.nome] = Math.max(0, Math.min(item.carga, quantidade));
+  salvarEstado();
+  sincronizarPersonagem();
+  atualizarCargasAcessorios();
+}
+
+function consumirCargaAcessorio(item) {
+  const cargas = obterCargasAcessorio(item);
+  if (cargas <= 0) {
+    alert(`${item.nome} está sem cargas. Recarregue conforme a condição indicada no acessório.`);
+    return false;
+  }
+  definirCargasAcessorio(item, cargas - 1);
+  return true;
+}
+
+function atualizarCargasAcessorios() {
+  SLOTS_ACESSORIOS.forEach(slot => {
+    const item = ACESSORIOS.find(acessorio => acessorio.nome === estado.acessoriosEquipados[slot.id]);
+    if (!item || item.carga === null || ['Anel de Escama Endurecida', 'Puxa Corte', 'Colar de Cura', 'Pedra da Reflexão'].includes(item.nome)) return;
+    const cargas = obterCargasAcessorio(item);
+    const info = document.getElementById(`acessorioCargas-${slot.id}`);
+    if (info) info.textContent = `Cargas: ${cargas}/${item.carga}`;
+    const usar = document.getElementById(`acessorioUsar-${slot.id}`);
+    if (usar) usar.disabled = cargas <= 0;
+    const recarregar = document.getElementById(`acessorioRecarregar-${slot.id}`);
+    if (recarregar) {
+      recarregar.disabled = cargas >= item.carga;
+      recarregar.title = item.recarga ? `Recarregue após: ${item.recarga}` : 'Recarregar cargas';
+    }
+  });
+}
+
+function renderAcessorioSlot(slot) {
+  const nome = estado.acessoriosEquipados[slot.id];
+  const item = ACESSORIOS.find(acessorio => acessorio.nome === nome);
+  const opcoes = ACESSORIOS.filter(acessorio => slotCompativelAcessorio(acessorio, slot));
+  if (item) {
+    inicializarCargasAcessorio('Anel de Escama Endurecida', 'fragmentados_anel_escama_cargas', 2);
+    inicializarCargasAcessorio('Anel de Escama Endurecida', 'fragmentados_anel_escama_ativo', 'false');
+    inicializarCargasAcessorio('Puxa Corte', 'fragmentados_puxa_corte_cargas', 5);
+    inicializarCargasAcessorio('Colar de Cura', 'fragmentados_colar_cura_cargas', 2);
+    inicializarCargasAcessorio('Pedra da Reflexão', 'fragmentados_pedra_reflexao_cargas', 6);
+    if (item.carga !== null && !['Anel de Escama Endurecida', 'Puxa Corte', 'Colar de Cura', 'Pedra da Reflexão'].includes(item.nome)) {
+      obterCargasAcessorio(item);
+    }
+  }
+
+  const seletor = `<select class="acessorio-slot-select" data-slot="${slot.id}" autocomplete="off" onchange="equiparAcessorioSlot(this.dataset.slot, this.value)" aria-label="Equipar acessório em ${slot.nome}">
+    <option value="">Vazio</option>
+    ${opcoes.map(opcao => `<option value="${opcao.nome}" ${opcao.nome === nome ? 'selected' : ''}>${opcao.nome}</option>`).join('')}
+  </select>`;
+  let conteudo = `<div class="acessorio-slot-card${item ? ' preenchido' : ''}">
+    <div class="acessorio-slot-nome">${slot.nome}</div>
+    ${seletor}`;
+
+  if (item) {
+    conteudo += `<div class="acessorio-slot-descricao">${item.desc}</div>`;
+    conteudo += `<div class="acessorio-slot-detalhes">Raridade: ${item.raridade || '—'} · Ação: ${item.acao || 'Não especificada'}${item.recarga ? ` · Recarga: ${item.recarga}` : ''}</div>`;
+    if (item.nome === 'Anel de Escama Endurecida') {
+      conteudo += '<div id="anelEscamaInfo" class="acessorio-slot-cargas"></div>';
+      conteudo += '<button id="anelEscamaUsar" class="c-btn acessorio-acao-btn" onclick="ativarAnelEscama()">✦ Ativar escudo (+2 CA)</button>';
+      conteudo += '<button id="anelEscamaRecarregar" class="c-btn acessorio-acao-btn" onclick="recarregarAnelEscama()">↻ Recarregar (submerso por 1 turno)</button>';
+    } else if (item.nome === 'Puxa Corte') {
+      conteudo += '<div id="puxaCorteInfo" class="acessorio-slot-cargas"></div>';
+      conteudo += '<button id="puxaCorteUsar" class="c-btn acessorio-acao-btn" onclick="usarCargaPuxaCorte()">✦ Anular 10 de dano cortante</button>';
+      conteudo += '<button id="puxaCorteRecarregar" class="c-btn acessorio-acao-btn" onclick="recarregarPuxaCorte()">↻ Recarregar (descanso/meditação longa)</button>';
+    } else if (item.nome === 'Colar de Cura') {
+      conteudo += '<div id="colarCuraInfo" class="acessorio-slot-cargas"></div>';
+      conteudo += '<button id="colarCuraUsar" class="c-btn acessorio-acao-btn" onclick="usarColarCura()">✦ Rolar cura (1d12 PV)</button>';
+      conteudo += '<button id="colarCuraRecarregar" class="c-btn acessorio-acao-btn" onclick="recarregarColarCura()">↻ Recarregar (descanso/meditação média+)</button>';
+    } else if (item.nome === 'Pedra da Reflexão') {
+      conteudo += '<div id="pedraReflexaoInfo" class="acessorio-slot-cargas"></div>';
+      conteudo += '<button id="pedraReflexaoUsar" class="c-btn acessorio-acao-btn" onclick="usarPedraReflexao()">✦ Rolar previsão (1d6)</button>';
+      conteudo += '<button id="pedraReflexaoRecarregar" class="c-btn acessorio-acao-btn" onclick="recarregarPedraReflexao()">↻ Recarregar (descanso/meditação média+)</button>';
+    } else if (item.carga !== null) {
+      conteudo += `<div id="acessorioCargas-${slot.id}" class="acessorio-slot-cargas"></div>`;
+      conteudo += `<button id="acessorioUsar-${slot.id}" class="c-btn acessorio-acao-btn" onclick="usarAcessorio('${item.nome}')">✦ Usar acessório</button>`;
+      conteudo += `<button id="acessorioRecarregar-${slot.id}" class="c-btn acessorio-acao-btn" onclick="recarregarAcessorio('${item.nome}')">↻ Recarregar</button>`;
+    } else {
+      conteudo += `<button class="c-btn acessorio-acao-btn" onclick="usarAcessorio('${item.nome}')">${item.acao === 'Passiva' ? 'Ver efeito passivo' : '✦ Usar acessório'}</button>`;
+    }
+  } else {
+    conteudo += '<div class="acessorio-slot-vazio">Escolha um acessório para este espaço</div>';
+  }
+  return conteudo + '</div>';
 }
 
 function abrirPopupEquip(slot) {
@@ -323,6 +711,326 @@ function abrirPopupEquip(slot) {
 
 function fecharPopupEquip() {
   document.getElementById('popupEquip').classList.remove('aberto');
+}
+
+function rolarAtaqueArma() {
+  const arma = ARMAS.find(item => item.nome === estado.arma);
+  if (!arma) return;
+
+  const formula = arma.dano.match(/(\d+)d(\d+)/i);
+  const atributoAbreviado = arma.dano.match(/\+\s*(For|Des)\b/i)?.[1];
+  const atributo = atributoAbreviado === 'For' ? 'Força' : atributoAbreviado === 'Des' ? 'Destreza' : null;
+  const bonus = atributo
+    ? calcBonus((estado.constancias[atributo] || 0) + totalBonusRaca(atributo) + bonusAcessorioConstancia(atributo))
+    : 0;
+  const descricao = `Ataque: ${arma.nome} (${arma.dano})`;
+
+  if (formula) {
+    const quantidade = Number(formula[1]);
+    const lados = Number(formula[2]);
+    rolagemRapida(Array(quantidade).fill(lados), bonus, descricao);
+    return;
+  }
+
+  const danoFixo = arma.dano.match(/^\s*(\d+)(?:\s*\+\s*(For|Des))?/i);
+  if (danoFixo) {
+    const atributoFixo = danoFixo[2] === 'For' ? 'Força' : danoFixo[2] === 'Des' ? 'Destreza' : null;
+    const bonusFixo = atributoFixo
+      ? calcBonus((estado.constancias[atributoFixo] || 0) + totalBonusRaca(atributoFixo) + bonusAcessorioConstancia(atributoFixo))
+      : 0;
+    rolagemRapida([], Number(danoFixo[1]) + bonusFixo, descricao);
+    return;
+  }
+
+  alert(`Não foi possível interpretar o dano de ${arma.nome}: ${arma.dano}`);
+}
+
+function ajustarRecursoFicha(recurso, quantidade) {
+  const atualEl = document.getElementById(recurso === 'pv' ? 'pvAtual' : 'peAtual');
+  const maxEl = document.getElementById(recurso === 'pv' ? 'pvMax' : 'peMax');
+  if (!atualEl || !maxEl) return 0;
+
+  const atual = Number.parseInt(atualEl.textContent, 10);
+  const maximo = Number.parseInt(maxEl.value, 10);
+  if (!Number.isFinite(atual) || !Number.isFinite(maximo)) return 0;
+
+  const novo = Math.min(maximo, Math.max(0, atual + quantidade));
+  const aplicado = novo - atual;
+  if (recurso === 'pv') alterarPV(aplicado);
+  else alterarPE(aplicado);
+  return aplicado;
+}
+
+function usarAcessorio(nome = estado.acessorio) {
+  const acessorio = ACESSORIOS.find(item => item.nome === nome);
+  if (!acessorio) return;
+
+  if (acessorio.nome === 'Colar de Cura') {
+    usarColarCura();
+    return;
+  }
+
+  if (acessorio.nome === 'Pedra da Reflexão') {
+    usarPedraReflexao();
+    return;
+  }
+
+  if (acessorio.nome === 'Puxa Corte') {
+    usarCargaPuxaCorte();
+    return;
+  }
+
+  if (acessorio.nome === 'Anel de Escama Endurecida') {
+    ativarAnelEscama();
+    return;
+  }
+
+  if (acessorio.nome === 'Membrana Pendente') {
+    if (!consumirCargaAcessorio(acessorio)) return;
+    const aplicado = ajustarRecursoFicha('pv', 18);
+    alert(`Membrana Pendente: gastou 1 carga e ${aplicado > 0 ? `recuperou ${aplicado} PV` : 'PV já está no máximo'}. Remova manualmente uma condição menor, se houver.`);
+    return;
+  }
+
+  if (acessorio.nome === 'Anel de Energia') {
+    if (!consumirCargaAcessorio(acessorio)) return;
+    const aplicado = ajustarRecursoFicha('pe', 16);
+    alert(`Anel de Energia: gastou 1 carga e ${aplicado > 0 ? `recuperou ${aplicado} PE` : 'PE já está no máximo'}.`);
+    return;
+  }
+
+  if (acessorio.nome === 'Óculos da Segunda Vida') {
+    const pvAtual = Number.parseInt(sessionStorage.getItem('fragmentados_pv') || '0', 10);
+    if (pvAtual > 0) {
+      alert('Os Óculos da Segunda Vida só podem ser usados quando você chega a 0 PV.');
+      return;
+    }
+    if (!consumirCargaAcessorio(acessorio)) return;
+
+    const mapa = {};
+    Object.entries(CONSTANCIAS_MAP).forEach(([atributo, lista]) => lista.forEach(nome => { mapa[nome] = atributo; }));
+    const atributoVontade = mapa.Vontade;
+    const checks = JSON.parse(sessionStorage.getItem('fragmentados_const_checks') || '{}');
+    const bonusVontade = calcBonus((estado.constancias[atributoVontade] || 0) + totalBonusRaca(atributoVontade))
+      + bonusDeClasse() + (checks.Vontade || 0);
+    rolagemRapida([10], bonusVontade, 'Óculos da Segunda Vida: recuperação de PV', resultado => {
+      const recuperado = ajustarRecursoFicha('pv', resultado);
+      alert(`Óculos da Segunda Vida: você recuperou ${recuperado} PV.`);
+    });
+    return;
+  }
+
+  if (acessorio.acao === 'Passiva') {
+    alert(`${acessorio.nome} é um acessório passivo.\n\n${acessorio.desc}`);
+    return;
+  }
+
+  const cargasRestantes = acessorio.carga !== null
+    ? obterCargasAcessorio(acessorio)
+    : null;
+  if (acessorio.carga !== null && !consumirCargaAcessorio(acessorio)) return;
+  const recarga = acessorio.recarga ? `\nRecarga: ${acessorio.recarga}.` : '';
+  const gasto = acessorio.carga !== null
+    ? `\n\n1 carga gasta (${cargasRestantes - 1}/${acessorio.carga}).`
+    : '';
+  alert(`${acessorio.nome} — ${acessorio.acao || 'Ativação'}\n\n${acessorio.desc}${gasto}${recarga}\n\nResolva o efeito descrito conforme a situação da aventura.`);
+}
+
+function recarregarAcessorio(nome) {
+  const acessorio = ACESSORIOS.find(item => item.nome === nome);
+  if (!acessorio || acessorio.carga === null || !acessorioEstaEquipado(nome)) return;
+  const cargas = obterCargasAcessorio(acessorio);
+  if (cargas >= acessorio.carga) {
+    alert(`${nome} já está com todas as cargas.`);
+    return;
+  }
+  definirCargasAcessorio(acessorio, acessorio.carga);
+  alert(`${nome} recarregado. Condição de recarga: ${acessorio.recarga || 'não especificada'}.`);
+}
+
+function atualizarColarCuraUI(mensagem = '') {
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_colar_cura_cargas') || '2', 10);
+  const info = document.getElementById('colarCuraInfo');
+  if (info) info.textContent = mensagem ? `Cargas: ${cargas}/2 · ${mensagem}` : `Cargas: ${cargas}/2`;
+  const usar = document.getElementById('colarCuraUsar');
+  if (usar) usar.disabled = cargas <= 0;
+  const recarregar = document.getElementById('colarCuraRecarregar');
+  if (recarregar) recarregar.disabled = cargas >= 2;
+}
+
+function usarColarCura() {
+  if (!acessorioEstaEquipado('Colar de Cura')) return;
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_colar_cura_cargas') || '2', 10);
+  if (cargas <= 0) {
+    atualizarColarCuraUI('sem cargas; recarregue após descanso ou meditação média+');
+    return;
+  }
+
+  sessionStorage.setItem('fragmentados_colar_cura_cargas', cargas - 1);
+  atualizarColarCuraUI();
+  sincronizarPersonagem();
+  rolagemRapida([12], 0, 'Colar de Cura: recuperação de PV', resultado => {
+    const recuperado = ajustarRecursoFicha('pv', resultado);
+    atualizarColarCuraUI(`rolou ${resultado}; recuperou ${recuperado} PV`);
+  });
+}
+
+function recarregarColarCura() {
+  if (!acessorioEstaEquipado('Colar de Cura')) return;
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_colar_cura_cargas') || '2', 10);
+  if (cargas >= 2) {
+    atualizarColarCuraUI('já está com as 2 cargas');
+    return;
+  }
+  sessionStorage.setItem('fragmentados_colar_cura_cargas', '2');
+  atualizarColarCuraUI('recarregado após descanso ou meditação média+');
+  sincronizarPersonagem();
+}
+
+function atualizarPedraReflexaoUI(mensagem = '') {
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_pedra_reflexao_cargas') || '6', 10);
+  const info = document.getElementById('pedraReflexaoInfo');
+  if (info) info.textContent = mensagem ? `Cargas: ${cargas}/6 · ${mensagem}` : `Cargas: ${cargas}/6`;
+  const usar = document.getElementById('pedraReflexaoUsar');
+  if (usar) usar.disabled = cargas <= 0;
+  const recarregar = document.getElementById('pedraReflexaoRecarregar');
+  if (recarregar) recarregar.disabled = cargas >= 6;
+}
+
+function usarPedraReflexao() {
+  if (!acessorioEstaEquipado('Pedra da Reflexão')) return;
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_pedra_reflexao_cargas') || '6', 10);
+  if (cargas <= 0) {
+    atualizarPedraReflexaoUI('sem cargas; recarregue após descanso ou meditação média+');
+    return;
+  }
+
+  sessionStorage.setItem('fragmentados_pedra_reflexao_cargas', cargas - 1);
+  atualizarPedraReflexaoUI('rolando d6...');
+  sincronizarPersonagem();
+  rolagemRapida([6], 0, 'Pedra da Reflexão: visão do futuro', resultado => {
+    const efeito = resultado <= 3
+      ? 'desvantagem no próximo ataque'
+      : 'vantagem no próximo ataque';
+    atualizarPedraReflexaoUI(`saiu ${resultado}: ${efeito}`);
+    sincronizarPersonagem();
+  });
+}
+
+function recarregarPedraReflexao() {
+  if (!acessorioEstaEquipado('Pedra da Reflexão')) return;
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_pedra_reflexao_cargas') || '6', 10);
+  if (cargas >= 6) {
+    atualizarPedraReflexaoUI('já está com as 6 cargas');
+    return;
+  }
+  sessionStorage.setItem('fragmentados_pedra_reflexao_cargas', '6');
+  atualizarPedraReflexaoUI('recarregada após descanso ou meditação média+');
+  sincronizarPersonagem();
+}
+
+function atualizarAnelEscamaUI() {
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_anel_escama_cargas') || '2', 10);
+  const ativo = sessionStorage.getItem('fragmentados_anel_escama_ativo') === 'true';
+  const base = Number.parseInt(sessionStorage.getItem('fragmentados_ca') || '0', 10);
+  const caEl = document.getElementById('caValor');
+  if (caEl && base > 0) caEl.textContent = base + (ativo ? 2 : 0);
+
+  const caInfo = document.getElementById('anelEscamaCAInfo');
+  if (caInfo) {
+    caInfo.style.display = ativo ? 'block' : 'none';
+    caInfo.textContent = ativo ? `Anel ativo: +2 CA (total ${base + 2})` : '';
+  }
+
+  const info = document.getElementById('anelEscamaInfo');
+  if (info) {
+    info.textContent = `Cargas: ${cargas}/2 · ${ativo ? 'Escudo ativo (+2 CA)' : 'Escudo inativo'}`;
+    info.style.color = ativo ? '#7ecfb3' : '#888';
+  }
+
+  const usar = document.getElementById('anelEscamaUsar');
+  if (usar) {
+    usar.textContent = ativo ? 'Fui acertado — encerrar escudo' : '✦ Ativar escudo (+2 CA)';
+    usar.onclick = ativo ? encerrarEscudoAnelEscama : ativarAnelEscama;
+    usar.disabled = !ativo && cargas <= 0;
+    usar.title = ativo ? 'O escudo termina quando você é acertado' : cargas > 0 ? 'Gasta 1 carga; ação bônus ou reação' : 'Sem cargas. Recarregue ficando submerso por 1 turno.';
+  }
+
+  const recarregar = document.getElementById('anelEscamaRecarregar');
+  if (recarregar) recarregar.disabled = cargas >= 2;
+}
+
+function ativarAnelEscama() {
+  if (!acessorioEstaEquipado('Anel de Escama Endurecida')) return;
+  if (sessionStorage.getItem('fragmentados_anel_escama_ativo') === 'true') {
+    alert('O escudo do Anel de Escama Endurecida já está ativo.');
+    return;
+  }
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_anel_escama_cargas') || '2', 10);
+  if (cargas <= 0) {
+    alert('O Anel de Escama Endurecida está sem cargas. Fique submerso embaixo da água por 1 turno para recarregá-lo.');
+    return;
+  }
+  sessionStorage.setItem('fragmentados_anel_escama_cargas', cargas - 1);
+  sessionStorage.setItem('fragmentados_anel_escama_ativo', 'true');
+  atualizarAnelEscamaUI();
+  sincronizarPersonagem();
+}
+
+function encerrarEscudoAnelEscama() {
+  if (sessionStorage.getItem('fragmentados_anel_escama_ativo') !== 'true') return;
+  sessionStorage.setItem('fragmentados_anel_escama_ativo', 'false');
+  atualizarAnelEscamaUI();
+  sincronizarPersonagem();
+}
+
+function recarregarAnelEscama() {
+  if (!acessorioEstaEquipado('Anel de Escama Endurecida')) return;
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_anel_escama_cargas') || '2', 10);
+  if (cargas >= 2) {
+    alert('O Anel de Escama Endurecida já está com as 2 cargas.');
+    return;
+  }
+  sessionStorage.setItem('fragmentados_anel_escama_cargas', '2');
+  atualizarAnelEscamaUI();
+  sincronizarPersonagem();
+  alert('Anel de Escama Endurecida recarregado após ficar submerso por 1 turno.');
+}
+
+function atualizarPuxaCorteUI() {
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_puxa_corte_cargas') || '5', 10);
+  const info = document.getElementById('puxaCorteInfo');
+  if (info) info.textContent = `Cargas: ${cargas}/5`;
+  const usar = document.getElementById('puxaCorteUsar');
+  if (usar) usar.disabled = cargas <= 0;
+  const recarregar = document.getElementById('puxaCorteRecarregar');
+  if (recarregar) recarregar.disabled = cargas >= 5;
+}
+
+function usarCargaPuxaCorte() {
+  if (!acessorioEstaEquipado('Puxa Corte')) return;
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_puxa_corte_cargas') || '5', 10);
+  if (cargas <= 0) {
+    alert('O anel Puxa Corte está sem cargas. Recarregue-o após um descanso longo ou meditação longa.');
+    return;
+  }
+  sessionStorage.setItem('fragmentados_puxa_corte_cargas', cargas - 1);
+  atualizarPuxaCorteUI();
+  sincronizarPersonagem();
+  alert(`Puxa Corte: 1 carga gasta (${cargas - 1}/5). Reduza em 10 o dano cortante recebido e ignore o ferimento complementar desse golpe.`);
+}
+
+function recarregarPuxaCorte() {
+  if (!acessorioEstaEquipado('Puxa Corte')) return;
+  const cargas = Number.parseInt(sessionStorage.getItem('fragmentados_puxa_corte_cargas') || '5', 10);
+  if (cargas >= 5) {
+    alert('O anel Puxa Corte já está com as 5 cargas.');
+    return;
+  }
+  sessionStorage.setItem('fragmentados_puxa_corte_cargas', '5');
+  atualizarPuxaCorteUI();
+  sincronizarPersonagem();
+  alert('Anel Puxa Corte recarregado após um descanso longo ou meditação longa.');
 }
 
 function abrirConstancias(atributo, vTotal) {
@@ -450,6 +1158,14 @@ function removerFoto() {
 // ===== INVENTÁRIO =====
 function carregarInventario() {
   const itens = JSON.parse(sessionStorage.getItem('fragmentados_inventario') || '[]');
+  if (!estado.grimorioInicializado) {
+    if (estado.classe === 'Mago' && !itens.some(item => item.nome === 'Grimório Arcano')) {
+      itens.push({ nome: 'Grimório Arcano', qtd: 1, peso: 1 });
+      sessionStorage.setItem('fragmentados_inventario', JSON.stringify(itens));
+    }
+    estado.grimorioInicializado = true;
+    salvarEstado();
+  }
   const lista = document.getElementById('inventarioLista');
   if (!lista) return;
   lista.innerHTML = '';
@@ -538,6 +1254,7 @@ function _deslocamentoRaca(raca) {
 
 function renderFicha() {
   _carregarCores();
+  normalizarAcessoriosEquipados();
   const c = document.getElementById('fichaConteudo');
   c.innerHTML = '';
   const layout = _layoutAtual();
@@ -558,7 +1275,7 @@ function renderFicha() {
     const fixa      = fixas.includes(cn);
     const atribPai  = map[cn];
     const base      = atribPai ? (estado.constancias[atribPai] || 0) : 0;
-    const racaB     = atribPai ? totalBonusRaca(atribPai) : 0;
+    const racaB     = atribPai ? totalBonusRaca(atribPai) + bonusAcessorioConstancia(atribPai) : 0;
     const bonusAtrib = calcBonus(base + racaB);
     const checks    = constChecks[cn] || 0;
     return `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #1a1726;">
@@ -668,7 +1385,7 @@ function renderFicha() {
   let aHtml = `<div class="ficha-bloco" id="fichaAtributosBloco"><h4>Atributos</h4>`;
   if (ptLivre > 0) aHtml += `<div id="fichaPontosAviso" style="background:#c9a84c22;border:1px solid #c9a84c55;border-radius:3px;padding:8px 12px;margin-bottom:12px;font-size:0.78rem;color:#c9a84c;text-align:center;">✨ Você tem <strong>${ptLivre}</strong> ponto${ptLivre > 1 ? 's' : ''} para distribuir!</div>`;
   Object.entries(estado.constancias).forEach(([k, v]) => {
-    const racaBonus = totalBonusRaca(k);
+    const racaBonus = totalBonusRaca(k) + bonusAcessorioConstancia(k);
     const vTotal   = v + racaBonus;
     const bonus    = calcBonus(vTotal);
     const bonusStr = bonus === 0 ? '—' : '+' + bonus;
@@ -698,7 +1415,8 @@ function renderFicha() {
     h += `<button class="c-btn" style="width:auto;padding:0 8px;font-size:0.7rem;" onclick="abrirPopupEquip('${slot}')">trocar</button>`;
     if (val) h += `<button class="c-btn" style="width:auto;padding:0 8px;font-size:0.7rem;color:#ff4444;border-color:#ff444444;" onclick="limparEquip('${slot}')">&#x2715;</button>`;
     h += `</span></div>`;
-    if (item) h += `<div style="font-size:0.72rem;color:#aaa;margin-bottom:10px;">${item.dano || ''}${slot === 'acessorio' && item.desc ? '<br><span style="font-size:0.7rem;color:#666;line-height:1.5;display:block;margin-top:4px;">' + item.desc + '</span>' : ''}</div>`;
+    if (item) h += `<div style="font-size:0.72rem;color:#aaa;margin-bottom:10px;">${item.dano || ''}</div>`;
+    if (item && slot === 'arma') h += `<button class="c-btn" style="width:100%;margin-bottom:10px;color:#c9a84c;border-color:#c9a84c66;" onclick="rolarAtaqueArma()">⚔ Atacar · rolar dano</button>`;
     else h += `<div style="margin-bottom:10px;"></div>`;
     return h;
   };
@@ -706,19 +1424,25 @@ function renderFicha() {
     <div class="l2-equip-slots">
       <div class="l2-equip-slot">${slotHtml('ARMA','arma',ARMAS,estado.arma)}</div>
       <div class="l2-equip-slot" style="border-left:1px solid #2a2535;padding-left:20px;">${slotHtml('ARMADURA','armadura',ARMADURAS,estado.armadura)}</div>
-      <div class="l2-equip-slot" style="border-left:1px solid #2a2535;padding-left:20px;">${slotHtml('ACESSÓRIO','acessorio',ACESSORIOS,estado.acessorio)}</div>
     </div>
+  </div>`;
+  c.innerHTML += `<div class="ficha-bloco ficha-acessorios-equipados">
+    <h4>Acessórios equipados</h4>
+    <p class="acessorios-ajuda">Escolha um item em cada espaço. Os anéis ocupam um espaço de dedo cada.</p>
+    <div class="acessorios-slots-grid">${SLOTS_ACESSORIOS.map(renderAcessorioSlot).join('')}</div>
   </div>`;
 
   // --- VITALIDADE ---
   const armaduraObj = ARMADURAS.find(x => x.nome === estado.armadura);
   const caArmadura  = armaduraObj ? parseInt(armaduraObj.dano.replace('CA +','')) || 0 : 0;
-  const caBase      = 10 + calcBonus(estado.constancias['Destreza'] || 0) + caArmadura;
+  const caBase      = 10 + calcBonus((estado.constancias['Destreza'] || 0) + totalBonusRaca('Destreza') + bonusAcessorioConstancia('Destreza')) + caArmadura;
   const pvMax  = parseInt(sessionStorage.getItem('fragmentados_pvmax')) || (() => { const v = calcularPV(); sessionStorage.setItem('fragmentados_pvmax', v); sessionStorage.setItem('fragmentados_pv', v); return v; })();
   const peMax  = parseInt(sessionStorage.getItem('fragmentados_pemax')) || (() => { const v = calcularPE(); sessionStorage.setItem('fragmentados_pemax', v); sessionStorage.setItem('fragmentados_pe', v); return v; })();
   const pvAtual = parseInt(sessionStorage.getItem('fragmentados_pv')) ?? pvMax;
   const peAtual = parseInt(sessionStorage.getItem('fragmentados_pe')) ?? peMax;
   const caAtual = parseInt(sessionStorage.getItem('fragmentados_ca')) || caBase;
+  const anelEscamaAtivo = sessionStorage.getItem('fragmentados_anel_escama_ativo') === 'true';
+  if (sessionStorage.getItem('fragmentados_ca') === null) sessionStorage.setItem('fragmentados_ca', caAtual);
   c.innerHTML += `
     <div class="ficha-bloco" style="min-width:220px;">
       <h4>Vitalidade</h4>
@@ -726,10 +1450,11 @@ function renderFicha() {
         <div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">CLASSE DE ARMADURA</div>
         <div style="display:flex;align-items:center;gap:10px;">
           <button class="c-btn" onclick="alterarCA(-1)">−</button>
-          <span id="caValor" style="font-size:1.6rem;color:#e0d6c8;min-width:40px;text-align:center;">${caAtual}</span>
+          <span id="caValor" style="font-size:1.6rem;color:#e0d6c8;min-width:40px;text-align:center;">${caAtual + (anelEscamaAtivo ? 2 : 0)}</span>
           <button class="c-btn" onclick="alterarCA(1)">+</button>
         </div>
-        <div style="font-size:0.7rem;color:#555;margin-top:6px;">Ajustar: <input type="number" value="${caAtual}" min="1" style="width:50px;background:transparent;border:none;border-bottom:1px solid #3a3550;color:#aaa;font-size:0.75rem;text-align:center;" onchange="document.getElementById('caValor').textContent=this.value;sessionStorage.setItem('fragmentados_ca',this.value);sincronizarPersonagem();"></div>
+        <div style="font-size:0.7rem;color:#555;margin-top:6px;">Ajustar base: <input id="caAjuste" type="number" value="${caAtual}" min="1" style="width:50px;background:transparent;border:none;border-bottom:1px solid #3a3550;color:#aaa;font-size:0.75rem;text-align:center;" onchange="definirCAFicha(this.value)"></div>
+        <div id="anelEscamaCAInfo" style="font-size:0.7rem;color:#7ecfb3;margin-top:5px;${anelEscamaAtivo ? '' : 'display:none;'}">Anel ativo: +2 CA (total ${caAtual + 2})</div>
       </div>
       <div style="margin-bottom:20px;">
         <div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">PONTOS DE VIDA</div>
@@ -741,7 +1466,7 @@ function renderFicha() {
         <div style="font-size:0.7rem;color:#555;margin-top:6px;">Máx: <input id="pvMax" type="number" value="${pvMax}" min="1" style="width:50px;background:transparent;border:none;border-bottom:1px solid #3a3550;color:#aaa;font-size:0.75rem;text-align:center;" onchange="document.getElementById('pvAtual').textContent=this.value;sessionStorage.setItem('fragmentados_pvmax',this.value);sessionStorage.setItem('fragmentados_pv',this.value);sincronizarPersonagem();"></div>
       </div>
       <div>
-        <div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">PONTOS DE ENERGIA</div>
+        <div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">${estado.classe === 'Mago' ? 'MANA' : 'PONTOS DE ENERGIA'}</div>
         <div style="display:flex;align-items:center;gap:10px;">
           <button class="c-btn" onclick="alterarPE(-1)">−</button>
           <span id="peAtual" style="font-size:1.6rem;color:#e0d6c8;min-width:40px;text-align:center;">${peAtual}</span>
@@ -801,10 +1526,11 @@ function renderFicha() {
       const pe     = custoPE(h.nivel);
       const peTag  = h.acao === 'Passiva' ? '' : `<span style="font-size:0.65rem;color:#c9a84c;border:1px solid #c9a84c44;padding:1px 6px;border-radius:2px;margin-right:4px;">${pe} PE</span>`;
       const acaTag = `<span style="font-size:0.65rem;color:#666;border:1px solid #2a2535;padding:1px 6px;border-radius:2px;">${h.acao}</span>`;
+      const usarTag = h.acao === 'Passiva' ? '' : `<button class="c-btn" style="width:auto;padding:1px 7px;font-size:0.65rem;margin-left:4px;" onclick="gastarPE(${pe}, 'PE', this)" title="Gastar ${pe} PE ao usar esta habilidade">Usar</button>`;
       return `<div class="ficha-hab-item">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
           <span class="ficha-hab-nome">${h.nome} <span style="font-size:0.65rem;color:#555;">[Nv ${h.nivel}]</span></span>
-          <span>${peTag}${acaTag}</span>
+          <span>${peTag}${acaTag}${usarTag}</span>
         </div>
         <div style="font-size:0.78rem;color:#aaa;line-height:1.6;">${h.desc}${evoHtml}</div>
       </div>`;
@@ -861,6 +1587,40 @@ function renderFicha() {
       habHtml += `<div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin:12px 0 6px;">CAMINHO: ${estado.caminho.toUpperCase()}</div>`;
       dados.caminhos[estado.caminho].habs.filter(h => estado.nivel >= h.nivel).forEach(h => { habHtml += renderHabFicha(h); });
     }
+    if (estado.classe === 'Mago') {
+      const magiasGrimorio = estado.magiasGrimorio || [];
+      const limiteGrimorio = capacidadeGrimorio();
+      habHtml += `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:12px 0 6px;">
+        <span style="font-size:0.7rem;letter-spacing:2px;color:#9d8bdb;">GRIMÓRIO (${magiasGrimorio.length}/${limiteGrimorio})</span>
+        <button id="btnGerenciarGrimorio" class="c-btn" style="width:auto;padding:2px 8px;font-size:0.65rem;" onclick="abrirPopupGerenciarGrimorio(this)">+ Adicionar magia</button>
+      </div>`;
+      if (magiasGrimorio.length === 0) {
+        habHtml += '<div class="ficha-hab-item" style="font-size:0.75rem;color:#666;">Nenhuma magia anotada.</div>';
+      }
+      magiasGrimorio.forEach((nome, indice) => {
+        const magia = obterMagiaDoLivro(nome);
+        if (!magia) {
+          habHtml += `<div class="ficha-hab-item" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <span><span class="ficha-hab-nome" style="color:#c5b6f0;">${nome}</span><span style="font-size:0.68rem;color:#ff8888;"> · Magia não encontrada no livro</span></span>
+            <button class="c-btn" style="width:auto;padding:1px 7px;font-size:0.65rem;color:#ff8888;" onclick="removerMagiaGrimorio(${indice})">Excluir</button>
+          </div>`;
+          return;
+        }
+        const custo = custoManaMagia(magia);
+        const usaPV = /Usa PV em vez de PE/i.test(magia.texto);
+        const recurso = usaPV ? 'PV' : 'Mana';
+        habHtml += `<div class="ficha-hab-item">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
+            <span class="ficha-hab-nome" style="color:#c5b6f0;">${nome} <span style="font-size:0.65rem;color:#777;">· Vol. ${magia.texto.match(/livro-tag-nivel">Vol\.\s*(\d+)/)?.[1] || '?'}</span></span>
+            <span style="display:flex;gap:4px;flex-shrink:0;">
+              <button class="c-btn" style="width:auto;padding:1px 7px;font-size:0.65rem;" onclick="conjurarMagiaDoGrimorio(${indice})" title="Gastar ${custo} ${recurso} ao conjurar">Conjurar · ${custo} ${recurso}</button>
+              <button class="c-btn" style="width:auto;padding:1px 7px;font-size:0.65rem;color:#ff8888;" onclick="removerMagiaGrimorio(${indice})" title="Excluir magia do grimório">Excluir</button>
+            </span>
+          </div>
+          <div style="font-size:0.75rem;color:#aaa;line-height:1.6;">${magia.texto}</div>
+        </div>`;
+      });
+    }
     if (truquesEscolhidos.length > 0) {
       const listaTruquesRender = TRUQUES[estado.classe] || [];
       habHtml += `<div style="font-size:0.7rem;letter-spacing:2px;color:#7ecfb3;margin:12px 0 6px;">TRUQUES</div>`;
@@ -902,6 +1662,11 @@ function renderFicha() {
 
   carregarInventario();
   _wrapLayout(layout);
+  atualizarAnelEscamaUI();
+  atualizarPuxaCorteUI();
+  atualizarColarCuraUI();
+  atualizarPedraReflexaoUI();
+  atualizarCargasAcessorios();
 }
 
 // posições default dos blocos no layout 3
@@ -910,9 +1675,10 @@ const L3_POS_DEFAULT = [
   { left: 310, top: 0   },  // xp
   { left: 520, top: 0   },  // atributos
   { left: 310, top: 340 },  // equipamentos
+  { left: 0,   top: 680 },  // acessórios
   { left: 520, top: 340 },  // vitalidade
   { left: 0,   top: 340 },  // habilidades
-  { left: 0,   top: 680 },  // inventario
+  { left: 0,   top: 1120 }, // inventário
 ];
 
 function _wrapLayout(n) {
@@ -922,6 +1688,7 @@ function _wrapLayout(n) {
   // Layout 3: posicionamento absoluto livre
   const blocos = Array.from(c.querySelectorAll(':scope > .ficha-bloco'));
   const saved  = JSON.parse(localStorage.getItem(LAYOUT_KEY) || '[]');
+  if (saved.length === blocos.length - 1) saved.splice(4, 0, null);
   blocos.forEach((bloco, i) => {
     const pos = saved[i]?.left !== undefined ? saved[i] : (L3_POS_DEFAULT[i] || { left: i * 20, top: i * 20 });
     bloco.style.left = pos.left + 'px';
@@ -1206,7 +1973,8 @@ function toggleArteEspada(nome) {
 document.addEventListener('click', e => {
   const p = document.getElementById('popupCaminhoTalentos');
   if (!p || !p.classList.contains('aberto')) return;
-  if (!p.contains(e.target) && !e.target.classList.contains('hab-badge')) fecharPopupCT();
+  const abriuGrimorio = e.target instanceof Element && e.target.closest('#btnGerenciarGrimorio');
+  if (!p.contains(e.target) && !e.composedPath().includes(p) && !abriuGrimorio && !e.target.classList.contains('hab-badge')) fecharPopupCT();
 });
 
 // ===== MODO EDIÇÃO =====

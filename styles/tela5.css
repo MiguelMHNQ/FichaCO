@@ -101,6 +101,93 @@ body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%);
 .ficha-hab-item:last-child { border-bottom: none; }
 .ficha-hab-nome { color: var(--cor-texto); }
 
+.acessorio-acao-btn {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 34px;
+  padding: 7px 10px;
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 0.72rem;
+}
+
+.acessorio-acao-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#peAtual {
+  display: inline-block;
+  position: relative;
+}
+
+#peAtual.pe-gasto {
+  animation: pe-gasto-pulso 0.65s ease-out;
+}
+
+#peAtual.pe-gasto::after {
+  content: attr(data-gasto);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  color: #c5a5ff;
+  font-size: 0.65rem;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 0 10px #a879ff99;
+  animation: pe-gasto-flutua 1.1s ease-out forwards;
+}
+
+.c-btn.habilidade-usada {
+  animation: habilidade-usada 0.8s ease-out;
+}
+
+.c-btn.habilidade-usada::after {
+  content: " ✓";
+  color: #c5a5ff;
+}
+
+@keyframes pe-gasto-pulso {
+  0%, 100% { color: #e0d6c8; text-shadow: none; transform: scale(1); }
+  35% { color: #c5a5ff; text-shadow: 0 0 16px #a879ff; transform: scale(1.22); }
+}
+
+@keyframes pe-gasto-flutua {
+  0% { opacity: 0; transform: translate(-50%, 0); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -28px); }
+}
+
+@keyframes habilidade-usada {
+  0%, 100% { border-color: #3a3550; box-shadow: none; }
+  35% { border-color: #c5a5ff; box-shadow: 0 0 12px #a879ff99; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #peAtual.pe-gasto,
+  #peAtual.pe-gasto::after,
+  .c-btn.habilidade-usada {
+    animation: none;
+  }
+
+  #peAtual.pe-gasto {
+    color: #c5a5ff !important;
+    text-shadow: 0 0 12px #a879ff99;
+  }
+
+  #peAtual.pe-gasto::after {
+    opacity: 1;
+    transform: translate(-50%, -12px);
+  }
+
+  .c-btn.habilidade-usada {
+    border-color: #c5a5ff;
+    box-shadow: 0 0 10px #a879ff77;
+  }
+}
+
 .item-linha {
   padding: 9px 12px;
   border: 1px solid #2a2535;
@@ -261,6 +348,85 @@ body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%);
 .l2-equip-slot {
   flex: 1;
   min-width: 160px;
+}
+
+.ficha-acessorios-equipados {
+  min-width: 100%;
+}
+
+.acessorios-ajuda {
+  color: #777;
+  font-size: 0.75rem;
+  margin: -4px 0 14px;
+}
+
+.acessorios-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.acessorio-slot-card {
+  min-width: 0;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed #3a3550;
+  border-radius: 4px;
+  background: #0e0c15;
+}
+
+.acessorio-slot-card.preenchido {
+  border-style: solid;
+  border-color: #c9a84c55;
+  background: #c9a84c08;
+}
+
+.acessorio-slot-nome {
+  color: var(--cor-principal);
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.acessorio-slot-select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 6px;
+  border: 1px solid #3a3550;
+  border-radius: 3px;
+  background: #13111c;
+  color: var(--cor-texto);
+  font: 0.72rem Georgia, serif;
+}
+
+.acessorio-slot-descricao,
+.acessorio-slot-vazio {
+  color: #888;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.acessorio-slot-detalhes {
+  color: #777;
+  font-size: 0.62rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.acessorio-slot-vazio {
+  margin: auto 0;
+  text-align: center;
+  color: #555;
+}
+
+.acessorio-slot-cargas {
+  color: #888;
+  font-size: 0.68rem;
 }
 
 /* ===== LAYOUT 3 — PAINEL LIVRE ===== */

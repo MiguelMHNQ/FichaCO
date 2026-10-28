@@ -109,6 +109,54 @@ HABILIDADES.Bardo = {
   }
 };
 
+HABILIDADES.Mago = {
+  base: [
+    { nome: 'Grimório Arcano', nivel: 1, desc: 'Seu grimório comporta Arcanismo + nível magias anotadas. Você só pode conjurar magias transcritas e traduzidas nele; transcrever uma magia leva 2 horas menos seu bônus de Arcanismo.', acao: 'Passiva' },
+    { nome: 'Conjuração Arcana', nivel: 1, desc: 'Começa com três magias de volume 1. Para conjurar uma magia, leia-a no grimório. Seu dano mágico pode somar seu modificador de Inteligência.', acao: 'Passiva' },
+    { nome: 'Magias Controladas', nivel: 1, desc: 'Pode manter magias controladas guardadas até um limite de 1 + modificador de Inteligência e lançar uma delas usando uma ação bônus.', acao: 'Passiva' },
+  ],
+  caminhos: {
+    'Caminho do Colecionador': {
+      proficiencias: 'Nenhuma adicional',
+      habs: [
+        { nome: 'Conhecimento Ampliado', nivel: 6, desc: 'Aprende uma magia adicional de um volume ao qual já tenha acesso. Pode escolher outra magia nos níveis 9, 12, 17 e 20.', acao: 'Passiva' },
+        { nome: 'Grimório Aprimorado', nivel: 9, desc: 'A durabilidade do grimório aumenta em 6 + seu bônus de classe.', acao: 'Passiva' },
+        { nome: 'Favoritismo Pessoal', nivel: 13, desc: 'Recebe +5 na CD para testes de resistência de suas magias.', acao: 'Passiva' },
+        { nome: 'Anular Magia', nivel: 17, desc: 'Contra magia ou efeito mágico que permita um teste de resistência para reduzir dano à metade: ao passar, não sofre dano; ao falhar, sofre apenas metade. Também anula condições e danos adicionais que seriam ignorados ao passar no teste.', acao: 'Passiva' },
+        { nome: 'Coleção Absoluta', nivel: 20, desc: 'Enquanto estiver com o grimório, aprende e pode usar todas as magias dos volumes 1 a 4, pagando seus custos normalmente.', acao: 'Passiva' },
+      ]
+    },
+    'Caminho do Necromante': {
+      proficiencias: 'Nenhuma adicional',
+      habs: [
+        { nome: 'Servos Mortos-Vivos', nivel: 6, desc: 'Recebe a magia Ressuscitar Mortos; se já a possuir, seu custo é reduzido em 2 PE. Ao conjurá-la, escolha um benefício: criar um servo adicional a partir de uma pilha de ossos ou restos; aumentar os PV do servo em 2 + seu nível de Mago; ou conceder +2 à Defesa e à Constituição do servo (o bônus aumenta para +4 no nível 12). Se escolher outro benefício, ele também vale para ambos os servos.', acao: 'Passiva' },
+        { nome: 'Ceifador Energético', nivel: 9, desc: 'Ao finalizar uma criatura, por qualquer meio, recupera PV ou PE em quantidade igual ao seu nível + modificador de Inteligência. A recuperação não pode exceder os limites máximos seus ou da criatura. Não funciona contra mortos-vivos ou maquinário.', acao: 'Passiva' },
+        { nome: 'Mortos Superiores', nivel: 13, desc: 'Ao conjurar Ressuscitar Mortos, escolha dois benefícios em vez de um. Adiciona à lista: +4,5m a todos os deslocamentos do servo; bônus igual ao seu bônus de classe em testes de duas constâncias à sua escolha; ou +1d12 de dano corpo a corpo (aumenta para +2d10 no nível 18).', acao: 'Passiva' },
+        { nome: 'Ceifador Perfeito', nivel: 17, desc: 'Ceifador Energético também pode afetar um servo morto-vivo seu a até 6m. Se houver mais de um servo na área, escolha qual será afetado; os limites de recuperação continuam valendo.', acao: 'Passiva' },
+        { nome: 'Aniquilador Necrótico', nivel: 20, desc: 'Com uma ação completa e 20 PE, toque uma criatura a até 1,5m. Ela faz um teste de Constituição contra sua CD; se falhar, sofre 7d10 + 20 de dano necrótico e Decomposição. Se passar, sofre metade do dano e evita a condição. Ignora resistências; se reduzir a criatura a 0 PV, ela morre imediatamente, sem salvaguardas contra a morte.', acao: 'Ação Completa' },
+      ]
+    },
+    'Especialista Arcano — Elemental': {
+      proficiencias: 'Nenhuma adicional',
+      habs: [
+        { nome: 'Especialidade Mágica — Elemental', nivel: 6, desc: 'Escolhe o tipo Elemental. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 PE a menos.', acao: 'Passiva' },
+      ]
+    },
+    'Especialista Arcano — Orgânica': {
+      proficiencias: 'Nenhuma adicional',
+      habs: [
+        { nome: 'Especialidade Mágica — Orgânica', nivel: 6, desc: 'Escolhe o tipo Orgânica. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 PE a menos.', acao: 'Passiva' },
+      ]
+    },
+    'Especialista Arcano — Mística': {
+      proficiencias: 'Nenhuma adicional',
+      habs: [
+        { nome: 'Especialidade Mágica — Mística', nivel: 6, desc: 'Escolhe o tipo Mística. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 PE a menos.', acao: 'Passiva' },
+      ]
+    },
+  }
+};
+
 HABILIDADES.Obscuro = {
   base: [
     { nome: 'Capturar', nivel: 1, desc: 'Aprisiona a sombra de um inimigo caído (ND ≤ seu Nível + Bônus de Classe). Teste de Conjurar vs Vontade da criatura. Se ganhar, ela vira sua serva. PV da fera: [Afinidade x10 + Sabedoria x5 + Rank x10 + Vigor da criatura].', acao: 'Ação Padrão', evo: 'Nível 11: pode capturar inimigos vivos com 10% ou menos de PV. Disputa muda para Sabedoria vs Inteligência.' },
@@ -302,6 +350,18 @@ const TALENTOS = {
     { nome: 'Lâmina Inominável', desc: 'Ao atingir inimigo com Arma de Sombras, se ele tentar se afastar no próximo turno, deslocamento é reduzido à metade e sofre 2d6 de dano necrótico automático.' },
     { nome: 'Troca Fantasmagórica', desc: 'Ao usar Sombreamento, inimigos a até 3m do ponto de origem fazem Salvaguarda de Vigor ou ficam Cegos até o fim do próximo turno deles.' },
   ],
+  Mago: [
+    { nome: 'Performance Mestre', desc: 'Ao acertar um ataque mágico, pode utilizar um truque na mesma ação.' },
+    { nome: 'Nerd Mágico', desc: 'Descobre rapidamente pelo menos um detalhe de uma magia que veja. Recebe +3 em testes de Arcanismo para identificar magias, objetos, estruturas ou portadores de magia.' },
+    { nome: 'Reserva Mental', desc: 'Possui cargas iguais ao modificador de Inteligência. Como ação bônus, gaste uma carga para recuperar 1d6 + Inteligência de energia. Recupera as cargas em descanso longo.' },
+    { nome: 'Mente Arcana', desc: 'Se não usar a ação de movimento no turno, recebe +2 em ataques mágicos até o fim do turno.' },
+    { nome: 'Magia Silenciosa', desc: '+4 em Arcanismo para esconder a execução ou os rastros de suas magias.' },
+    { nome: 'Mira Arcana', desc: 'Gaste 2 PE para aumentar o alcance de uma magia em uma etapa; ataques mágicos ignoram penalidades de cobertura parcial.' },
+    { nome: 'Auxílio Mágico', desc: 'Toque um aliado e gaste 2 PE para conceder +1d8 em testes baseados em Inteligência por 10 minutos.' },
+    { nome: 'Continuidade Paciente', desc: 'Pode guardar duas magias controladas adicionais.' },
+    { nome: 'Controle Manual', desc: '+2 nos ataques de magias controladas.' },
+    { nome: 'Magia Empilhada', desc: 'Uma vez por turno, ao lançar uma magia, pode lançar outra de volume 3 ou menor e do mesmo elemento na mesma ação, pagando o dobro da mana original.' },
+    { nome: 'Tiro Acumulado', desc: 'Pode lançar até duas magias guardadas usando uma ação bônus.' },
+    { nome: 'Presença Mágica', desc: 'Enxerga rastros e auras mágicas através de até 1m de barreira sólida e recebe +4 em testes de Inteligência para identificá-los.' },
+  ],
 };
-
-

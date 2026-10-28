@@ -59,6 +59,14 @@
       </div>
     </div>
 
+    <div class="card-personagem" data-personagem="Mago" data-classe="Mago" onclick="abrirPreviewClasse('Mago', this)">
+      <span class="selecionado-badge">✦ Escolhido</span>
+      <div class="card-info">
+        <div class="card-nome">Mago</div>
+        <div class="card-desc">Um estudioso arcano que registra feitiços em seu grimório e molda a magia com conhecimento e precisão.</div>
+      </div>
+    </div>
+
   </div>
 
   <button class="btn-avancar" id="btn1" onclick="Sons.confirm();window.location.href='tela2.html'">Continuar →</button>
@@ -111,7 +119,8 @@
     Object.assign(estado, {
       personagem: null, classe: null, nivel: 1, caminho: null,
       constancias: { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 },
-      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, talentos: [], nomePersonagem: ''
+      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, acessoriosEquipados: {}, acessoriosCargas: {}, talentos: [],
+      truques: [], magiasGrimorio: [], grimorioInicializado: false, nomePersonagem: ''
     });
     salvarEstado();
     window.location.href = 'tela1.html';
@@ -133,8 +142,12 @@
     estado.arma = null;
     estado.armadura = null;
     estado.acessorio = null;
+    estado.acessoriosEquipados = {};
+    estado.acessoriosCargas = {};
     estado.talentos = [];
     estado.truques = [];
+    estado.magiasGrimorio = [];
+    estado.grimorioInicializado = false;
     estado.nomePersonagem = '';
     salvarEstado();
     const card = document.querySelector('.card-personagem.selecionado');
@@ -146,7 +159,10 @@
     _cardPendente = card;
     const d = CLASSES_PREVIEW[classe];
     if (!d) return;
-    if (estado.classe !== classe) estado.constanciasEscolhidas = [];
+    if (estado.classe !== classe) {
+      estado.constanciasEscolhidas = [];
+      estado.magiasGrimorio = [];
+    }
     document.getElementById('pcNome').textContent = classe;
     document.getElementById('pcDesc').textContent = d.desc;
     const corpo = document.getElementById('pcCorpo');
@@ -179,8 +195,15 @@
         <div class="popup-tag-lista">${d.armaduras.map(a => `<span class="popup-tag">${a}</span>`).join('')}</div>
       </div>
 
-      <div class="popup-secao">Famosos</div>
-      <div class="popup-famosos">${d.famosos.map(f => `<div><span class="popup-famoso-nome-link" onclick="Sons.click();abrirFamoso(event,'${f.replace(/'/g,'&#39;')}')">✦ ${f}</span></div>`).join('')}</div>
+      ${d.especificacoes && d.especificacoes !== 'Nenhuma' ? `
+        <div class="popup-secao">Especificações</div>
+        <div style="font-size:0.78rem;color:#aaa;line-height:1.7;">${d.especificacoes}</div>
+      ` : ''}
+
+      ${d.famosos.length ? `
+        <div class="popup-secao">Famosos</div>
+        <div class="popup-famosos">${d.famosos.map(f => `<div><span class="popup-famoso-nome-link" onclick="Sons.click();abrirFamoso(event,'${f.replace(/'/g,'&#39;')}')">✦ ${f}</span></div>`).join('')}</div>
+      ` : ''}
     `;
     document.getElementById('popupClasse').classList.add('aberto');
   }
@@ -265,13 +288,22 @@
   }
 
   function confirmarClassePopup() {
-    if (_cardPendente) selecionarPersonagem(_cardPendente);
+    if (!_cardPendente) return;
+    const dados = CLASSES_PREVIEW[_cardPendente.dataset.classe];
+    const quantidade = dados.constanciasEscolhaQtd || 2;
+    if ((estado.constanciasEscolhidas || []).length !== quantidade) {
+      document.getElementById('pcConstanciasAviso').textContent = `Escolha ${quantidade} constâncias antes de continuar.`;
+      Sons.error();
+      return;
+    }
+    selecionarPersonagem(_cardPendente);
     fecharPreviewClasse();
   }
 
   function selecionarPersonagem(card) {
     document.querySelectorAll('.card-personagem').forEach(c => c.classList.remove('selecionado'));
     card.classList.add('selecionado');
+    if (estado.classe !== card.dataset.classe) estado.magiasGrimorio = [];
     estado.personagem = card.dataset.classe;
     estado.classe = card.dataset.classe;
     document.getElementById('btn1').classList.add('habilitado');

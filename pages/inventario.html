@@ -28,6 +28,22 @@
   <h1 class="titulo-tela">Inventário</h1>
   <p class="subtitulo-tela">Seus personagens</p>
 
+  <div id="controlesPersonagens" class="inv-controles" hidden>
+    <label class="inv-busca">
+      <span>Buscar personagem</span>
+      <input id="buscaPersonagem" type="search" placeholder="Nome, classe ou descrição" oninput="renderLista()">
+    </label>
+    <label class="inv-ordenacao">
+      <span>Ordenar por</span>
+      <select id="ordenacaoPersonagens" onchange="renderLista()">
+        <option value="recentes">Mais recentes</option>
+        <option value="nome-asc">Nome (A–Z)</option>
+        <option value="nome-desc">Nome (Z–A)</option>
+        <option value="nivel-desc">Nível (maior primeiro)</option>
+      </select>
+    </label>
+    <p id="resumoPersonagens" class="inv-resumo" aria-live="polite"></p>
+  </div>
   <div id="listaPersonagens" class="inv-grid"></div>
 </section>
 
@@ -96,7 +112,14 @@
   function renderLista() {
     const container = document.getElementById('listaPersonagens');
     const personagens = getPersonagens();
+    const controles = document.getElementById('controlesPersonagens');
+    const busca = document.getElementById('buscaPersonagem').value.trim();
+    const termo = busca.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
+    const ordenacao = document.getElementById('ordenacaoPersonagens').value;
     container.innerHTML = '';
+    controles.hidden = personagens.length === 0;
+    document.getElementById('resumoPersonagens').textContent =
+      `${personagens.length} ${personagens.length === 1 ? 'personagem' : 'personagens'}`;
 
     if (personagens.length === 0) {
       container.innerHTML = `
@@ -108,7 +131,44 @@
       return;
     }
 
-    personagens.forEach((p, idx) => {
+    const encontrados = personagens
+      .map((personagem, indice) => ({ personagem, indice }))
+      .filter(({ personagem }) => {
+        const campos = [personagem.nomePersonagem, personagem.classe, personagem.desc];
+        const texto = campos.filter(campo => typeof campo === 'string').join(' ')
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
+        return texto.includes(termo);
+      });
+
+    encontrados.sort((a, b) => {
+      if (ordenacao === 'nome-asc' || ordenacao === 'nome-desc') {
+        const comparacao = (a.personagem.nomePersonagem || '').localeCompare(
+          b.personagem.nomePersonagem || '', 'pt-BR', { sensitivity: 'base' }
+        );
+        return ordenacao === 'nome-asc' ? comparacao : -comparacao;
+      }
+      if (ordenacao === 'nivel-desc') {
+        return (Number(b.personagem.nivel) || 0) - (Number(a.personagem.nivel) || 0);
+      }
+      return b.indice - a.indice;
+    });
+
+    const resumo = document.getElementById('resumoPersonagens');
+    resumo.textContent = busca
+      ? `${encontrados.length} de ${personagens.length} ${personagens.length === 1 ? 'personagem encontrado' : 'personagens encontrados'}`
+      : `${personagens.length} ${personagens.length === 1 ? 'personagem' : 'personagens'}`;
+
+    if (encontrados.length === 0) {
+      container.innerHTML = `
+        <div class="inv-vazio">
+          <div class="inv-vazio-icone">⌕</div>
+          <div class="inv-vazio-texto">Nenhum personagem encontrado.</div>
+          <div class="inv-vazio-sub">Tente buscar por outro nome, classe ou descrição.</div>
+        </div>`;
+      return;
+    }
+
+    encontrados.forEach(({ personagem: p, indice: idx }) => {
       const card = document.createElement('div');
       card.className = 'inv-card';
       card.innerHTML = `

@@ -659,7 +659,7 @@
   function renderClasses(filtro) {
     const c = document.getElementById('livroConteudo');
     const classes = Object.entries(CLASSES_PREVIEW).filter(([nome, d]) =>
-      !filtro || buscaTexto(nome + d.desc + d.famosos.join(' '), filtro));
+      !filtro || buscaTexto(nome + d.desc + d.famosos.join(' ') + d.especificacoes, filtro));
     if (!classes.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = classes.map(([nome, d]) => `
       <div class="livro-card">
@@ -683,9 +683,8 @@
           <div class="livro-label">Armas</div>
           <div class="livro-tags">${d.armas.map(t => `<span class="livro-tag">${t}</span>`).join('')}</div>
         </div>
-        <div style="margin-top:10px;font-size:0.72rem;color:#555;font-style:italic;">
-          Famosos: ${destacar(d.famosos.join(', '), filtro)}
-        </div>
+        ${d.especificacoes && d.especificacoes !== 'Nenhuma' ? `<div class="livro-card-texto" style="margin-top:12px;">${destacar(d.especificacoes, filtro)}</div>` : ''}
+        ${d.famosos.length ? `<div style="margin-top:10px;font-size:0.72rem;color:#555;font-style:italic;">Famosos: ${destacar(d.famosos.join(', '), filtro)}</div>` : ''}
       </div>`).join('');
   }
 
@@ -864,7 +863,7 @@
     if (valor.trim().length > 0) {
       document.querySelectorAll('.livro-aba').forEach(b => b.classList.remove('ativo'));
       abaAtiva = '_pesquisa';
-      const abas = ['termos','combate','condicoes','racas','linguas','magias','ficha','regras','classes','habilidades','armas','armaduras','acessorios'];
+      const abas = ['termos','combate','condicoes','racas','linguas','magias','ficha','regras','classes','habilidades','armas','armaduras','acessorios','itens'];
       const labels = { termos:'Termos', combate:'Combate', condicoes:'Condições', racas:'Raças', linguas:'Línguas', magias:'Magias', ficha:'Ficha', regras:'Regras', classes:'Classes', habilidades:'Habilidades', armas:'Armas', armaduras:'Armaduras', acessorios:'Acessórios' };
       let html = '';
       abas.forEach(aba => {
