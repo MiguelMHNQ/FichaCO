@@ -85,14 +85,39 @@ function definirCAFicha(valor) {
   sincronizarPersonagem();
 }
 
+function atualizarPVFicha() {
+  const el = document.getElementById('pvAtual');
+  const maxEl = document.getElementById('pvMax');
+  if (!el || !maxEl) return;
+  const max = Math.max(1, parseInt(maxEl.value, 10) || 1);
+  const salvo = parseInt(sessionStorage.getItem('fragmentados_pv'), 10);
+  const total = Number.isFinite(salvo) ? Math.max(0, salvo) : max;
+  const normal = Math.min(total, max), temporario = Math.max(0, total - max);
+  el.textContent = normal;
+  el.classList.toggle('pv-com-temporarios', temporario > 0);
+  el.style.color = normal <= 0 ? '#ff4444' : normal <= max * 0.3 ? '#ff9944' : '#e0d6c8';
+  const bonus = document.getElementById('pvTemporarios');
+  if (bonus) { bonus.textContent = `+${temporario}`; bonus.hidden = temporario === 0; }
+}
+
+function definirPVMaxFicha(valor) {
+  const max = Math.max(1, parseInt(valor, 10) || 1);
+  document.getElementById('pvMax').value = max;
+  sessionStorage.setItem('fragmentados_pvmax', max);
+  sessionStorage.setItem('fragmentados_pv', max);
+  atualizarPVFicha();
+  sincronizarPersonagem();
+}
+
 function alterarPV(delta) {
   const el = document.getElementById('pvAtual');
-  const max = parseInt(document.getElementById('pvMax').value) || 20;
-  if (!el) return;
-  let val = Math.max(0, parseInt(el.textContent) + delta);
-  el.textContent = val;
-  el.style.color = val <= 0 ? '#ff4444' : val <= max * 0.3 ? '#ff9944' : '#e0d6c8';
+  if (!el || !Number.isFinite(delta)) return;
+  // O total salvo inclui o excedente; o visor separa PV normais e temporários.
+  const atual = parseInt(sessionStorage.getItem('fragmentados_pv') ?? el.textContent, 10);
+  if (!Number.isFinite(atual)) return;
+  const val = Math.max(0, atual + delta);
   sessionStorage.setItem('fragmentados_pv', val);
+  atualizarPVFicha();
   sincronizarPersonagem();
 }
 
@@ -108,6 +133,28 @@ function alterarPE(delta) {
 }
 
 const _timersFeedbackPE = new WeakMap();
+const _avisosPE = new WeakMap();
+
+function limparAvisoPE(alvo) {
+  const aviso = _avisosPE.get(alvo);
+  if (!aviso) return;
+  clearTimeout(aviso.timer);
+  aviso.el.remove();
+  alvo.classList.remove('tem-aviso-pe');
+  _avisosPE.delete(alvo);
+}
+
+function mostrarAvisoPE(alvo, texto) {
+  limparAvisoPE(alvo);
+  const aviso = document.createElement('span');
+  aviso.className = 'aviso-pe';
+  aviso.setAttribute('role', 'status');
+  aviso.textContent = texto;
+  alvo.classList.add('tem-aviso-pe');
+  alvo.appendChild(aviso);
+  const timer = setTimeout(() => limparAvisoPE(alvo), 2800);
+  _avisosPE.set(alvo, { el: aviso, timer });
+}
 
 function animarFeedbackPE(el, classe) {
   if (!el) return;
@@ -131,9 +178,10 @@ function gastarPE(custo, recurso = 'PE', botao = null) {
     return false;
   }
   if (peAtual < custo) {
-    alert(`${recurso} insuficiente. Esta habilidade requer ${custo} ${recurso}; você tem ${peAtual} ${recurso}.`);
+    mostrarAvisoPE(botao || el, `${recurso} insuficiente`);
     return false;
   }
+  limparAvisoPE(botao || el);
   alterarPE(-custo);
   el.dataset.gasto = `−${custo} ${recurso}`;
   animarFeedbackPE(el, 'pe-gasto');
@@ -1468,8 +1516,9 @@ function renderFicha() {
           <button class="c-btn" onclick="alterarPV(-1)">−</button>
           <span id="pvAtual" style="font-size:1.6rem;color:#e0d6c8;min-width:40px;text-align:center;">${pvAtual}</span>
           <button class="c-btn" onclick="alterarPV(1)">+</button>
+          <span id="pvTemporarios" class="pv-temporarios" title="Pontos de vida temporários" aria-label="Pontos de vida temporários" hidden></span>
         </div>
-        <div style="font-size:0.7rem;color:#555;margin-top:6px;">Máx: <input id="pvMax" type="number" value="${pvMax}" min="1" style="width:50px;background:transparent;border:none;border-bottom:1px solid #3a3550;color:#aaa;font-size:0.75rem;text-align:center;" onchange="document.getElementById('pvAtual').textContent=this.value;sessionStorage.setItem('fragmentados_pvmax',this.value);sessionStorage.setItem('fragmentados_pv',this.value);sincronizarPersonagem();"></div>
+        <div style="font-size:0.7rem;color:#555;margin-top:6px;">Máx: <input id="pvMax" type="number" value="${pvMax}" min="1" style="width:50px;background:transparent;border:none;border-bottom:1px solid #3a3550;color:#aaa;font-size:0.75rem;text-align:center;" onchange="definirPVMaxFicha(this.value)"></div>
       </div>
       <div>
         <div style="font-size:0.7rem;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">${estado.classe === 'Mago' ? 'MANA' : 'PONTOS DE ENERGIA'}</div>
@@ -1529,10 +1578,12 @@ function renderFicha() {
       const evoHtml = nivelEvo && h.evo
         ? `<span style="color:#c9a84c;font-style:italic;font-size:0.74rem;"> ✦ ${h.evo.split('|').find(p => { const m = p.match(/Nível (\d+)/); return m && parseInt(m[1]) === nivelEvo; }) || h.evo.split('|').pop()}</span>`
         : '';
-      const pe     = custoPE(h.nivel);
-      const peTag  = h.acao === 'Passiva' ? '' : `<span style="font-size:0.65rem;color:#c9a84c;border:1px solid #c9a84c44;padding:1px 6px;border-radius:2px;margin-right:4px;">${pe} PE</span>`;
+      // A evolução mais recente alcançada define a faixa de custo, não o nível do personagem.
+      const pe     = custoPE(nivelEvo || h.nivel);
+      const podeUsar = h.acao !== 'Passiva' || h.ativavel === true;
+      const peTag  = !podeUsar ? '' : `<span style="font-size:0.65rem;color:#c9a84c;border:1px solid #c9a84c44;padding:1px 6px;border-radius:2px;margin-right:4px;">${pe} PE</span>`;
       const acaTag = `<span style="font-size:0.65rem;color:#666;border:1px solid #2a2535;padding:1px 6px;border-radius:2px;">${h.acao}</span>`;
-      const usarTag = h.acao === 'Passiva' ? '' : `<button class="c-btn" style="width:auto;padding:1px 7px;font-size:0.65rem;margin-left:4px;" onclick="gastarPE(${pe}, 'PE', this)" title="Gastar ${pe} PE ao usar esta habilidade">Usar</button>`;
+      const usarTag = !podeUsar ? '' : `<button class="c-btn" style="width:auto;padding:1px 7px;font-size:0.65rem;margin-left:4px;" onclick="gastarPE(${pe}, 'PE', this)" title="Gastar ${pe} PE ao usar esta habilidade">Usar</button>`;
       return `<div class="ficha-hab-item">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
           <span class="ficha-hab-nome">${h.nome} <span style="font-size:0.65rem;color:#555;">[Nv ${h.nivel}]</span></span>
@@ -1673,6 +1724,7 @@ function renderFicha() {
   atualizarColarCuraUI();
   atualizarPedraReflexaoUI();
   atualizarCargasAcessorios();
+  atualizarPVFicha();
 }
 
 // posições default dos blocos no layout 3

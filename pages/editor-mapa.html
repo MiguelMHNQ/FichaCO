@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primórdios — Editor de mapa</title>
+  <link rel="icon" href="../assets/images/LogoT.png" type="image/png">
+  <link rel="stylesheet" href="../styles/editor-mapa.css">
+  <link rel="stylesheet" href="../styles/confirmacao.css">
+</head>
+<body>
+  <canvas id="mesa" tabindex="0" aria-label="Editor de mapa. Arraste o fundo com o botão esquerdo para mover, roda para aproximar."></canvas>
+  <div class="arquivo painel">
+    <button id="arquivo" aria-label="Arquivo" aria-expanded="false">▤</button>
+    <div class="menu" id="menuArquivo">
+      <strong>ARQUIVO</strong>
+      <button id="salvarSair">Salvar e sair <span>↗</span></button>
+      <button id="salvar">Salvar <span>Ctrl S</span></button>
+      <button id="sair">Sair <span>←</span></button>
+    </div>
+  </div>
+  <header class="ferramentas painel" aria-label="Ferramentas">
+    <div class="linha">
+      <button data-tool="select" class="ativo" title="Selecionar (V)">↖ <span>Selecionar</span></button>
+      <button data-tool="pen" title="Lápis (B)">✎ <span>Lápis</span></button>
+      <button data-tool="eraser" title="Apagar traço (E)">⌫ <span>Borracha</span></button>
+      <button data-tool="rect" title="Retângulo (R)">□ <span>Retângulo</span></button>
+      <button data-tool="ellipse" title="Elipse (O)">○ <span>Elipse</span></button>
+      <i></i><button id="desfazer" title="Desfazer (Ctrl Z)">↶</button><button id="refazer" title="Refazer (Ctrl Shift Z)">↷</button>
+      <button id="importar" title="Adicionar imagem">＋ Imagem</button>
+    </div>
+    <div class="linha opcoes">
+      <label>Cor <input id="cor" type="color" value="#c9a84c"></label>
+      <label>Tamanho <input id="tamanho" type="range" min="1" max="100" value="4"><output id="tamanhoValor">4</output></label>
+      <label><input id="preencher" type="checkbox"> Preencher formas</label>
+    </div>
+  </header>
+  <button id="organizar" class="painel organizar" aria-expanded="false" aria-controls="painelCamadas">▱ Organizar</button>
+  <aside id="painelCamadas" class="painel camadas" aria-label="Organizar camadas" hidden>
+    <div class="camadas-topo"><strong>CAMADAS</strong><button id="fecharCamadas" aria-label="Fechar camadas">✕</button></div>
+    <button id="novaCamada" class="adicionar">＋ Nova camada</button>
+    <p>O topo da lista fica à frente. Arraste as camadas ou use as setas para reordenar.</p>
+    <div id="listaCamadas"></div>
+    <small>Selecione uma camada para desenhar nela. Clique no nome para renomear.</small>
+  </aside>
+  <aside id="selecao" class="painel propriedades" hidden>
+    <strong>IMAGEM SELECIONADA</strong>
+    <button id="travar" aria-pressed="false">🔓 Travar imagem</button>
+    <label>Largura <input id="largura" type="number" min="5" max="20000"></label>
+    <label>Altura <input id="altura" type="number" min="5" max="20000"></label>
+    <label>Rotação <input id="rotacao" type="number" step="5"> °</label>
+    <button id="cortar">⌗ Cortar imagem</button>
+    <button id="duplicar">⧉ Duplicar</button>
+    <button id="frente">↑ Trazer para frente</button>
+    <button id="deletar" class="perigo">✕ Deletar</button>
+    <small>Arraste os cantos para redimensionar e o círculo para girar.</small>
+  </aside>
+  <div class="livro">
+    <div class="categorias painel" id="categorias">
+      <strong>BIBLIOTECA</strong>
+      <button data-category="mapas">▧ Mapas</button>
+      <button data-category="personagens">♟ Personagens</button>
+      <button data-category="montarias">♞ Montarias</button>
+      <button data-category="objetos">♜ Objetos</button>
+    </div>
+    <button id="livro" class="painel" aria-label="Abrir biblioteca" aria-expanded="false">▥ <span>Biblioteca</span></button>
+  </div>
+  <footer class="painel rodape">
+    <input id="nomeMapa" aria-label="Nome do mapa" maxlength="100" placeholder="Nome do mapa">
+    <span id="estadoSalvo">Carregando…</span>
+    <span class="dica">Arraste o fundo com o botão esquerdo · Roda: zoom · Ctrl V: colar imagem</span>
+    <button id="menos" aria-label="Diminuir zoom">−</button><button id="zoom" title="Centralizar e restaurar zoom">100%</button><button id="mais" aria-label="Aumentar zoom">＋</button>
+  </footer>
+  <dialog id="biblioteca">
+    <div class="dialogo-topo"><div><small>SEUS RECURSOS</small><h1 id="categoriaTitulo">Mapas</h1></div><button data-close="biblioteca" aria-label="Fechar">✕</button></div>
+    <button id="adicionarBiblioteca" class="adicionar">＋ Adicionar fotos</button>
+    <p class="instrucao">Clique em uma imagem para adicioná-la ao mapa.</p>
+    <div id="galeria"></div>
+  </dialog>
+  <dialog id="recorte">
+    <div class="dialogo-topo"><h2>Cortar imagem</h2><button data-close="recorte" aria-label="Fechar">✕</button></div>
+    <p>Arraste sobre a imagem para selecionar a área que deseja manter.</p>
+    <canvas id="canvasRecorte"></canvas>
+    <button id="aplicarRecorte" class="adicionar" disabled>Aplicar recorte</button>
+  </dialog>
+  <input id="upload" type="file" accept="image/*" multiple hidden>
+  <dialog id="confirmarSaida" class="confirmacao" aria-labelledby="tituloSaida" aria-describedby="descricaoSaida">
+    <button class="confirmacao-fechar" data-close="confirmarSaida" aria-label="Fechar">✕</button>
+    <div class="confirmacao-icone" aria-hidden="true">↗</div>
+    <small>ANTES DE PARTIR</small>
+    <h2 id="tituloSaida">Sair sem salvar?</h2>
+    <p id="descricaoSaida">Seu mapa tem alterações não salvas.<br>Se sair agora, essas alterações serão perdidas.</p>
+    <div class="confirmacao-acoes">
+      <button data-close="confirmarSaida" autofocus>Continuar editando</button>
+      <button id="sairSemSalvar" class="confirmacao-confirmar">Sair sem salvar</button>
+    </div>
+  </dialog>
+  <div id="aviso" role="status" hidden></div>
+  <script src="../scripts/editor-mapa.js"></script>
+</body>
+</html>

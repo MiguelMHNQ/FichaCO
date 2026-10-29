@@ -52,7 +52,7 @@ HABILIDADES.Bardo = {
     { nome: 'Canção Barbica', nivel: 2, desc: 'Motiva um alvo que possa escutar, concedendo +1d4 do mesmo tipo de dano por 1 minuto.', acao: 'Ação Bônus', evo: 'Nível 3: +1d6 | Nível 6: +1d8 | Nível 9: +1d10 | Nível 11: +1d12' },
     { nome: 'Confusão Inimiga', nivel: 3, desc: 'Entoa sons desafinados. O alvo faz teste de Constituição contra sua CD; se falhar, recebe desvantagem em ataques até o próximo turno.', acao: 'Ação Padrão' },
     { nome: 'Impulso', nivel: 5, desc: 'Empurra alvos em 3m ao redor a 7,5m de distância. Teste de Constituição contra CD; se falhar, causa +1d8 trovejante. Se acertar algo sólido, +1d4 de impacto.', acao: 'Ação Padrão' },
-    { nome: 'Inspirar Confiança', nivel: 7, desc: 'Uma vez por rodada, mesmo fora do turno, permite que um aliado que possa te ouvir role novamente uma jogada de ataque. Deve ficar com o segundo resultado.', acao: 'Passiva' },
+    { nome: 'Inspirar Confiança', nivel: 7, desc: 'Uma vez por rodada, mesmo fora do turno, permite que um aliado que possa te ouvir role novamente uma jogada de ataque. Deve ficar com o segundo resultado.', acao: 'Passiva', ativavel: true },
     { nome: 'Ala de Segredos', nivel: 9, desc: 'Escolha uma habilidade inicial de outro caminho de Bardo, ou uma habilidade nível 1–4 de outra classe (exceto Aspectomante, Obscuro, Sonariante, Necromante e Feiticeiro).', acao: 'Ação Padrão', evo: 'Nível 13: pode pegar a segunda habilidade do caminho escolhido ou sua evolução.' },
     { nome: 'Impulsão Sonora', nivel: 12, desc: 'Causa 3 impulsões sonoras, movendo você e um aliado junto. Cada impulsão locomove 5m. Você ataca com vantagem; o aliado sem vantagem. Livre de ataque de oportunidade.', acao: 'Ação de Movimento' },
   ],
@@ -60,7 +60,7 @@ HABILIDADES.Bardo = {
     'Bravura': {
       proficiencias: 'Vontade, Espadas Longas, Arcos Longos e Curtos',
       habs: [
-        { nome: 'Ataque Extra', nivel: 6, desc: 'Ao acertar um ataque, pode atacar +1 vez com a mesma ação.', acao: 'Passiva', evo: 'Nível 9: +2 ataques | Nível 13: +3 ataques' },
+        { nome: 'Ataque Extra', nivel: 6, desc: 'Ao acertar um ataque, pode atacar +1 vez com a mesma ação.', acao: 'Passiva', ativavel: true, evo: 'Nível 9: +2 ataques | Nível 13: +3 ataques' },
         { nome: 'Contra Peso', nivel: 9, desc: 'Música que deixa o clima mais leve. Aliados que escutam têm vantagem contra Amedrontado, Apavorado ou Encantado por 1 minuto.', acao: 'Ação Padrão' },
         { nome: 'Sinfonia de Guerra', nivel: 13, desc: 'Ao entoar uma magia de Bardo, gaste 5 PE e ação bônus para realizar um ataque com sua arma.', acao: 'Passiva' },
         { nome: 'Vontade de Ferro', nivel: 17, desc: 'Por 1min30s a cada golpe acertado: aliados ganham +1 CA. A cada 3 golpes seus, alvos recebem +4 de dano adicional (máx. 3 acúmulos).', acao: 'Passiva' },
@@ -198,7 +198,7 @@ HABILIDADES.Guerreiro = {
     { nome: 'Entrada Explosiva', nivel: 1, desc: 'Desloca-se até 4,5m em direção a um inimigo sem provocar ataques de oportunidade. Se acertar um ataque corpo a corpo neste turno, ganha PV Temporários igual ao Modificador de Constituição até o fim do combate. (Custo: 2 PE)', acao: 'Ação Bônus' },
     { nome: 'Ataque Preciso', nivel: 2, desc: 'Ao acertar um ataque, pode gastar PE para causar +1d6 de dano adicional neste golpe. Não cumulativo com Pancada Potente.', acao: 'Nenhuma (ativada ao acertar)', evo: 'Nível 3: +1d8 | Nível 6: +1d10 | Nível 9: +2d6 | Nível 11: +4d4' },
     { nome: 'Pancada Potente', nivel: 3, desc: 'Ao acertar um ataque corpo a corpo, pode gastar PE para adicionar +5 de dano fixo. Não cumulativo com Ataque Preciso.', acao: 'Nenhuma (ativada ao acertar)', evo: 'Nível 7: +8 | Nível 11: +9' },
-    { nome: 'Ataque Extra', nivel: 5, desc: 'Gastando PE, ao acertar um ataque pode atacar +1 vez com a mesma ação.', acao: 'Passiva', evo: 'Nível 9: +2 ataques | Nível 15: +3 ataques' },
+    { nome: 'Ataque Extra', nivel: 5, desc: 'Gastando PE, ao acertar um ataque pode atacar +1 vez com a mesma ação.', acao: 'Passiva', ativavel: true, evo: 'Nível 9: +2 ataques | Nível 15: +3 ataques' },
     { nome: 'Bônus Coerente', nivel: 7, desc: '1x por Descanso Curto: realiza 1 Ação Bônus adicional em qualquer momento do seu turno, ultrapassando o limite normal do sistema.', acao: 'Passiva', evo: 'Nível 13: 3 usos por Descanso Longo (máx. 1 uso por turno).' },
     { nome: 'Contra-partida', nivel: 9, desc: 'Gastando PE de uma habilidade de nível 9, 1x por Descanso Longo: realiza uma Ação Padrão adicional no seu turno atual. Não reinicia deslocamento nem concede Ações Bônus ou Reações extras.', acao: 'Nenhuma (ativada no seu turno)' },
     { nome: 'Instinto Nato', nivel: 12, desc: 'Ao sofrer dano de um ataque: reduz o dano em Nível + Força e pode mover-se até 1,5m sem provocar ataques de oportunidade após esse ataque.', acao: 'Reação' },

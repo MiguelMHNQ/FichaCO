@@ -140,6 +140,28 @@ body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%);
   animation: pe-gasto-flutua 1.1s ease-out forwards;
 }
 
+.pv-temporarios { font-size: 1rem; font-weight: bold; white-space: nowrap; }
+.pv-temporarios[hidden] { display: none; }
+.pv-temporarios, #pvAtual.pv-com-temporarios { color: #69b7ff !important; }
+.tem-aviso-pe { position: relative; }
+.aviso-pe {
+  position: absolute;
+  bottom: calc(100% + 7px);
+  right: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: 220px;
+  padding: 5px 8px;
+  border: 1px solid #e9747440;
+  border-radius: 5px;
+  background: #211216;
+  color: #ff8585;
+  font: 11px/1.4 Georgia, serif;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  box-shadow: 0 3px 12px #0005;
+}
 .c-btn.habilidade-usada {
   animation: habilidade-usada 0.8s ease-out;
 }

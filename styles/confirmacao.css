@@ -1,0 +1,19 @@
+/* Confirmações do TableTop e do editor. */
+dialog.confirmacao{box-sizing:border-box;position:fixed;inset:0;margin:auto;width:min(440px,calc(100vw - 36px));max-height:calc(100vh - 40px);overflow:auto;padding:36px 30px 26px;border:1px solid #c9a84c40;border-radius:16px;background:radial-gradient(ellipse at top,#c9a84c0c,transparent 65%),#111017;color:#e0d6c8;text-align:center;font-family:Georgia,serif;box-shadow:0 30px 100px #000a,0 0 45px #c9a84c08;animation:confirmacao-entrada .2s ease-out}
+dialog.confirmacao::backdrop{background:#030207bf;backdrop-filter:blur(7px)}
+.confirmacao::before{content:'';position:absolute;top:0;left:25%;right:25%;height:1px;background:linear-gradient(90deg,transparent,#e2c777,transparent)}
+.confirmacao .confirmacao-fechar{position:absolute;top:10px;right:12px;padding:7px 9px;border:0;border-radius:6px;background:transparent;color:#8e8796;cursor:pointer}
+.confirmacao .confirmacao-fechar:hover{color:#e0d6c8;background:#ffffff08}
+.confirmacao-icone{display:grid;place-items:center;margin:0 auto 20px;width:58px;height:58px;border-radius:16px;border:1px solid #c9a84c35;background:#c9a84c0d;color:#d5b86c;font-size:26px}
+.confirmacao-perigo .confirmacao-icone{border-color:#de786c35;background:#de786c0c;color:#e59a8f}
+.confirmacao small{display:block;color:#968a70;font-size:9px;letter-spacing:2.5px;margin-bottom:10px}
+.confirmacao h2{margin:0 0 12px;font-size:23px;font-weight:normal;letter-spacing:.3px;color:#eee4d4}
+.confirmacao p{margin:0;color:#a09aa7;font-size:13px;line-height:1.8;overflow-wrap:anywhere}
+.confirmacao-acoes{display:flex;gap:10px;margin-top:27px;padding-top:20px;border-top:1px solid #ffffff0a}
+.confirmacao .confirmacao-acoes button{flex:1;min-width:0;border:1px solid #ffffff18;border-radius:8px;padding:12px 10px;background:#ffffff03;color:#c6bfcd;font:12px Georgia,serif;cursor:pointer;transition:background .15s,border-color .15s}
+.confirmacao .confirmacao-acoes button:hover{background:#ffffff09;border-color:#ffffff30}
+.confirmacao .confirmacao-acoes .confirmacao-confirmar{color:#f0c2b9;background:#9e403b22;border-color:#cf6d6050}
+.confirmacao .confirmacao-acoes .confirmacao-confirmar:hover{background:#9e403b44;border-color:#cf6d6080}
+.confirmacao button:focus-visible{outline:2px solid #c9a84c;outline-offset:3px}
+@keyframes confirmacao-entrada{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){dialog.confirmacao{animation:none}}

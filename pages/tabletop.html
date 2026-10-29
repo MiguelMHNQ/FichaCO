@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primórdios — TableTop</title>
+<link rel="icon" href="../assets/images/LogoT.png" type="image/png">
+<link rel="stylesheet" href="../styles/global.css">
+<link rel="stylesheet" href="../styles/tela1.css">
+<link rel="stylesheet" href="../styles/tabletop.css">
+<link rel="stylesheet" href="../styles/confirmacao.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div id="navLogo" onclick="toggleMenu()">
+  <img src="../assets/images/LogoT.png" alt="Primórdios">
+  <div id="navMenu">
+    <div class="nav-item" onclick="Sons.nav();window.location.href='inventario.html'"><span class="nav-item-icone">⚔</span> Inventário</div>
+    <div class="nav-item" onclick="Sons.nav();novoPersonagem()"><span class="nav-item-icone">✦</span> Novo Personagem</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='livro.html'"><span class="nav-item-icone">⁂</span> Livro</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='tabletop.html'"><span class="nav-item-icone">⬡</span> TableTop</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='configuracoes.html'"><span class="nav-item-icone">⚙</span> Configurações</div>
+    <div class="nav-item nav-sair" onclick="Sons.back();sair()"><span class="nav-item-icone">↩</span> Sair</div>
+  </div>
+</div>
+
+<!-- Tela principal -->
+<section class="tela tt-tela">
+  <h1 class="titulo-tela">TableTop</h1>
+  <p class="subtitulo-tela">Mesa de jogo virtual</p>
+
+  <div class="tt-opcoes">
+
+    <button class="tt-card" onclick="Sons.click(); abrirEditar()">
+      <span class="tt-card-icone">✏</span>
+      <span class="tt-card-titulo">Editar</span>
+      <span class="tt-card-desc">Crie e gerencie seus mapas</span>
+    </button>
+
+    <button class="tt-card tt-card-desabilitado" disabled>
+      <span class="tt-card-icone">⚔</span>
+      <span class="tt-card-titulo">Entrar</span>
+      <span class="tt-card-desc">Entre em uma sessão</span>
+      <span class="tt-card-badge">Em breve</span>
+    </button>
+
+  </div>
+</section>
+
+<!-- ===== POPUP EDITAR ===== -->
+<div id="popupEditar" class="tt-popup-overlay" onclick="fecharSeForaDoBox(event)">
+  <div class="tt-popup-box">
+
+    <button class="tt-popup-fechar" onclick="Sons.back(); fecharEditar()" aria-label="Fechar">✕</button>
+
+    <div class="tt-popup-header">
+      <h2 class="tt-popup-titulo">Mapas</h2>
+      <p class="tt-popup-sub">Seus mapas salvos</p>
+    </div>
+
+    <button class="tt-btn-novo" onclick="Sons.confirm(); novoMapa()">
+      <span>+</span> Criar novo mapa
+    </button>
+
+    <div id="listaMaps" class="tt-lista-mapas">
+      <!-- preenchido por JS -->
+    </div>
+
+    <div id="mapasVazio" class="tt-mapas-vazio" hidden>
+      <span class="tt-mapas-vazio-icone">⬡</span>
+      <p>Nenhum mapa criado ainda.</p>
+      <p class="tt-mapas-vazio-sub">Clique em "Criar novo mapa" para começar.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== POPUP CONFIRMAR DELETE MAPA ===== -->
+<dialog id="popupDeleteMapa" class="confirmacao confirmacao-perigo" aria-labelledby="tituloDeleteMapa" aria-describedby="descricaoDeleteMapa">
+    <button class="confirmacao-fechar" onclick="Sons.back(); fecharDeleteMapa()" aria-label="Fechar">✕</button>
+    <div class="confirmacao-icone" aria-hidden="true">⌫</div>
+    <small>EXCLUIR MAPA</small>
+    <h2 id="tituloDeleteMapa">Apagar este mapa?</h2>
+    <p id="descricaoDeleteMapa">Esta ação é permanente e não pode ser desfeita.</p>
+    <div class="confirmacao-acoes">
+      <button onclick="Sons.back(); fecharDeleteMapa()" autofocus>Manter mapa</button>
+      <button class="confirmacao-confirmar" onclick="Sons.del(); confirmarDeleteMapa()">Apagar mapa</button>
+    </div>
+</dialog>
+
+<script src="../scripts/estado.js"></script>
+<script src="../scripts/audio.js"></script>
+<script src="../scripts/sons.js"></script>
+<script src="../scripts/espera-vinil.js"></script>
+<script>
+  // ===== NAVBAR =====
+  const logoImg = document.querySelector('#navLogo img');
+  logoImg.classList.add('logo-entrada');
+  logoImg.addEventListener('animationend', () => {
+    logoImg.classList.remove('logo-entrada');
+    logoImg.classList.remove('logo-girar');
+  });
+  function toggleMenu() {
+    Sons.toggle();
+    logoImg.classList.remove('logo-girar');
+    void logoImg.offsetWidth;
+    logoImg.classList.add('logo-girar');
+    document.getElementById('navMenu').classList.toggle('aberto');
+  }
+  document.addEventListener('click', e => {
+    if (!document.getElementById('navLogo').contains(e.target))
+      document.getElementById('navMenu').classList.remove('aberto');
+  });
+  function sair() { localStorage.removeItem('primordios_logado'); window.location.href = 'tela0.html'; }
+  function novoPersonagem() { sessionStorage.removeItem('primordios_estado'); window.location.href = 'tela1.html'; }
+
+  // ===== MAPAS — localStorage =====
+  function getUsuario() {
+    try { return JSON.parse(localStorage.getItem('primordios_logado') || 'null'); } catch { return null; }
+  }
+  function getMapas() {
+    const u = getUsuario();
+    if (!u) return [];
+    try { const lista = JSON.parse(localStorage.getItem('primordios_mapas_' + u.usuario) || '[]'); return Array.isArray(lista) ? lista : []; } catch { return []; }
+  }
+  function salvarMapas(lista) {
+    const u = getUsuario();
+    if (!u) return false;
+    try {
+      localStorage.setItem('primordios_mapas_' + u.usuario, JSON.stringify(lista));
+      return true;
+    } catch {
+      alert('Não foi possível salvar a lista de mapas. Verifique o espaço disponível no navegador.');
+      return false;
+    }
+  }
+
+  // ===== POPUP EDITAR =====
+  function abrirEditar() {
+    renderListaMapas();
+    document.getElementById('popupEditar').classList.add('aberto');
+  }
+  function fecharEditar() {
+    document.getElementById('popupEditar').classList.remove('aberto');
+  }
+  function fecharSeForaDoBox(e) {
+    if (e.target === e.currentTarget) {
+      Sons.back();
+      e.currentTarget.classList.remove('aberto');
+    }
+  }
+
+  function renderListaMapas() {
+    const lista  = getMapas();
+    const cont   = document.getElementById('listaMaps');
+    const vazio  = document.getElementById('mapasVazio');
+    cont.innerHTML = '';
+    if (lista.length === 0) { vazio.hidden = false; return; }
+    vazio.hidden = true;
+    lista.forEach((mapa, idx) => {
+      const card = document.createElement('div');
+      card.className = 'tt-mapa-card';
+      card.innerHTML = `
+        <div class="tt-mapa-thumb"><span class="tt-mapa-thumb-icon">⬡</span></div>
+        <div class="tt-mapa-info">
+          <div class="tt-mapa-nome"></div>
+          <div class="tt-mapa-data"></div>
+        </div>
+        <div class="tt-mapa-acoes">
+          <button class="tt-mapa-btn-editar" onclick="Sons.click(); editarMapa(${idx})">✏ Editar</button>
+          <button class="tt-mapa-btn-del"    onclick="Sons.del(); abrirDeleteMapa(${idx})">✕</button>
+        </div>`;
+      card.querySelector('.tt-mapa-nome').textContent = mapa.nome;
+      card.querySelector('.tt-mapa-data').textContent = mapa.data || '';
+      if (typeof mapa.thumb === 'string' && mapa.thumb.startsWith('data:image/')) {
+        const img = document.createElement('img');
+        img.src = mapa.thumb; img.alt = ''; img.style.cssText = 'width:100%;height:100%;object-fit:cover';
+        card.querySelector('.tt-mapa-thumb').replaceChildren(img);
+      }
+      cont.appendChild(card);
+    });
+  }
+
+  function novoMapa() {
+    const lista = getMapas();
+    const novo = {
+      id: crypto.randomUUID(),
+      nome: 'Mapa ' + (lista.length + 1),
+      data: new Date().toLocaleDateString('pt-BR'),
+      thumb: null,
+      dados: null,
+    };
+    sessionStorage.setItem('primordios_mapa_rascunho', JSON.stringify({ usuario: getUsuario().usuario, mapa: novo }));
+    sessionStorage.setItem('primordios_mapa_idx', '-1');
+    window.location.href = 'editor-mapa.html';
+  }
+
+  function editarMapa(idx) {
+    sessionStorage.removeItem('primordios_mapa_rascunho');
+    sessionStorage.setItem('primordios_mapa_idx', idx);
+    window.location.href = 'editor-mapa.html';
+  }
+
+  // ===== DELETE MAPA =====
+  let _idxDeleteMapa = null;
+  function abrirDeleteMapa(idx) {
+    _idxDeleteMapa = idx;
+    const mapa = getMapas()[idx];
+    document.getElementById('descricaoDeleteMapa').textContent = 'O mapa “' + (mapa?.nome || 'Sem nome') + '” será apagado. Esta ação não pode ser desfeita.';
+    document.getElementById('popupDeleteMapa').showModal();
+  }
+  function fecharDeleteMapa() {
+    _idxDeleteMapa = null;
+    document.getElementById('popupDeleteMapa').close();
+  }
+  function confirmarDeleteMapa() {
+    if (_idxDeleteMapa === null) return;
+    const lista = getMapas();
+    lista.splice(_idxDeleteMapa, 1);
+    if (!salvarMapas(lista)) return;
+    fecharDeleteMapa();
+    renderListaMapas();
+  }
+
+  // ===== INIT =====
+  document.getElementById('popupDeleteMapa').addEventListener('click', e => {
+    const box = e.currentTarget.getBoundingClientRect();
+    if (e.clientX < box.left || e.clientX > box.right || e.clientY < box.top || e.clientY > box.bottom) fecharDeleteMapa();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { fecharDeleteMapa(); fecharEditar(); }
+  });
+  window.addEventListener('load', () => {
+    const user = getUsuario();
+    if (!user) { window.location.href = 'tela0.html'; return; }
+  });
+</script>
+</body>
+</html>

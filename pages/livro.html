@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -17,6 +17,7 @@
     <div class="nav-item" onclick="Sons.nav();window.location.href='inventario.html'"><span class="nav-item-icone">⚔</span> Inventário</div>
     <div class="nav-item" onclick="Sons.nav();novoPersonagem()"><span class="nav-item-icone">✦</span> Novo Personagem</div>
     <div class="nav-item" onclick="Sons.nav();window.location.href='livro.html'"><span class="nav-item-icone">⁂</span> Livro</div>
+    <div class="nav-item" onclick="Sons.nav();window.location.href='tabletop.html'"><span class="nav-item-icone">⬡</span> TableTop</div>
     <div class="nav-item" onclick="Sons.nav();window.location.href='configuracoes.html'"><span class="nav-item-icone">⚙</span> Configurações</div>
     <div class="nav-item nav-sair" onclick="Sons.back();sair()"><span class="nav-item-icone">↩</span> Sair</div>
   </div>
@@ -261,7 +262,7 @@
     {
       titulo: 'Pontos de Vida & Energia',
       texto: `<strong>Pontos de Vida (PV)</strong> representam a resistência física do personagem. Ao chegar a 0 PV, o personagem entra em <em>estado de morrendo</em>.<br><br>
-      <strong>Pontos de Energia (PE)</strong> são o combustível para habilidades ativas. Cada habilidade tem um custo de PE baseado no nível mínimo para aprendê-la:<br><br>
+      <strong>Pontos de Energia (PE)</strong> são o combustível para habilidades ativas. Cada habilidade tem um custo de PE baseado no nível mínimo para aprendê-la. Ao alcançar uma evolução, o custo passa a usar o nível dessa evolução; entre evoluções, ele permanece o mesmo:<br><br>
       <table class="livro-tabela">
         <tr><th>Nível da Hab.</th><th>Custo PE</th></tr>
         <tr><td>1–2</td><td>1</td></tr>
@@ -888,5 +889,6 @@
     renderTermos('');
   });
 </script>
+<script src="../scripts/espera-vinil.js"></script>
 </body>
 </html>
