@@ -1,0 +1,48 @@
+const fs=require('node:fs'),path=require('node:path');
+module.exports=async({owner,player,send,sleep,assert,errors,people,profile})=>{
+  const mutate=(tab,ops)=>tab.run(`PrimordiosSessao.mutate(${JSON.stringify(ops)})`);
+  await mutate(owner,['origem','alvo','longe','cenario'].map((id,i)=>({type:'put',kind:'imagens',id,value:{src:'/assets/images/LogoT.png',camadaId:'base',x:i===1?160:i===2?350:i*100,y:0,w:i===1?200:40,h:40,token:i!==3,nome:id}})));
+  await player.wait(`PrimordiosSessao.state.scene.imagens.length===4`);
+  const click=async(tab,x,y)=>{await send('Page.bringToFront',{},tab.sessionId);await send('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',buttons:1,clickCount:1},tab.sessionId);await send('Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',buttons:0,clickCount:1},tab.sessionId);};
+  await click(player,600,450);await player.wait(`!tokenFicha.hidden`);await player.run(`tokenFicha.click()`);await player.wait(`document.querySelector('dialog[open] select')`);
+  await player.run(`document.querySelector('dialog[open] select').value='${people.player.id}';[...document.querySelectorAll('dialog[open] button')].find(b=>b.textContent==='Vincular').click()`);await player.wait(`PrimordiosSessao.state.bindings?.length===1`);await owner.wait(`PrimordiosSessao.state.bindings?.length===1`);
+  assert.equal(await player.run(`PrimordiosSessao.state.bindings[0].characterId`),people.player.id);
+  await click(owner,700,450);await owner.run(`tokenFicha.click()`);await owner.wait(`document.querySelector('dialog[open] select')`);await owner.run(`document.querySelector('dialog[open] select').value='${people.owner.id}';[...document.querySelectorAll('dialog[open] button')].find(b=>b.textContent==='Vincular').click()`);await owner.wait(`PrimordiosSessao.state.bindings?.length===2`);
+  await player.run(`sessaoFicha.click()`);await player.wait(`document.querySelector('.sessao-ficha iframe')?.contentWindow?.rolarAtaqueArma`);await player.wait(`document.querySelector('.sessao-ficha iframe').contentWindow.document.getElementById('peAtual')`);
+  const child=code=>player.run(`document.querySelector('.sessao-ficha iframe').contentWindow.eval(${JSON.stringify(code)})`);
+  await child(`estado.id='${people.player.id}';estado.classe='Guerreiro';estado.nivel=10;estado.arma='Adaga';estado.constancias['Força']=2;renderFicha();`);
+  await owner.run(`localStorage.setItem('primordios_estilo_dados','emerald')`);await child(`document.querySelector('[data-dice-style=sapphire]').click()`);
+  await child(`rolarAtaqueArma()`);await player.wait(`document.querySelector('dialog[open] form')`);
+  const prepare=()=>player.run(`(()=>{const d=document.querySelector('dialog[open]'),inputs=d.querySelectorAll('input');inputs[0].value='3';inputs[1].value='2';inputs[2].value='2d6 + 3';d.querySelector('form').requestSubmit();})()`);
+  await prepare();await player.wait(`!document.querySelector('.sessao-acao').hidden`);assert.equal(await player.run(`document.querySelectorAll('.sessao-alvos input').length`),1,'Somente um token no alcance; exclui origem, longe e cenário');
+  await click(player,700,450);assert.equal(await player.run(`document.querySelector('.sessao-alvos input').checked`),true);
+  const shot=await send('Page.captureScreenshot',{format:'png'},player.sessionId);fs.writeFileSync(path.join(profile,'alcance-alvos.png'),Buffer.from(shot.data,'base64'));
+  await player.run(`document.querySelector('.sessao-acao button').click()`);await player.wait(`PrimordiosSessao.state.rolls?.length===1`);await owner.wait(`PrimordiosSessao.state.rolls?.length===1`);
+  assert.deepEqual(await player.run(`PrimordiosSessao.state.rolls[0]`),await owner.run(`PrimordiosSessao.state.rolls[0]`));
+  await player.wait(`PrimordiosSessao.diceVisual.snapshot().some(b=>b.phase==='rolling')`);await sleep(550);
+  const rolling=await send('Page.captureScreenshot',{format:'png'},player.sessionId);fs.writeFileSync(path.join(profile,'dados-rolando.png'),Buffer.from(rolling.data,'base64'));
+  await player.wait(`PrimordiosSessao.diceVisual.snapshot().some(b=>b.phase==='broken')`);
+  assert.deepEqual(await player.run(`PrimordiosSessao.diceVisual.snapshot()[0].bodies.map(b=>b.value)`),await player.run(`PrimordiosSessao.state.rolls[0].dice.map(d=>d.v)`));
+  const positions=await player.run(`PrimordiosSessao.diceVisual.snapshot()[0].bodies.map(b=>[b.x,b.y])`);await player.run(`mais.click()`);assert.deepEqual(await player.run(`PrimordiosSessao.diceVisual.snapshot()[0].bodies.map(b=>[b.x,b.y])`),positions,'Zoom não reposiciona dados no mundo');await player.run(`menos.click()`);
+  assert.equal(await player.run(`PrimordiosSessao.state.rolls[0].dice.length`),2);assert.equal(await owner.run(`PrimordiosSessao.state.rolls[0].style`),'sapphire');assert.equal(await owner.run(`PrimordiosSessao.diceVisual.snapshot()[0].style`),'sapphire','Outro jogador vê o acabamento do autor, não seu próprio estilo');
+  assert.equal(await player.run(`!!document.querySelector('.sessao-rolagem')`),false,'Sem modal de resultados');
+  const broken=await send('Page.captureScreenshot',{format:'png'},player.sessionId);fs.writeFileSync(path.join(profile,'dados-quebrados.png'),Buffer.from(broken.data,'base64'));
+  await player.run(`sessaoFicha.click()`);
+  await child(`estado.acessoriosEquipados={maos:'Laço da Verdade'};estado.acessorio='Laço da Verdade';usarAcessorio('Laço da Verdade')`);await player.wait(`document.querySelector('dialog[open]')`);
+  const charges=await child(`obterCargasAcessorio(ACESSORIOS.find(i=>i.nome==='Laço da Verdade'))`);await prepare();await player.run(`document.querySelector('.sessao-acao button:last-child').click()`);await sleep(100);
+  assert.equal(await child(`obterCargasAcessorio(ACESSORIOS.find(i=>i.nome==='Laço da Verdade'))`),charges,'Cancelar não consome carga');
+  await child(`usarAcessorio('Laço da Verdade')`);await player.wait(`document.querySelector('dialog[open]')`);await prepare();await player.run(`document.querySelector('.sessao-alvos input').click();document.querySelector('.sessao-acao button').click()`);await player.wait(`PrimordiosSessao.state.rolls.length===2`);await sleep(100);assert.equal(await child(`obterCargasAcessorio(ACESSORIOS.find(i=>i.nome==='Laço da Verdade'))`),charges-1);
+
+  await child(`estado.classe='Bardo';renderFicha();sessionStorage.setItem('fragmentados_pe','50');document.getElementById('peAtual').textContent='50';document.querySelector('[data-acao-nome="Apoiar"]').click()`);await player.wait(`document.querySelector('dialog[open]')`);await prepare();await player.run(`document.querySelector('.sessao-acao button:last-child').click()`);await sleep(100);assert.equal(await child(`sessionStorage.getItem('fragmentados_pe')`),'50');
+  for(const tab of [owner,player]){await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true},tab.sessionId);await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5},tab.sessionId);}
+  await player.run(`centralizar.click()`);
+  await child(`document.querySelector('[data-acao-nome="Apoiar"]').click()`);await player.wait(`document.querySelector('dialog[open]')`);await prepare();
+  await send('Page.bringToFront',{},player.sessionId);await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:295,y:422}]},player.sessionId);await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]},player.sessionId);await player.wait(`document.querySelector('.sessao-alvos [data-target=alvo]').checked`);
+  await player.run(`document.querySelector('.sessao-acao button').click()`);await player.wait(`PrimordiosSessao.state.rolls.length===3`);await player.wait(`PrimordiosSessao.diceVisual.snapshot().some(b=>b.phase==='broken')`);await sleep(100);assert.ok(Number(await child(`sessionStorage.getItem('fragmentados_pe')`))<50,'Habilidade só gasta após confirmar');
+  assert.equal(await player.run(`!!document.querySelector('.sessao-rolagem')`),false);
+  await player.wait(`PrimordiosSessao.diceVisual.snapshot().length===0`);
+  await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]},player.sessionId);
+  await player.run(`PrimordiosSessao.diceVisual.roll({id:'formas-teste',title:'Formas',dice:[2,4,6,8,10,12,20,100].map(d=>({d,v:d})),bonus:0,total:162},[{x:0,y:0}])`);await player.wait(`PrimordiosSessao.diceVisual.snapshot().some(b=>b.phase==='broken')`);assert.equal(await player.run(`PrimordiosSessao.diceVisual.snapshot()[0].bodies.length`),9,'Percentual usa dezenas e unidades');await player.wait(`PrimordiosSessao.diceVisual.snapshot().length===0`);
+  await child(`estado.classe='Mago';estado.magiasGrimorio=['Poeira'];renderFicha();sessionStorage.setItem('fragmentados_pe','50');peAtual.textContent='50';document.querySelector('#grimorioFicha .grimorio-conjurar').click()`);await player.wait(`document.querySelector('dialog[open]')`);await prepare();await player.run(`document.querySelector('.sessao-alvos input').click();document.querySelector('.sessao-acao button').click()`);await player.wait(`PrimordiosSessao.state.rolls.length===4`);await player.wait(`document.querySelector('.sessao-ficha iframe').contentWindow.sessionStorage.getItem('fragmentados_pe')==='48'`);
+  assert.deepEqual(errors,[]);console.log('OK: vínculo pela interface para jogador e mestre, origem da ficha, alcance/seleção por mouse e toque, dados iguais para todos, cenário excluído, cancelamento sem cargas/PE e consumo após confirmar. Captura: '+path.join(profile,'alcance-alvos.png'));
+};

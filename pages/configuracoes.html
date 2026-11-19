@@ -8,6 +8,13 @@
 <link rel="stylesheet" href="../styles/global.css">
 <link rel="stylesheet" href="../styles/tela1.css">
 <link rel="stylesheet" href="../styles/configuracoes.css">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js"></script>
+<script src="../scripts/persistencia-mapas.js"></script>
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -43,18 +50,26 @@
 
       <div class="cfg-linha">
         <div class="cfg-linha-info">
-          <span class="cfg-label">Alterar senha</span>
-          <span class="cfg-valor-sub">Redefina sua senha de acesso</span>
+          <span class="cfg-label">Nome público</span>
+          <span class="cfg-valor-sub">Escolha como os jogadores veem você</span>
         </div>
-        <button class="cfg-btn-acao" onclick="Sons.click();abrirAlterarSenha()">Alterar</button>
+        <button class="cfg-btn-acao" onclick="location.href='configurar-perfil.html?editar=1'">Alterar nome</button>
+      </div>
+
+      <div class="cfg-linha" id="credenciaisAntigas" hidden>
+        <div class="cfg-linha-info">
+          <span class="cfg-label">Senhas locais antigas</span>
+          <span class="cfg-valor-sub" id="credenciaisAntigasInfo">Remova as senhas do cadastro antigo deste navegador sem apagar fichas ou mapas.</span>
+        </div>
+        <button class="cfg-btn-acao" onclick="limparSenhasLegadas(this)">Limpar senhas antigas</button>
       </div>
 
       <div class="cfg-linha cfg-linha-perigo">
         <div class="cfg-linha-info">
           <span class="cfg-label" style="color:#ff6666;">Apagar conta</span>
-          <span class="cfg-valor-sub">Remove permanentemente sua conta e personagens</span>
+          <span class="cfg-valor-sub">Exclusão da conta online ainda indisponível</span>
         </div>
-        <button class="cfg-btn-perigo" onclick="Sons.del();abrirApagarConta()">Apagar</button>
+        <button class="cfg-btn-perigo" disabled title="Exclusão da conta online ainda indisponível" data-i18n-title="Exclusão da conta online ainda indisponível">Apagar</button>
       </div>
     </div>
 
@@ -103,6 +118,10 @@
     <!-- ===== ÁUDIO ===== -->
     <div class="cfg-bloco">
       <div class="cfg-bloco-titulo">Áudio</div>
+      <div class="cfg-linha">
+        <div class="cfg-linha-info"><span class="cfg-label">Permissão de áudio</span><span class="cfg-valor-sub">Escolha se deseja ouvir músicas e efeitos</span></div>
+        <button class="cfg-btn-acao" onclick="ConsentimentoAudio.pedir()">Alterar</button>
+      </div>
 
       <div class="cfg-linha">
         <div class="cfg-linha-info">
@@ -128,10 +147,10 @@
 
         <!-- Volume -->
         <div class="cfg-musica-volume">
-          <span class="cfg-volume-icone">🔈</span>
+          <span class="cfg-volume-icone"><svg class="icone-linha" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4zM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></span>
           <input type="range" class="cfg-slider" id="volumeSlider" min="0" max="100" value="20"
             oninput="alterarVolume(this.value)">
-          <span class="cfg-volume-icone">🔊</span>
+          <span class="cfg-volume-icone"><svg class="icone-linha" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4zM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg></span>
           <span class="cfg-volume-valor" id="volumeValor">20%</span>
         </div>
 
@@ -166,31 +185,6 @@
   </div>
 </section>
 
-<!-- ===== POPUP ALTERAR SENHA ===== -->
-<div id="popupSenha">
-  <div class="cfg-popup-box">
-    <div class="cfg-popup-header">
-      <span class="cfg-popup-titulo">Alterar Senha</span>
-      <button class="c-btn" onclick="fecharAlterarSenha()" style="color:#aaa;">✕</button>
-    </div>
-    <div class="campo-grupo">
-      <label class="campo-label">Senha atual</label>
-      <input id="senhaAtual" type="password" class="campo-input" placeholder="••••••••">
-    </div>
-    <div class="campo-grupo">
-      <label class="campo-label">Nova senha</label>
-      <input id="senhaNova" type="password" class="campo-input" placeholder="mínimo 6 caracteres">
-    </div>
-    <div class="campo-grupo">
-      <label class="campo-label">Confirmar nova senha</label>
-      <input id="senhaNovaConf" type="password" class="campo-input" placeholder="repita a nova senha">
-    </div>
-    <div id="senhaErro" class="form-erro"></div>
-    <div id="senhaSucesso" class="form-sucesso"></div>
-    <button class="btn-login" onclick="salvarNovaSenha()">Salvar</button>
-  </div>
-</div>
-
 <!-- ===== POPUP APAGAR CONTA ===== -->
 <div id="popupApagarConta">
   <div class="cfg-popup-box" style="text-align:center;">
@@ -224,8 +218,10 @@
 
 <audio id="audioPlayer" crossorigin="anonymous"></audio>
 
-<script src="../scripts/estado.js"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
 <script src="../scripts/sons.js"></script>
+<script src="../scripts/consentimento-audio.js"></script>
+<script src="../scripts/audio.js"></script>
 <script>
   // ===== NAVBAR =====
   const logoImg = document.querySelector('#navLogo img');
@@ -246,28 +242,12 @@
       document.getElementById('navMenu').classList.remove('aberto');
   });
   function sair() {
-    localStorage.removeItem('primordios_logado');
-    window.location.href = 'tela0.html';
+    return PrimordiosAuth.sair();
   }
 
-  function novoPersonagem() {
-    Object.assign(estado, {
-      personagem: null, classe: null, nivel: 1, caminho: null,
-      constancias: { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 },
-      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, acessoriosEquipados: {}, acessoriosCargas: {}, talentos: [], nomePersonagem: ''
-    });
-    salvarEstado();
-    window.location.href = 'tela1.html';
-  }
 
   // ===== CONFIG =====
-  const MUSICAS = [
-    { nome: 'Espera',            arquivo: '../assets/audio/Espera.mp3' },
-    { nome: 'Nossa Canção', arquivo: '../assets/audio/TocareinNossaCanção.MP3' },
-    { nome: 'Porque ser Forte?',            arquivo: '../assets/audio/Dequevaleserforte.mp3' },
-    { nome: 'Dinheiro é VIDA',         arquivo: '../assets/audio/Dinheiroévida.mp3' },
-    { nome: 'Serei o Amanhecer',    arquivo: '../assets/audio/SerOAmanhecer.mp3' },
-  ];
+
 
   let config = {
     tema: 'escuro',
@@ -282,12 +262,15 @@
 
   function carregarConfig() {
     const salvo = localStorage.getItem('primordios_config');
-    if (salvo) Object.assign(config, JSON.parse(salvo));
+    if (salvo) Object.assign(config, lerJSON(localStorage, 'primordios_config', {}));
   }
 
   function salvarConfig(chave, valor) {
+    Object.assign(config, lerJSON(localStorage, 'primordios_config', {}));
     config[chave] = valor;
     localStorage.setItem('primordios_config', JSON.stringify(config));
+    window.aplicarPreferencias?.();
+    window.dispatchEvent(new Event('primordios:config'));
   }
 
   function aplicarConfig() {
@@ -316,6 +299,11 @@
     if (m) document.getElementById('cfgMusicaNome').textContent = m.nome;
   }
 
+  window.addEventListener('storage', e => {
+    if (e.key === 'primordios_config') { carregarConfig(); aplicarConfig(); }
+  });
+  window.addEventListener('primordios:config', () => { carregarConfig(); aplicarConfig(); });
+
   // ===== TEMA =====
   function alternarTema() {
     config.tema = config.tema === 'escuro' ? 'claro' : 'escuro';
@@ -341,35 +329,15 @@
   const audio = document.getElementById('audioPlayer');
 
   function carregarMusicaAtual(retomar) {
-    const m = MUSICAS[config.musicaIdx];
-    if (!m) return;
-    const pos = retomar ? parseFloat(sessionStorage.getItem('primordios_audio_pos') || '0') : 0;
-    audio.src = m.arquivo;
-    audio.volume = config.volume / 100;
-    document.getElementById('cfgMusicaNome').textContent = m.nome;
-    audio.addEventListener('canplay', () => {
-      if (pos > 0) audio.currentTime = pos;
-      if (config.musicaAtiva) audio.play().catch(() => {});
-      atualizarBotoesPlayer();
-    }, { once: true });
+    AudioPrimordios.carregar(config.musicaIdx, retomar);
+    document.getElementById('cfgMusicaNome').textContent = MUSICAS[config.musicaIdx]?.nome || '';
   }
 
-  // Salva posição continuamente para o audio.js reaproveitar
-  audio.addEventListener('timeupdate', () => {
-    if (!audio.paused && audio.duration)
-      sessionStorage.setItem('primordios_audio_pos', audio.currentTime);
-  });
-
-  window.addEventListener('beforeunload', () => {
-    if (!audio.paused && audio.duration)
-      sessionStorage.setItem('primordios_audio_pos', audio.currentTime);
-  });
-
-  function alternarMusica() {
+  async function alternarMusica() {
+    if(!config.musicaAtiva && !ConsentimentoAudio.permitido()) { await ConsentimentoAudio.pedir(); carregarConfig(); aplicarConfig(); return; }
     salvarConfig('musicaAtiva', !config.musicaAtiva);
     document.getElementById('toggleMusica').classList.toggle('ativo', config.musicaAtiva);
-    if (config.musicaAtiva) { carregarMusicaAtual(false); }
-    else { audio.pause(); }
+    if (!config.musicaAtiva) audio.pause();
     atualizarBotoesPlayer();
   }
 
@@ -390,8 +358,9 @@
     document.getElementById('btnModoAleatoria').classList.toggle('ativo', modo === 'aleatoria');
   }
 
-  function togglePlayPause() {
-    if (audio.paused) { audio.play(); salvarConfig('musicaAtiva', true); }
+  async function togglePlayPause() {
+    if(audio.paused && !ConsentimentoAudio.permitido()) { await ConsentimentoAudio.pedir(); carregarConfig(); aplicarConfig(); return; }
+    if (audio.paused) { audio.play().catch(() => {}); salvarConfig('musicaAtiva', true); }
     else              { audio.pause(); salvarConfig('musicaAtiva', false); }
     atualizarBotoesPlayer();
   }
@@ -428,9 +397,9 @@
     document.getElementById('progTotal').textContent  = formatarTempo(audio.duration);
   });
 
-  audio.addEventListener('ended', () => {
-    if (config.modo === 'aleatoria') musicaProxima();
-    else if (config.modo === 'unica') { audio.currentTime = 0; audio.play(); }
+  window.addEventListener('primordios:faixa', e => {
+    config.musicaIdx = e.detail.idx;
+    document.getElementById('cfgMusicaNome').textContent = MUSICAS[config.musicaIdx].nome;
   });
 
   audio.addEventListener('play',  atualizarBotoesPlayer);
@@ -465,69 +434,50 @@
     document.getElementById('popupMusica').classList.remove('aberto');
   }
 
-  // ===== ALTERAR SENHA =====
-  function abrirAlterarSenha() { document.getElementById('popupSenha').classList.add('aberto'); }
-  function fecharAlterarSenha() { document.getElementById('popupSenha').classList.remove('aberto'); }
-
-  function salvarNovaSenha() {
-    const atual  = document.getElementById('senhaAtual').value;
-    const nova   = document.getElementById('senhaNova').value;
-    const conf   = document.getElementById('senhaNovaConf').value;
-    const erroEl = document.getElementById('senhaErro');
-    const sucEl  = document.getElementById('senhaSucesso');
-    erroEl.textContent = ''; sucEl.textContent = '';
-
-    const user    = JSON.parse(localStorage.getItem('primordios_logado') || 'null');
-    const usuarios = JSON.parse(localStorage.getItem('primordios_usuarios') || '[]');
-    const idx     = usuarios.findIndex(u => u.usuario === user.usuario);
-    if (idx === -1) { erroEl.textContent = 'Usuário não encontrado.'; return; }
-    if (usuarios[idx].senha !== atual) { Sons.error(); erroEl.textContent = 'Senha atual incorreta.'; return; }
-    if (nova.length < 6)  { Sons.error(); erroEl.textContent = 'Nova senha deve ter ao menos 6 caracteres.'; return; }
-    if (nova !== conf)    { Sons.error(); erroEl.textContent = 'As senhas não coincidem.'; return; }
-
-    usuarios[idx].senha = nova;
-    localStorage.setItem('primordios_usuarios', JSON.stringify(usuarios));
-    Sons.success();
-    sucEl.textContent = '✦ Senha alterada com sucesso!';
-    setTimeout(() => fecharAlterarSenha(), 1500);
+  // ===== CREDENCIAIS LEGADAS =====
+  function limparSenhasLegadas(button) {
+    const users = lerJSON(localStorage, 'primordios_usuarios', []);
+    if (!Array.isArray(users)) return;
+    try {
+      const sanitized = users.filter(user => user && typeof user === 'object').map(user => {
+        const safe = { ...user }; delete safe.senha; delete safe.password; return safe;
+      });
+      localStorage.setItem('primordios_usuarios', JSON.stringify(sanitized));
+      document.getElementById('credenciaisAntigasInfo').textContent = 'Senhas antigas removidas deste navegador. Fichas e mapas preservados.';
+      button.disabled = true;
+    } catch { document.getElementById('credenciaisAntigasInfo').textContent = 'Não foi possível limpar as senhas. Tente novamente.'; }
   }
-
   // ===== APAGAR CONTA =====
-  function abrirApagarConta() { document.getElementById('popupApagarConta').classList.add('aberto'); }
+  function abrirApagarConta() {
+    // Não confundir apagar os dados locais antigos com excluir a identidade online.
+    document.getElementById('apagarErro').textContent = 'A exclusão da conta online ainda não está disponível. Seus dados não foram apagados.';
+    document.getElementById('popupApagarConta').classList.add('aberto');
+  }
   function fecharApagarConta() { document.getElementById('popupApagarConta').classList.remove('aberto'); }
 
-  function confirmarApagarConta() {
-    const senha   = document.getElementById('apagarSenha').value;
-    const erroEl  = document.getElementById('apagarErro');
-    erroEl.textContent = '';
-    const user    = JSON.parse(localStorage.getItem('primordios_logado') || 'null');
-    const usuarios = JSON.parse(localStorage.getItem('primordios_usuarios') || '[]');
-    const idx     = usuarios.findIndex(u => u.usuario === user.usuario);
-    if (idx === -1 || usuarios[idx].senha !== senha) { erroEl.textContent = 'Senha incorreta.'; return; }
-    usuarios.splice(idx, 1);
-    localStorage.setItem('primordios_usuarios', JSON.stringify(usuarios));
-    localStorage.removeItem('primordios_personagens_' + user.usuario);
-    localStorage.removeItem('primordios_logado');
-    sessionStorage.clear();
-    window.location.href = 'tela0.html';
+  async function confirmarApagarConta() {
+    document.getElementById('apagarErro').textContent = 'A exclusão da conta online ainda não está disponível. Seus dados não foram apagados.';
   }
 
   // Fecha popups ao clicar fora
-  ['popupSenha','popupApagarConta','popupMusica'].forEach(id => {
+  ['popupApagarConta','popupMusica'].forEach(id => {
     document.getElementById(id).addEventListener('click', function(e) {
       if (e.target === this) this.classList.remove('aberto');
     });
   });
 
   // ===== INIT =====
-  window.addEventListener('load', () => {
-    const user = JSON.parse(localStorage.getItem('primordios_logado') || 'null');
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
+    const user = lerJSON(localStorage, 'primordios_logado', null);
     if (!user) { window.location.href = 'tela0.html'; return; }
-    document.getElementById('cfgUsuario').textContent = user.usuario;
+    document.getElementById('cfgUsuario').textContent = user.nome || 'Jogador';
+    const legacy = lerJSON(localStorage, 'primordios_usuarios', []);
+    document.getElementById('credenciaisAntigas').hidden = !Array.isArray(legacy) || !legacy.some(user => user && typeof user === 'object' && ('senha' in user || 'password' in user));
     carregarConfig();
     aplicarConfig();
     // Retoma a posição salva pelo audio.js
-    if (config.musicaAtiva) carregarMusicaAtual(true);
+    // O player compartilhado já retoma a faixa.
   });
 </script>
 <script src="../scripts/espera-vinil.js"></script>

@@ -1,0 +1,11 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+let now=0;const labels=[];
+const context={window:{addEventListener(){}},document:{addEventListener(){},hidden:false},performance:{now:()=>now},requestAnimationFrame:()=>1,cancelAnimationFrame(){},matchMedia:()=>({matches:true}),BandejaDados3D:{styles:[{id:'ivory'}],geometry:()=>({vertices:[[0,1,0]],faces:[{value:3,n:[0,1,0]}]})}};
+vm.createContext(context);vm.runInContext(fs.readFileSync('scripts/dados-mesa.js','utf8'),context);
+const visual=new context.window.DadosNaMesa({draw(){},camera:()=>({zoom:1})});
+visual.roll({id:'dano',title:'Tiros de Chamas',category:'attack',dice:[{d:6,v:3}],bonus:0,total:3},[{x:0,y:0}],['a','b'].map((targetId,i)=>({targetId,anchor:{x:i*100,y:0,h:50},diceIndices:[0],units:1,factor:i?.5:1,total:i?1:3})));
+const canvas={fillRect(){},save(){},restore(){},translate(){},scale(){},strokeText(){},fillText(text){labels.push(text);}};
+now=121;visual.paint(canvas);assert.ok(labels.includes('−3'));assert.ok(labels.includes('−1'));assert.equal(visual.snapshot()[0].targetResults.length,2);
+now=8119;visual.paint(canvas);assert.equal(visual.snapshot().length,1,'Dano permanece durante 8 segundos após os dados quebrarem');
+now=8121;visual.paint(canvas);assert.equal(visual.snapshot().length,0,'Dano some sem deixar dados acumulados');
+console.log('OK: dano separado acima dos alvos e duração de 8 segundos após a quebra, inclusive com movimento reduzido.');

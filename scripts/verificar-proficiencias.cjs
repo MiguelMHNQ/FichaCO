@@ -1,0 +1,16 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const context=vm.createContext({window:{addEventListener(){}},sessionStorage:{getItem:()=>null,setItem(){}},localStorage:{getItem:()=>null}});
+for(const p of ['scripts/estado.js','scripts/itens.js','scripts/proficiencias.js'])vm.runInContext(fs.readFileSync(p,'utf8'),context,{filename:p});
+const read=code=>JSON.parse(JSON.stringify(vm.runInContext(code,context)));
+const rules={Espadachim:{conhecimento:['Espadas (Geral)'],familiaridade:['Adagas Leves'],armaduras:['Leves','Médias']},Mago:{conhecimento:['Adaga (Arma Específica)','Bastão (Arma Específica)'],familiaridade:['Demais Adagas Leves'],armaduras:['Leves']},Obscuro:{conhecimento:['Adagas Leves','Espada Curta (Arma Específica)','Arco Curto (Arma Específica)'],familiaridade:['Espadas Leves','Besta de Mão (Arma Específica)'],armaduras:['Leves']},Bardo:{conhecimento:['Espada Curta (Arma Específica)','Florete (Arma Específica)','Arco Curto'],familiaridade:['Adagas Leves'],armaduras:['Leves']}};
+for(const [classe,expected]of Object.entries(rules))for(const key of ['conhecimento','familiaridade','armaduras'])assert.deepEqual(read('CLASSES_PREVIEW['+JSON.stringify(classe)+'].'+key),expected[key]);
+const normalize=value=>read('window.Proficiencias.escolhas('+JSON.stringify(value)+')');
+assert.deepEqual(normalize({conhecimentos:['espadas-leves','machados-pesados'],familiaridade:'Espadas Pesadas'}),{conhecimentos:['espadas-leves','machados-pesados'],familiaridade:'Espadas Pesadas'});
+assert.equal(normalize({conhecimentos:['espadas-leves','machados-pesados'],familiaridade:'Espadas Leves'}).familiaridade,null);
+assert.equal(normalize({conhecimentos:['espadas-leves','machados-pesados'],familiaridade:'Lanças Pesadas'}).familiaridade,null);
+assert.equal(normalize({conhecimentos:['espadas-leves','espadas-leves'],familiaridade:'Espadas Pesadas'}).familiaridade,null);
+assert.deepEqual(normalize({conhecimentos:['unknown','<img>','lancas-leves'],familiaridade:'Lanças Pesadas'}),{conhecimentos:['lancas-leves'],familiaridade:null});
+assert.equal(normalize({conhecimentos:['martelos-pesados','macas-leves'],familiaridade:'Martelos Leves'}).familiaridade,'Martelos Leves');
+assert.equal(normalize({conhecimentos:['martelos-pesados','macas-leves'],familiaridade:'Maças Pesadas'}).familiaridade,'Maças Pesadas');
+const categories=read('window.Proficiencias.categorias()');assert.ok(categories.length>15);for(const name of ['Espadas','Adagas','Bastões'])assert.ok(categories.some(c=>c.opcoes.includes(name)));assert.ok(categories.some(c=>c.opcoes.includes('Espadas (Pesada)')));
+console.log('OK: regras das classes, famílias e pesos válidos do Guerreiro, duplicatas, entradas inválidas e categorias de especialização do catálogo real.');

@@ -3,6 +3,14 @@
   --cor-texto: #e0d6c8;
 }
 
+#fichaConteudo #caValor.ca-com-armadura { color:#a6a6ad !important; text-shadow:none !important; }
+body.tema-claro #fichaConteudo #caValor.ca-com-armadura { color:#696970 !important; }
+.nivel-toast { position:fixed;top:16px;right:16px;z-index:9999;background:#1a1726;border:1px solid #c9a84c55;border-radius:8px;padding:16px 20px;font-size:.8rem;color:#e0d6c8;line-height:1.9;box-shadow:0 8px 30px #0005;min-width:220px; }
+.nivel-toast[hidden] { display:none; }
+.nivel-toast-titulo { color:#c9a84c;font-size:.7rem;letter-spacing:2px;margin-bottom:8px; }
+.nivel-toast .icone-linha { margin-right:6px;width:16px;height:16px; }
+body.tema-claro .nivel-toast { background:#fffdf8;color:#514b42;border-color:#d9cfbd; }
+
 body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%); }
 
 /* ===== MODO EDIÇÃO ===== */
@@ -143,6 +151,10 @@ body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%);
 .pv-temporarios { font-size: 1rem; font-weight: bold; white-space: nowrap; }
 .pv-temporarios[hidden] { display: none; }
 .pv-temporarios, #pvAtual.pv-com-temporarios { color: #69b7ff !important; }
+.pe-temporarios { font-size: 1rem; font-weight: bold; white-space: nowrap; }
+.pe-temporarios[hidden] { display: none; }
+.pe-temporarios, #peAtual.pe-com-temporarios { color: #5ed99a !important; }
+body.tema-claro .pe-temporarios, body.tema-claro #peAtual.pe-com-temporarios { color: #24764c !important; }
 .tem-aviso-pe { position: relative; }
 .aviso-pe {
   position: absolute;
@@ -374,7 +386,54 @@ body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%);
 
 .ficha-acessorios-equipados {
   min-width: 100%;
+  container-type: inline-size;
+  --acessorio-fundo: #14111e;
+  --acessorio-borda: #c9a84c36;
+  --acessorio-texto: #bbb0a0;
 }
+
+.acessorios-orbita-layout {display:grid;grid-template-columns:340px minmax(0,1fr);align-items:center;gap:24px;padding:12px 0 8px}
+.acessorios-roda {--raio-roda:126px;position:relative;width:330px;max-width:100%;aspect-ratio:1;justify-self:center;isolation:isolate}
+.acessorios-roda::before,.acessorios-roda::after {content:'';position:absolute;inset:12%;border:1px solid var(--acessorio-borda);border-radius:50%;pointer-events:none}
+.acessorios-roda::after {inset:22%;border-style:dashed;opacity:.5}
+.acessorios-roda-centro {position:absolute;inset:32%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--cor-principal);border:1px solid var(--acessorio-borda);border-radius:50%;background:radial-gradient(circle,#c9a84c10,transparent 70%)}
+.acessorios-roda-centro>span {font-size:42px;line-height:1}
+.acessorios-roda-centro small {font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase}
+.acessorio-roda-item {position:absolute;left:50%;top:50%;width:54px;height:54px;border:1px dashed var(--acessorio-borda);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--acessorio-fundo);color:var(--acessorio-texto);padding:6px;cursor:pointer;transition:background .2s,border-color .2s,box-shadow .2s;z-index:1}
+.acessorio-roda-item svg {width:25px;height:25px;flex-shrink:0}
+.acessorio-roda-item>span {font-size:.48rem;line-height:1.1;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.acessorio-roda-item img {width:29px;height:29px;object-fit:contain}
+.acessorio-roda-item.equipado {border-style:solid;color:var(--cor-principal)}
+.acessorio-roda-item.ativo {border:1px solid var(--cor-principal);box-shadow:0 0 0 4px #c9a84c0b,0 6px 24px #0003;background:var(--acessorio-fundo);color:var(--cor-principal);z-index:2}
+.acessorio-roda-item:hover {border-color:var(--cor-principal)}
+.acessorio-roda-item:focus-visible {outline:2px solid var(--cor-principal);outline-offset:5px}
+.acessorios-roda-detalhes {min-width:0;border-left:1px solid var(--acessorio-borda);padding:8px 0 8px 24px}
+.acessorios-roda-detalhes [hidden] {display:none!important}
+.acessorios-roda-detalhes>[role=tabpanel]:not([hidden]) {animation:acessorio-revelar .25s ease-out}
+@keyframes acessorio-revelar {from{opacity:.3;translate:6px 0}to{opacity:1;translate:0 0}}
+.acessorios-roda-detalhes .acessorio-slot-card {border:0;background:transparent;min-height:0;padding:0;gap:12px}
+.acessorios-roda-detalhes .acessorio-slot-descricao {font-size:.82rem;line-height:1.8;color:var(--acessorio-texto)}
+.acessorios-roda-detalhes .acessorio-slot-detalhes {font-size:.7rem;line-height:1.7;color:var(--acessorio-texto)}
+.acessorio-feedback {font-size:.73rem;line-height:1.65;color:var(--cor-principal);overflow-wrap:anywhere}
+.acessorio-feedback:empty {display:none}
+.equipamento-busca {box-sizing:border-box;flex-shrink:0;width:100%;min-width:0;padding:10px 12px;border:1px solid #c9a84c45;border-radius:7px;background:#13111c;color:var(--cor-texto);font:.78rem Georgia,serif}
+.equipamento-busca:focus {outline:1px solid var(--cor-principal);outline-offset:1px}
+#popupEquipBusca {margin:0 0 12px}
+.acessorio-ghost {position:fixed;z-index:10000;pointer-events:none;user-select:none;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:1px solid;border-radius:3px;background:#c9a84c0c;text-shadow:0 0 8px #c9a84c70;box-shadow:0 0 14px #c9a84c20;text-align:center;padding:0 8px}
+.acessorio-destaque {display:flex;align-items:center;gap:14px;margin-bottom:18px;min-width:0}
+.acessorio-destaque-arte {width:64px;height:64px;display:grid;place-items:center;flex-shrink:0;background:#c9a84c08;border:1px solid var(--acessorio-borda);border-radius:14px;color:var(--cor-principal)}
+.acessorio-destaque-arte svg {width:36px;height:36px}
+.acessorio-destaque-arte img {width:52px;height:52px;object-fit:contain}
+.acessorio-destaque small {font-size:.62rem;color:var(--acessorio-texto);letter-spacing:1px}
+.acessorio-destaque h5 {font-size:1.1rem;line-height:1.4;font-weight:normal;margin:5px 0 0;color:var(--cor-principal);overflow-wrap:anywhere}
+body.tema-claro .ficha-acessorios-equipados {--acessorio-fundo:#fffaf0;--acessorio-borda:#b29b7055;--acessorio-texto:#62584b;--cor-principal:#896527}
+body.tema-claro .acessorios-roda-detalhes .acessorio-slot-card {background:transparent!important;box-shadow:none!important}
+@container (max-width:640px) {
+  .acessorios-orbita-layout {grid-template-columns:minmax(0,1fr);gap:12px}
+  .acessorios-roda {--raio-roda:clamp(88px,36cqw,126px)}
+  .acessorios-roda-detalhes {border-left:0;border-top:1px solid var(--acessorio-borda);padding:22px 0 0}
+}
+@media(prefers-reduced-motion:reduce) {.acessorios-roda {transition:none}.acessorio-roda-item {transition:none}.acessorios-roda-detalhes>[role=tabpanel]:not([hidden]) {animation:none}}
 
 .acessorios-ajuda {
   color: #777;
@@ -462,4 +521,27 @@ body { background: radial-gradient(ellipse at center, #12101a 0%, #0a0a0f 100%);
   min-width: 220px;
   width: 280px;
   flex: unset;
+}
+.ficha-viewport{width:100%;max-width:1000px;margin:0 auto}
+.bloco-edit-handle{pointer-events:auto;touch-action:none}
+.bloco-ordem{font:inherit;padding:3px 8px;min-width:28px;margin-left:4px;background:transparent;border:1px solid var(--cor-principal);color:inherit}
+.resize-handle{touch-action:none}
+@media(max-width:720px), (pointer:coarse) and (max-height:500px){
+  .tela{padding:34px 12px calc(100px + env(safe-area-inset-bottom,0px))}
+  .ficha-viewport{min-width:0}
+  #fichaConteudo:not(.layout-3)>.ficha-bloco{flex:0 0 100%!important;min-width:0!important;width:100%!important;max-width:100%;box-sizing:border-box;padding:16px}
+  #fichaConteudo:not(.layout-3){gap:16px!important}
+  .ficha-viewport.layout-livre{overflow:auto;max-height:72dvh;overscroll-behavior:contain;outline:1px solid var(--cor-principal);border-radius:6px;padding:4px;box-sizing:border-box}
+  #fichaConteudo.layout-3{margin:0!important;max-width:none!important}
+  .ficha-bloco.editavel{padding-top:64px!important}
+  .ficha-bloco.editavel .bloco-edit-handle{display:flex;align-items:center;min-height:44px;top:8px;left:12px;right:auto;font-size:.75rem;gap:4px;max-width:calc(100% - 24px);box-sizing:border-box}
+  .bloco-ordem{min-width:44px;min-height:44px;padding:4px;margin-left:0}
+  .layout-3 .ficha-bloco.editavel .bloco-edit-handle{left:50px;right:50px;justify-content:center;max-width:none}
+  .resize-handle{width:44px;height:44px;background:transparent;opacity:1}
+  .resize-handle::after{content:'';position:absolute;inset:15px;border-radius:50%;background:var(--cor-principal)}
+  .rh-n,.rh-s,.rh-w,.rh-e{display:none}
+  .rh-nw{top:0;left:0}.rh-ne{top:0;right:0}.rh-sw{bottom:0;left:0}.rh-se{bottom:0;right:0}
+  #fichaEditToolbar{padding:10px!important;gap:12px!important;box-sizing:border-box;min-width:0;position:sticky;top:env(safe-area-inset-top,0px);z-index:40;max-height:35dvh;overflow:auto}
+  .layout-btn{min-height:44px;min-width:44px}
+  .ficha-editar-btn{bottom:calc(14px + env(safe-area-inset-bottom,0px));right:12px}
 }

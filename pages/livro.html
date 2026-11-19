@@ -8,6 +8,12 @@
 <link rel="stylesheet" href="../styles/global.css">
 <link rel="stylesheet" href="../styles/tela1.css">
 <link rel="stylesheet" href="../styles/livro.css">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js"></script>
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -57,11 +63,13 @@
 
 </div>
 
-<script src="../scripts/estado.js"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
+<script src="../scripts/consentimento-audio.js"></script>
 <script src="../scripts/audio.js"></script>
 <script src="../scripts/sons.js"></script>
 <script src="../scripts/itens.js"></script>
-<script src="../scripts/habilidades.js"></script>
+<script src="../scripts/armas-detalhes.js"></script>
+<script src="../scripts/habilidades.js?v=mana-1"></script>
 <script src="../scripts/livro-dados.js"></script>
 <script>
   // ===== NAVBAR =====
@@ -82,8 +90,7 @@
     if (!document.getElementById('navLogo').contains(e.target))
       document.getElementById('navMenu').classList.remove('aberto');
   });
-  function sair() { localStorage.removeItem('primordios_logado'); window.location.href = 'tela0.html'; }
-  function novoPersonagem() { sessionStorage.removeItem('primordios_estado'); window.location.href = 'tela1.html'; }
+  function sair() { return PrimordiosAuth.sair(); }
 
   // ===== DADOS DAS ABAS =====
   let abaAtiva = 'termos';
@@ -257,11 +264,12 @@
         <tr><td>10–14</td><td>+4</td></tr>
         <tr><td>15–20</td><td>+5</td></tr>
       </table><br>
-      O BC é somado às Constâncias que o personagem possui proficiência (fixas da classe ou escolhidas).`
+      O BC é somado às Constâncias em que o personagem possui aptidão (fixas da classe ou escolhidas).`
     },
     {
       titulo: 'Pontos de Vida & Energia',
       texto: `<strong>Pontos de Vida (PV)</strong> representam a resistência física do personagem. Ao chegar a 0 PV, o personagem entra em <em>estado de morrendo</em>.<br><br>
+      <strong>Mana (Mago):</strong> Para o Mago, essa reserva se chama Mana: magias e habilidades consomem a mesma barra. Efeitos que gastam ou recuperam PE afetam sua Mana, sem criar uma segunda reserva.<br><br>
       <strong>Pontos de Energia (PE)</strong> são o combustível para habilidades ativas. Cada habilidade tem um custo de PE baseado no nível mínimo para aprendê-la. Ao alcançar uma evolução, o custo passa a usar o nível dessa evolução; entre evoluções, ele permanece o mesmo:<br><br>
       <table class="livro-tabela">
         <tr><th>Nível da Hab.</th><th>Custo PE</th></tr>
@@ -309,7 +317,7 @@
     },
     {
       titulo: 'Caminhos',
-      texto: `A partir do <strong>Nível 6</strong>, cada personagem escolhe um <strong>Caminho</strong> — uma especialização dentro de sua classe que concede habilidades únicas e proficiências adicionais.<br><br>
+      texto: `A partir do <strong>Nível 6</strong>, cada personagem escolhe um <strong>Caminho</strong> — uma especialização dentro de sua classe que concede habilidades únicas, aptidões e proficiências adicionais.<br><br>
       O caminho define o estilo de jogo do personagem a longo prazo. Suas habilidades são desbloqueadas progressivamente conforme o nível avança (6, 9, 13, 17 e 20).`
     },
     {
@@ -341,7 +349,7 @@
   // ===== RENDER FUNÇÕES =====
   function renderTermos(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = filtro ? LIVRO_TERMOS.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_TERMOS;
+    const lista = filtro ? LIVRO_TERMOS.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro)) : LIVRO_TERMOS;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = lista.map(r => `
       <div class="livro-card">
@@ -352,7 +360,7 @@
 
   function renderCombate(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = filtro ? LIVRO_COMBATE.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_COMBATE;
+    const lista = filtro ? LIVRO_COMBATE.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro)) : LIVRO_COMBATE;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = lista.map(r => {
       if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>${r.texto ? `<p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:12px;">${r.texto}</p>` : ''}`;
@@ -362,7 +370,7 @@
 
   function renderCondicoes(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = filtro ? LIVRO_CONDICOES.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_CONDICOES;
+    const lista = filtro ? LIVRO_CONDICOES.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro)) : LIVRO_CONDICOES;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = lista.map(r => {
       if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>${r.texto ? `<p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:12px;">${r.texto}</p>` : ''}`;
@@ -372,7 +380,7 @@
 
   function renderRacas(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = filtro ? LIVRO_RACAS.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_RACAS;
+    const lista = filtro ? LIVRO_RACAS.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro)) : LIVRO_RACAS;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = lista.map(r => {
       if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>`;
@@ -382,7 +390,7 @@
 
   function renderLinguas(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = filtro ? LIVRO_LINGUAS.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_LINGUAS;
+    const lista = filtro ? LIVRO_LINGUAS.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro)) : LIVRO_LINGUAS;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = lista.map(r => {
       if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div><p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:16px;">${r.texto}</p>`;
@@ -527,7 +535,7 @@
     });
 
     const filtradas = filtro
-      ? todasComElemento.filter(r => buscaTexto(r.titulo + r.texto, filtro))
+      ? todasComElemento.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro))
       : todasComElemento;
 
     if (!filtradas.length) { c.innerHTML = semResultado(); return; }
@@ -573,7 +581,7 @@
             <span style="font-size:1.1rem;color:#8888aa;">☐</span>
             <span style="font-size:0.8rem;letter-spacing:2px;color:#e0d6c8;text-transform:uppercase;">Controlado</span>
           </div>
-          <div style="font-size:0.76rem;color:#888;line-height:1.8;">Permite manipular a ativação do feitiço, guardando-o na manga após invocá-lo com a ação e PE correspondentes. Pode projetá-lo com uma <strong style="color:#aaa;">ação bônus</strong> quando necessário.</div>
+          <div style="font-size:0.76rem;color:#888;line-height:1.8;">Permite manipular a ativação do feitiço, guardando-o na manga após invocá-lo com a ação e Mana correspondentes. Pode projetá-lo com uma <strong style="color:#aaa;">ação bônus</strong> quando necessário.</div>
         </div>
 
         <div class="livro-card livro-card-sm" style="border-color:#25223399;">
@@ -636,7 +644,7 @@
 
   function renderFicha(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = filtro ? LIVRO_FICHA.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_FICHA;
+    const lista = filtro ? LIVRO_FICHA.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro)) : LIVRO_FICHA;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = lista.map(r => {
       if (r.subtitulo) return `<div class="livro-secao-titulo">${destacar(r.titulo, filtro)}</div>${r.texto ? `<p style="font-size:0.78rem;color:#666;font-style:italic;margin-bottom:12px;">${r.texto}</p>` : ''}`;
@@ -647,7 +655,7 @@
   function renderRegras(filtro) {
     const c = document.getElementById('livroConteudo');
     const lista = filtro
-      ? REGRAS.filter(r => buscaTexto(r.titulo + r.texto, filtro))
+      ? REGRAS.filter(r => buscaTexto(r.titulo + '<br>' + r.texto, filtro))
       : REGRAS;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = lista.map(r => `
@@ -660,7 +668,7 @@
   function renderClasses(filtro) {
     const c = document.getElementById('livroConteudo');
     const classes = Object.entries(CLASSES_PREVIEW).filter(([nome, d]) =>
-      !filtro || buscaTexto(nome + d.desc + d.famosos.join(' ') + d.especificacoes, filtro));
+      !filtro || buscaTexto([nome,d.desc,d.famosos.join(' '),d.especificacoes,...d.conhecimento,...d.familiaridade,...d.armaduras].join('<br>'), filtro));
     if (!classes.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = classes.map(([nome, d]) => `
       <div class="livro-card">
@@ -670,8 +678,12 @@
           <div>
             <div class="livro-label">Vida</div>
             <div class="livro-valor">${d.dadoVida} · Inicial: ${d.vidaInicial}</div>
-            <div class="livro-label" style="margin-top:8px;">Energia</div>
+            <div class="livro-label" style="margin-top:8px;">Vida por nível</div>
+            <div class="livro-valor">${d.vidaNivel}</div>
+            <div class="livro-label" style="margin-top:8px;">${nome === 'Mago' ? 'Mana' : 'Energia'}</div>
             <div class="livro-valor">${d.energiaInicial} inicial</div>
+            <div class="livro-label" style="margin-top:8px;">${nome === 'Mago' ? 'Mana por nível' : 'Energia por nível'}</div>
+            <div class="livro-valor">${d.energiaNivel}</div>
           </div>
           <div>
             <div class="livro-label">Constâncias Fixas</div>
@@ -681,8 +693,10 @@
           </div>
         </div>
         <div style="margin-top:10px;">
-          <div class="livro-label">Armas</div>
-          <div class="livro-tags">${d.armas.map(t => `<span class="livro-tag">${t}</span>`).join('')}</div>
+          <div class="livro-label">Conhecimento</div>
+          <div class="livro-tags">${d.conhecimento.map(t => `<span class="livro-tag">${t}</span>`).join('')}</div>
+          <div class="livro-label" style="margin-top:8px;">Familiaridade</div>
+          <div class="livro-tags">${d.familiaridade.map(t => `<span class="livro-tag">${t}</span>`).join('')}</div>
         </div>
         ${d.especificacoes && d.especificacoes !== 'Nenhuma' ? `<div class="livro-card-texto" style="margin-top:12px;">${destacar(d.especificacoes, filtro)}</div>` : ''}
         ${d.famosos.length ? `<div style="margin-top:10px;font-size:0.72rem;color:#555;font-style:italic;">Famosos: ${destacar(d.famosos.join(', '), filtro)}</div>` : ''}
@@ -693,10 +707,10 @@
     const c = document.getElementById('livroConteudo');
     let html = '';
     Object.entries(HABILIDADES).forEach(([classe, dados]) => {
-      const baseF = dados.base.filter(h => !filtro || buscaTexto(h.nome + h.desc + h.acao, filtro));
+      const baseF = dados.base.filter(h => !filtro || buscaTexto([h.nome,h.desc,h.acao].join('<br>'), filtro));
       const caminhoEntries = Object.entries(dados.caminhos).map(([nome, cam]) => ({
         nome,
-        habs: cam.habs.filter(h => !filtro || buscaTexto(h.nome + h.desc + h.acao + nome, filtro)),
+        habs: cam.habs.filter(h => !filtro || buscaTexto([h.nome,h.desc,h.acao,nome].join('<br>'), filtro)),
         proficiencias: cam.proficiencias
       })).filter(c => c.habs.length);
 
@@ -715,7 +729,7 @@
     // Talentos
     let tHtml = '';
     Object.entries(TALENTOS).forEach(([classe, lista]) => {
-      const f = lista.filter(t => !filtro || buscaTexto(t.nome + t.desc, filtro));
+      const f = lista.filter(t => !filtro || buscaTexto([t.nome,t.desc].join('<br>'), filtro));
       if (!f.length) return;
       tHtml += `<div class="livro-caminho-titulo" style="margin-top:20px;">Talentos — ${classe}</div>`;
       tHtml += f.map(t => `
@@ -751,7 +765,7 @@
 
   function renderArmas(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = filtro ? LIVRO_ARMAS_EXTRA.filter(r => buscaTexto(r.titulo + r.texto, filtro)) : LIVRO_ARMAS_EXTRA;
+    const lista = filtro ? LIVRO_ARMAS_EXTRA.filter(r => buscaTexto([r.titulo,r.texto,APARENCIA_ARMAS[r.titulo] || ''].join('<br>'), filtro)) : LIVRO_ARMAS_EXTRA;
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     let html = '';
     let gridAberto = false;
@@ -764,7 +778,6 @@
       } else {
         const partes = r.texto.split('<br><br><em>Passiva:</em>');
         const stats = partes[0];
-        const passiva = partes[1] || '';
         const getVal = (label) => {
           const m = stats.match(new RegExp('<strong>' + label + ':<\/strong>\\s*([^·<]+)'));
           return m ? m[1].trim() : '—';
@@ -780,7 +793,8 @@
               <span class="livro-tag">${getVal('Crítico')}</span>
               <span class="livro-tag">${getVal('Peso')}</span>
             </div>
-            ${passiva ? `<div class="livro-card-texto" style="font-size:0.75rem;margin-top:4px;"><em>${destacar(passiva, filtro)}</em></div>` : ''}
+            <div class="livro-card-texto" style="margin-top:10px;">${destacar(APARENCIA_ARMAS[r.titulo] || '', filtro)}</div>
+            ${botaoHabilidadeArma(r.titulo)}
           </div>`;
       }
     });
@@ -790,7 +804,7 @@
 
   function renderArmaduras(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = ARMADURAS.filter(a => !filtro || buscaTexto(a.nome + a.tipo + a.dano + a.desc, filtro));
+    const lista = ARMADURAS.filter(a => !filtro || buscaTexto([a.nome,a.tipo,a.dano,a.desc].join('<br>'), filtro));
     if (!lista.length) { c.innerHTML = semResultado(); return; }
     c.innerHTML = `<div class="livro-grid-itens">${lista.map(a => `
       <div class="livro-card livro-card-item">
@@ -803,9 +817,11 @@
 
   function renderAcessorios(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = ACESSORIOS.filter(a => !filtro || buscaTexto(a.nome + a.tipo + a.desc + (a.raridade||''), filtro));
+    const lista = ACESSORIOS.filter(a => !filtro || buscaTexto([a.nome,a.tipo,categoriaAcessorio(a),a.desc,a.raridade||''].join('<br>'), filtro));
     if (!lista.length) { c.innerHTML = semResultado(); return; }
-    c.innerHTML = `<div class="livro-grid-itens">${lista.map(a => `
+    const grupos = new Map();
+    lista.forEach(item => { const tipo=categoriaAcessorio(item);if(!grupos.has(tipo))grupos.set(tipo,[]);grupos.get(tipo).push(item); });
+    c.innerHTML = [...grupos].map(([tipo,itens]) => `<section class="livro-grupo-acessorios"><h3 class="livro-secao-titulo">${destacar(tipo,filtro)}</h3><div class="livro-grid-itens">${itens.map(a => `
       <div class="livro-card livro-card-item">
         <div class="livro-card-titulo">${destacar(a.nome, filtro)}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0;">
@@ -816,18 +832,19 @@
         </div>
         <div class="livro-card-texto">${destacar(a.desc, filtro)}</div>
         ${a.recarga ? `<div style="font-size:0.68rem;color:#555;margin-top:6px;">Recarga: ${a.recarga}</div>` : ''}
-      </div>`).join('')}</div>`;
+      </div>`).join('')}</div></section>`).join('');
   }
 
   // ===== UTILITÁRIOS =====
   function buscaTexto(str, filtro) {
-    return str.toLowerCase().includes(filtro.toLowerCase());
+    return window.PrimordiosI18n?.match(str,filtro) ?? str.toLowerCase().includes(filtro.toLowerCase());
   }
 
   function destacar(str, filtro) {
+    str = window.PrimordiosI18n?.html(str) ?? str;
     if (!filtro) return str;
     const re = new RegExp(`(${filtro.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    return str.replace(re, '<mark class="livro-mark">$1</mark>');
+    return str.split(/(<[^>]*>)/g).map(part => part.startsWith('<') ? part : part.replace(re, '<mark class="livro-mark">$1</mark>')).join('');
   }
 
   function semResultado() {
@@ -860,15 +877,15 @@
   }
 
   function pesquisar(valor) {
+    valor = valor.trim();
     const c = document.getElementById('livroConteudo');
     if (valor.trim().length > 0) {
       document.querySelectorAll('.livro-aba').forEach(b => b.classList.remove('ativo'));
       abaAtiva = '_pesquisa';
-      const abas = ['termos','combate','condicoes','racas','linguas','magias','ficha','regras','classes','habilidades','armas','armaduras','acessorios','itens'];
       const labels = { termos:'Termos', combate:'Combate', condicoes:'Condições', racas:'Raças', linguas:'Línguas', magias:'Magias', ficha:'Ficha', regras:'Regras', classes:'Classes', habilidades:'Habilidades', armas:'Armas', armaduras:'Armaduras', acessorios:'Acessórios' };
       let html = '';
-      abas.forEach(aba => {
-        RENDERS[aba](valor);
+      Object.entries(RENDERS).forEach(([aba, render]) => {
+        render(valor);
         const inner = c.innerHTML;
         if (!inner.includes('livro-sem-resultado')) {
           html += `<div class="livro-secao-titulo">${labels[aba]}</div>${inner}`;
@@ -877,14 +894,20 @@
       c.innerHTML = html || semResultado();
     } else {
       abaAtiva = 'termos';
+      document.querySelectorAll('.livro-aba').forEach(b => b.classList.remove('ativo'));
       document.querySelectorAll('.livro-aba')[0].classList.add('ativo');
       RENDERS['termos']('');
     }
   }
 
   // ===== INIT =====
-  window.addEventListener('load', () => {
-    const user = JSON.parse(localStorage.getItem('primordios_logado') || 'null');
+  window.addEventListener('primordios:preferencias', () => {
+    if (abaAtiva === '_pesquisa') pesquisar(document.getElementById('campoPesquisa').value);
+    else RENDERS[abaAtiva]?.('');
+  });
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
+    const user = lerJSON(localStorage, 'primordios_logado', null);
     if (!user) { window.location.href = 'tela0.html'; return; }
     renderTermos('');
   });

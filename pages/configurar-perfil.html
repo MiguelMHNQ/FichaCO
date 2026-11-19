@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seu nome — Primórdios</title>
+  <link rel="icon" href="../assets/images/LogoT.png" type="image/png">
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/tela0.css">
+  <link rel="stylesheet" href="../styles/preferencias.css">
+  <script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+  <script src="../scripts/auth-online.js"></script>
+  <link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
+</head>
+<body>
+  <main class="login-wrapper">
+    <header class="login-header">
+      <img src="../assets/images/LogoT.png" class="login-logo" alt="Primórdios">
+      <h1 class="login-titulo">Como te chamamos?</h1>
+      <p class="auth-ajuda">Escolha o nome que os outros jogadores vão ver. Pode ser um apelido; você poderá alterá-lo nas configurações.</p>
+    </header>
+    <form id="perfilForm" class="login-form">
+      <label class="campo-label" for="nomePublico">Nome público</label>
+      <input id="nomePublico" class="campo-input" type="text" autocomplete="nickname" placeholder="Seu nome de aventureiro" data-i18n-placeholder="Seu nome de aventureiro" minlength="3" maxlength="40" required disabled>
+      <p id="perfilErro" class="form-erro" role="alert"></p>
+      <button id="salvarPerfil" class="btn-login" type="submit" disabled>Salvar e entrar</button>
+      <button class="auth-link" type="button" onclick="PrimordiosAuth.sair()">Usar outra conta Google</button>
+    </form>
+  </main>
+  <script src="../scripts/consentimento-audio.js"></script>
+  <script src="../scripts/audio.js"></script>
+  <script src="../scripts/sons.js"></script>
+  <script src="../scripts/espera-vinil.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!await PrimordiosAuth.ready) return;
+      const { user } = await PrimordiosAuth.status();
+      if (!user) return;
+      document.getElementById('nomePublico').value = user.user_metadata?.display_name || '';
+      document.getElementById('nomePublico').disabled = false;
+      document.getElementById('salvarPerfil').disabled = false;
+      if (new URLSearchParams(location.search).has('editar')) document.getElementById('salvarPerfil').textContent = 'Salvar nome';
+      document.getElementById('nomePublico').focus();
+    });
+    document.getElementById('perfilForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = document.getElementById('salvarPerfil');
+      if (button.disabled) return;
+      button.disabled = true; document.getElementById('perfilErro').textContent = '';
+      try {
+        await PrimordiosAuth.saveName(document.getElementById('nomePublico').value);
+        location.replace(new URLSearchParams(location.search).has('editar') ? 'configuracoes.html' : 'inventario.html');
+      } catch (error) { document.getElementById('perfilErro').textContent = error.message; button.disabled = false; }
+    });
+  </script>
+</body>
+</html>

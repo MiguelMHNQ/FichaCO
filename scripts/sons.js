@@ -8,8 +8,8 @@ const Sons = (() => {
   }
 
   function tocar(fn) {
-    const cfg = JSON.parse(localStorage.getItem('primordios_config') || '{}');
-    if (cfg.sons === false) return;
+    let cfg={};try {cfg=JSON.parse(localStorage.getItem('primordios_config')||'{}')||{};}catch{}
+    if (!window.ConsentimentoAudio?.permitido() || cfg.sons === false) return;
     try { fn(getCtx()); } catch(e) {}
   }
 

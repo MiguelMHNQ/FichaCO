@@ -221,3 +221,17 @@ body {
   flex-shrink: 0;
 }
 .popup-fechar:hover { border-color: #aaa; color: #aaa; }
+.auth-link { display: block; margin: 14px auto; padding: 4px; border: 0; background: transparent; color: #c9a84c; font: inherit; font-size: .8rem; cursor: pointer; text-align: center; text-decoration: underline; text-underline-offset: 4px; }
+.auth-link:focus-visible, .btn-login:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.btn-login:disabled { opacity: .55; cursor: wait; }
+.auth-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.auth-dialog { box-sizing: border-box; width: min(420px, calc(100% - 32px)); border: 1px solid #3a3550; border-radius: 8px; padding: 28px; background: #13111c; color: #eee; }
+.auth-dialog::backdrop { background: #0a0a0fdd; }
+.auth-dialog h2 { margin: 0; font-size: 1rem; letter-spacing: 2px; }
+.auth-ajuda { font-size: .8rem; line-height: 1.6; color: #aaa; }
+.form-sucesso { line-height: 1.6; }
+body.tema-claro .auth-dialog { background: #fcfaf6; color: #302b28; border-color: #d8d0c1; }
+.btn-google { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 44px; padding: 12px 18px; margin: 20px 0 12px; border: 1px solid #747775; border-radius: 6px; background: #fff; color: #1f1f1f; font: 500 15px Arial,sans-serif; cursor: pointer; }
+.btn-google:hover { background: #f2f4f7; }
+.btn-google:disabled { opacity: .55; cursor: wait; }
+.btn-google:focus-visible { outline: 2px solid #4285f4; outline-offset: 4px; }

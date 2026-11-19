@@ -7,6 +7,12 @@
 <link rel="icon" href="../assets/images/LogoT.png" type="image/png">
 <link rel="stylesheet" href="../styles/global.css">
 <link rel="stylesheet" href="../styles/tela3.css">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js"></script>
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -42,15 +48,18 @@
 
 
 
-<script src="../scripts/estado.js"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
+<script src="../scripts/consentimento-audio.js"></script>
 <script src="../scripts/audio.js"></script>
 <script src="../scripts/sons.js"></script>
 <script src="../scripts/itens.js"></script>
+<script src="../scripts/armas-detalhes.js"></script>
 <script>
   let abaAtiva = 'armas';
   let buscaAtual = '';
 
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
     carregarEstadoBase();
     renderLista();
     mostrarPreview();
@@ -85,8 +94,8 @@
     // agrupa por categoria (tudo antes do ' — ')
     const grupos = {};
     items.forEach(item => {
-      if (buscaAtual && !item.nome.toLowerCase().includes(buscaAtual) && !(item.tipo||'').toLowerCase().includes(buscaAtual) && !(item.dano||'').toLowerCase().includes(buscaAtual) && !(item.desc||'').toLowerCase().includes(buscaAtual)) return;
-      const cat = item.tipo.split(' — ')[0];
+      if (buscaAtual && !(window.PrimordiosI18n?.match([item.nome,item.tipo,item.dano,item.desc,item.descricaoVisual,item.habilidade,abaAtiva==='acessorios'?categoriaAcessorio(item):''].filter(Boolean).join('<br>'),buscaAtual) ?? item.nome.toLowerCase().includes(buscaAtual))) return;
+      const cat = abaAtiva === 'acessorios' ? categoriaAcessorio(item) : item.tipo.split(' — ')[0];
       if (!grupos[cat]) grupos[cat] = [];
       grupos[cat].push(item);
     });
@@ -132,7 +141,7 @@
       const ativo = (label==='Arma' && abaAtiva==='armas') || (label==='Armadura' && abaAtiva==='armaduras') || (label==='Acessório' && abaAtiva==='acessorios');
       const extra = i.raridade ? `<div class="sel-extra">${i.raridade}${i.recarga?' · '+i.recarga:''}${i.acao?' · '+i.acao:''}</div>` : '';
       const dano  = i.dano ? `<div class="sel-dano">⚔ ${i.dano}</div>` : '';
-      return `<div class="sel-card${ativo?' ativo':''}"><div class="sel-label">${label}</div><div class="sel-nome">${i.nome}</div><div class="sel-tipo">${i.tipo}</div>${extra}${dano}<div class="sel-desc">${i.desc}</div></div>`;
+      return `<div class="sel-card${ativo?' ativo':''}"><div class="sel-label">${label}</div><div class="sel-nome">${i.nome}</div><div class="sel-tipo">${i.tipo}</div>${extra}${dano}<div class="sel-desc">${i.desc}</div>${label==='Arma'?`<div class="sel-desc">${i.descricaoVisual}</div>${botaoHabilidadeArma(i.nome)}`:''}</div>`;
     };
 
     document.getElementById('t3Detalhe').innerHTML =

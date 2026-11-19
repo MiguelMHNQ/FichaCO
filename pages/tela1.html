@@ -7,6 +7,13 @@
 <link rel="icon" href="../assets/images/LogoT.png" type="image/png">
 <link rel="stylesheet" href="../styles/global.css">
 <link rel="stylesheet" href="../styles/tela1.css">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js"></script>
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/proficiencias.css?v=1">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -86,7 +93,10 @@
   </div>
 </div>
 
-<script src="../scripts/estado.js"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
+<script src="../scripts/itens.js"></script>
+<script src="../scripts/proficiencias.js?v=1"></script>
+<script src="../scripts/consentimento-audio.js"></script>
 <script src="../scripts/audio.js"></script>
 <script src="../scripts/sons.js"></script>
 <script>
@@ -112,45 +122,16 @@
   });
 
   function sair() {
-    localStorage.removeItem('primordios_logado');
-    window.location.href = 'tela0.html';
+    return PrimordiosAuth.sair();
   }
 
-  function novoPersonagem() {
-    Object.assign(estado, {
-      personagem: null, classe: null, nivel: 1, caminho: null,
-      constancias: { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 },
-      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, acessoriosEquipados: {}, acessoriosCargas: {}, talentos: [],
-      truques: [], magiasGrimorio: [], grimorioInicializado: false, nomePersonagem: ''
-    });
-    salvarEstado();
-    window.location.href = 'tela1.html';
-  }
   let _cardPendente = null;
 
   // Restaura seleção visual se já tinha classe salva
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
     carregarEstadoBase();
-    // Limpa estado apenas se vier de criação nova (sem personagem salvo intacto)
-    estado.personagem = null;
-    estado.classe = null;
-    estado.nivel = 1;
-    estado.caminho = null;
-    estado.raca = null;
-    estado.racaEscolhas = {};
-    estado.constancias = { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 };
-    estado.constanciasEscolhidas = [];
-    estado.arma = null;
-    estado.armadura = null;
-    estado.acessorio = null;
-    estado.acessoriosEquipados = {};
-    estado.acessoriosCargas = {};
-    estado.talentos = [];
-    estado.truques = [];
-    estado.magiasGrimorio = [];
-    estado.grimorioInicializado = false;
-    estado.nomePersonagem = '';
-    salvarEstado();
+    if (!estado.id) { Object.assign(estado, criarEstadoInicial(), {id:crypto.randomUUID(),usuarioDono:lerJSON(localStorage,'primordios_logado',null)?.usuario || null}); salvarEstado(); }
     const card = document.querySelector('.card-personagem.selecionado');
     if (card) { card.classList.remove('selecionado'); }
     document.getElementById('btn1').classList.remove('habilitado');
@@ -168,12 +149,12 @@
     document.getElementById('pcDesc').textContent = d.desc;
     const corpo = document.getElementById('pcCorpo');
     corpo.innerHTML = `
-      <div class="popup-secao">Dados de Vida & Energia</div>
+      <div class="popup-secao">${classe==='Mago'?'Dados de Vida & Mana':'Dados de Vida & Energia'}</div>
       <div class="popup-linha"><span>Dado de vida</span><span>${d.dadoVida}</span></div>
       <div class="popup-linha"><span>Vida inicial</span><span>${d.vidaInicial}</span></div>
       <div class="popup-linha"><span>Vida por nível</span><span>${d.vidaNivel}</span></div>
-      <div class="popup-linha"><span>Energia inicial</span><span>${d.energiaInicial}</span></div>
-      <div class="popup-linha"><span>Energia por nível</span><span>${d.energiaNivel}</span></div>
+      <div class="popup-linha"><span>${classe==='Mago'?'Mana inicial':'Energia inicial'}</span><span>${d.energiaInicial}</span></div>
+      <div class="popup-linha"><span>${classe==='Mago'?'Mana por nível':'Energia por nível'}</span><span>${d.energiaNivel}</span></div>
 
       <div class="popup-secao">Constâncias</div>
       <div class="popup-linha"><span>Fixas</span><span>${d.constanciasFixas.join(', ')}</span></div>
@@ -187,14 +168,7 @@
       </div>
 
       <div class="popup-secao">Proficiências</div>
-      <div class="popup-linha" style="flex-direction:column;gap:6px;">
-        <span style="color:#aaa;">Armas:</span>
-        <div class="popup-tag-lista">${d.armas.map(a => `<span class="popup-tag">${a}</span>`).join('')}</div>
-      </div>
-      <div class="popup-linha" style="flex-direction:column;gap:6px;">
-        <span style="color:#aaa;">Armaduras:</span>
-        <div class="popup-tag-lista">${d.armaduras.map(a => `<span class="popup-tag">${a}</span>`).join('')}</div>
-      </div>
+      <div id="pcProficiencias"></div>
 
       ${d.especificacoes && d.especificacoes !== 'Nenhuma' ? `
         <div class="popup-secao">Especificações</div>
@@ -206,11 +180,12 @@
         <div class="popup-famosos">${d.famosos.map(f => `<div><span class="popup-famoso-nome-link" onclick="Sons.click();abrirFamoso(event,'${f.replace(/'/g,'&#39;')}')">✦ ${f}</span></div>`).join('')}</div>
       ` : ''}
     `;
+    Proficiencias.montar(document.getElementById('pcProficiencias'),classe,{onChange:salvarEstado});
     document.getElementById('popupClasse').classList.add('aberto');
   }
 
   function toggleConstanciaPopup(c) {
-    const classe = document.getElementById('pcNome').textContent;
+    const classe = _cardPendente?.dataset.classe;
     const d = CLASSES_PREVIEW[classe];
     if (!d) return;
     const qtd = d.constanciasEscolhaQtd || 2;
@@ -230,7 +205,7 @@
     d.constanciasEscolha.forEach(op => {
       const ativo = estado.constanciasEscolhidas.includes(op);
       document.querySelectorAll('#pcConstanciasEscolha .popup-tag').forEach(tag => {
-        if (tag.textContent === op) {
+        if ((window.PrimordiosI18n?.original(tag) || tag.textContent) === op) {
           tag.style.borderColor = ativo ? '#c9a84c' : '#3a3550';
           tag.style.color = ativo ? '#c9a84c' : '#aaa';
           tag.style.background = ativo ? '#c9a84c18' : 'transparent';
@@ -279,8 +254,10 @@
     setTimeout(() => { popup.classList.remove('aberto','saindo'); }, 350);
   }
 
-  document.getElementById('popupFamoso').addEventListener('click', function(e) {
-    if (e.target === this) fecharFamoso();
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('popupFamoso').addEventListener('click', function(e) {
+      if (e.target === this) fecharFamoso();
+    });
   });
 
   function fecharPreviewClasse() {
@@ -297,6 +274,7 @@
       Sons.error();
       return;
     }
+    if(_cardPendente.dataset.classe==='Guerreiro'&&!Proficiencias.completas()){document.getElementById('pcConstanciasAviso').textContent='Escolha duas categorias de Conhecimento e uma de Familiaridade.';Sons.error();return;}
     selecionarPersonagem(_cardPendente);
     fecharPreviewClasse();
   }

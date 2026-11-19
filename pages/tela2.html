@@ -7,6 +7,12 @@
 <link rel="icon" href="../assets/images/LogoT.png" type="image/png">
 <link rel="stylesheet" href="../styles/global.css">
 <link rel="stylesheet" href="../styles/tela2.css">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js"></script>
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -98,10 +104,11 @@
   </div>
 </section>
 
-<script src="../scripts/estado.js"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
+<script src="../scripts/consentimento-audio.js"></script>
 <script src="../scripts/audio.js"></script>
 <script src="../scripts/sons.js"></script>
-<script src="../scripts/habilidades.js"></script>
+<script src="../scripts/habilidades.js?v=mana-1"></script>
 <script src="../scripts/livro-dados.js"></script>
 <script>
   function validarNome() {
@@ -131,7 +138,8 @@
     window.location.href = 'tela3.html';
   }
 
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
     carregarEstadoBase();
     document.getElementById('nivelValor').textContent = estado.nivel;
     const ni = document.getElementById('nomePersonagem');
@@ -371,7 +379,7 @@
       const caminho = dados.caminhos[estado.caminho];
       const sep = document.createElement('div');
       sep.style = 'margin:16px 0 10px;font-size:0.7rem;letter-spacing:3px;color:#c9a84c;text-transform:uppercase;';
-      sep.textContent = '— Caminho: ' + estado.caminho + ' — Proficiências: ' + caminho.proficiencias;
+      sep.textContent = '— Caminho: ' + estado.caminho + ' — Benefícios: ' + caminho.proficiencias;
       container.appendChild(sep);
       caminho.habs.forEach(h => criarHabItem(container, h));
     }

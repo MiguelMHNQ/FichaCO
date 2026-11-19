@@ -1,0 +1,470 @@
+{
+  "Suspende objeto de até 20kg em até 6m de altura. Ação bônus + 1PE para mover ±1,5m.": [
+    "Suspends an object weighing up to 20kg at a height of up to 6m. Bonus action + 1EP to move it ±1,5m.",
+    "Suspende un objeto de hasta 20kg a una altura de hasta 6m. Acción adicional + 1PE para moverlo ±1,5m."
+  ],
+  "Armadura de Placas": [
+    "Plate Armor",
+    "Armadura de Placas"
+  ],
+  "Foto do personagem": [
+    "Character portrait",
+    "Retrato del personaje"
+  ],
+  "Amuletos": [
+    "Amulets",
+    "Amuletos"
+  ],
+  "Buscar equipamento": [
+    "Search equipment",
+    "Buscar equipo"
+  ],
+  "Buscar acessório": [
+    "Search accessories",
+    "Buscar accesorios"
+  ],
+  "Animação dos dados; resultados disponíveis abaixo": [
+    "Animated dice; results available below",
+    "Animación de dados; resultados disponibles debajo"
+  ],
+  "Bandeja de dados": [
+    "Dice tray",
+    "Bandeja de dados"
+  ],
+  "Bônus: {value}": [
+    "Bonus: {value}",
+    "Bonificación: {value}"
+  ],
+  "Dado não suportado": [
+    "Unsupported die",
+    "Dado no compatible"
+  ],
+  "Editar Ficha": [
+    "Edit Character Sheet",
+    "Editar ficha"
+  ],
+  "Escolha os dados e role": [
+    "Choose your dice and roll",
+    "Elige los dados y lanza"
+  ],
+  "Escolher dados": [
+    "Choose dice",
+    "Elegir dados"
+  ],
+  "Falha na apresentação dos dados": [
+    "Dice display failed",
+    "Error al mostrar los dados"
+  ],
+  "Falha na rolagem": [
+    "Dice roll failed",
+    "Error al lanzar los dados"
+  ],
+  "Limpar dados": [
+    "Clear dice",
+    "Quitar dados"
+  ],
+  "Rolando…": [
+    "Rolling…",
+    "Lanzando…"
+  ],
+  "d4: leia o vértice superior. d100: dezenas + unidades; 00 + 0 vale 100.": [
+    "d4: read the top vertex. d100: tens + units; 00 + 0 counts as 100.",
+    "d4: lee el vértice superior. d100: decenas + unidades; 00 + 0 vale 100."
+  ],
+  "critico": [
+    "critical",
+    "crítico"
+  ],
+  "falha": [
+    "failure",
+    "fallo"
+  ],
+  "recarregar": [
+    "recharge",
+    "recargar"
+  ],
+  "usar": [
+    "use",
+    "usar"
+  ],
+  "Mãos": [
+    "Hands",
+    "Manos"
+  ],
+  "Dedo": [
+    "Finger",
+    "Dedo"
+  ],
+  "Pulsos": [
+    "Wrists",
+    "Muñecas"
+  ],
+  "Pés": [
+    "Feet",
+    "Pies"
+  ],
+  "Raridade": [
+    "Rarity",
+    "Rareza"
+  ],
+  "Ação": [
+    "Action",
+    "Acción"
+  ],
+  "Recarga": [
+    "Recharge",
+    "Recarga"
+  ],
+  "Puxa Corte": [
+    "Slash Catcher",
+    "Atrapa Cortes"
+  ],
+  "Acessórios equipados": [
+    "Equipped Accessories",
+    "Accesorios equipados"
+  ],
+  "Escolha um item em cada espaço. Os anéis ocupam um espaço de dedo cada.": [
+    "Equip one item per slot. Rings use one finger slot each.",
+    "Equipa un objeto en cada espacio. Cada anillo ocupa un espacio de dedo."
+  ],
+  "Anéis": [
+    "Rings",
+    "Anillos"
+  ],
+  "Bolsas": [
+    "Bags",
+    "Bolsas"
+  ],
+  "Braceletes": [
+    "Bracelets",
+    "Brazaletes"
+  ],
+  "Bússolas": [
+    "Compasses",
+    "Brújulas"
+  ],
+  "Capas": [
+    "Cloaks",
+    "Capas"
+  ],
+  "Colares": [
+    "Necklaces",
+    "Collares"
+  ],
+  "Coroas": [
+    "Crowns",
+    "Coronas"
+  ],
+  "Dedos falsos": [
+    "False Fingers",
+    "Dedos falsos"
+  ],
+  "Laços": [
+    "Ribbons",
+    "Lazos"
+  ],
+  "Mantos": [
+    "Mantles",
+    "Mantos"
+  ],
+  "Monóculos": [
+    "Monocles",
+    "Monóculos"
+  ],
+  "Tiaras": [
+    "Tiaras",
+    "Tiaras"
+  ],
+  "End": [
+    "End",
+    "End"
+  ],
+  "equipado": [
+    "equipped",
+    "equipado"
+  ],
+  "Seus ataques com o tipo escolhido ignoram 2 pontos de resistência do alvo. O bônus de dano aumenta para +4.": [
+    "Your attacks of the chosen type ignore 2 points of the target's resistance. The damage bonus increases to +4.",
+    "Tus ataques del tipo elegido ignoran 2 puntos de resistencia del objetivo. El bono de daño aumenta a +4."
+  ],
+  "Aptidão em uma constância adicional à escolha.": [
+    "Aptitude in one additional skill of your choice.",
+    "Aptitud en una competencia adicional a elección."
+  ],
+  "1x por descanso curto: vantagem em teste de Inteligência mesmo sem aptidão usando objeto improvisado.": [
+    "1x per short rest: advantage on an Intelligence check even without aptitude when using an improvised object.",
+    "1x por descanso corto: ventaja en una prueba de Inteligencia incluso sin aptitud al usar un objeto improvisado."
+  ],
+  "Aptidão em Atuação; pode usar o mundo ao redor como instrumento": [
+    "Aptitude in Performance; can use the surrounding world as an instrument",
+    "Aptitud en Actuación; puede usar el mundo que lo rodea como instrumento"
+  ],
+  "Aptidão em Enganação, Persuasão, Intimidação e Lábia com BC.": [
+    "Aptitude in Deception, Persuasion, Intimidation and Fast Talk with Class Bonus.",
+    "Aptitud en Engaño, Persuasión, Intimidación y Labia con Bonificación de Clase."
+  ],
+  "Aptidão em Enganação, Persuasão, Intimidação e Lábia com Bônus de Classe.": [
+    "Aptitude in Deception, Persuasion, Intimidation and Fast Talk with Class Bonus.",
+    "Aptitud en Engaño, Persuasión, Intimidación y Labia con Bonificación de Clase."
+  ],
+  "Aptidão em Intimidação": [
+    "Aptitude in Intimidation",
+    "Aptitud en Intimidación"
+  ],
+  "Aptidão em Percepção.": [
+    "Aptitude in Perception.",
+    "Aptitud en Percepción."
+  ],
+  "Aptidão em Persuasão; Magias de Cura (regra de Mago)": [
+    "Aptitude in Persuasion; Healing Spells (Mage rule)",
+    "Aptitud en Persuasión; Hechizos de Curación (regla de Mago)"
+  ],
+  "Aptidão em Vontade; proficiência em Espadas Longas, Arcos Longos e Curtos": [
+    "Aptitude in Willpower; proficiency with Longswords, Longbows and Shortbows",
+    "Aptitud en Voluntad; competencia con Espadas Largas, Arcos Largos y Cortos"
+  ],
+  "Benefícios: {v5}": [
+    "Benefits: {v5}",
+    "Beneficios: {v5}"
+  ],
+  "O BC é somado às Constâncias em que o personagem possui aptidão (fixas da classe ou escolhidas).": [
+    "The Class Bonus is added to Skills in which the character has aptitude (fixed by class or chosen).",
+    "La Bonificación de Clase se suma a las Competencias en las que el personaje tiene aptitud (fijas de clase o elegidas)."
+  ],
+  "Proficiência em uma ferramenta de ofício e aptidão em uma Constância de Sabedoria à escolha.": [
+    "Proficiency with one crafting tool and aptitude in one Wisdom Skill of your choice.",
+    "Competencia con una herramienta de oficio y aptitud en una Competencia de Sabiduría a elección."
+  ],
+  "— Benefícios:": [
+    "— Benefits:",
+    "— Beneficios:"
+  ],
+  "— uma especialização dentro de sua classe que concede habilidades únicas, aptidões e proficiências adicionais.": [
+    "— a specialization within your class that grants unique abilities, aptitudes and additional proficiencies.",
+    "— una especialización dentro de tu clase que otorga habilidades únicas, aptitudes y competencias adicionales."
+  ],
+  "Adaga (Arma Específica)": [
+    "Dagger (Specific Weapon)",
+    "Daga (Arma Específica)"
+  ],
+  "Adagas Leves": [
+    "Light Daggers",
+    "Dagas Ligeras"
+  ],
+  "Arco Curto (Arma Específica)": [
+    "Short Bow (Specific Weapon)",
+    "Arco Corto (Arma Específica)"
+  ],
+  "Bastão (Arma Específica)": [
+    "Staff (Specific Weapon)",
+    "Bastón (Arma Específica)"
+  ],
+  "Besta de Mão (Arma Específica)": [
+    "Hand Crossbow (Specific Weapon)",
+    "Ballesta de Mano (Arma Específica)"
+  ],
+  "Categoria de arma (opcional)": [
+    "Weapon category (optional)",
+    "Categoría de arma (opcional)"
+  ],
+  "Categoria de outro peso": [
+    "Category of a different weight",
+    "Categoría de otro peso"
+  ],
+  "Demais Adagas Leves": [
+    "Other Light Daggers",
+    "Otras Dagas Ligeras"
+  ],
+  "Escolha duas categorias de Conhecimento e uma de Familiaridade.": [
+    "Choose two Knowledge categories and one Familiarity category.",
+    "Elige dos categorías de Conocimiento y una de Familiaridad."
+  ],
+  "Escolha duas categorias entre Espadas Leves, Machados Pesados, Martelos Pesados, Lanças Leves e Maças Leves.": [
+    "Choose two categories from Light Swords, Heavy Axes, Heavy Hammers, Light Spears and Light Maces.",
+    "Elige dos categorías entre Espadas Ligeras, Hachas Pesadas, Martillos Pesados, Lanzas Ligeras y Mazas Ligeras."
+  ],
+  "Escolha uma categoria": [
+    "Choose a category",
+    "Elige una categoría"
+  ],
+  "Escolha uma categoria de peso diferente, pertencente a uma das duas famílias de armas selecionadas.": [
+    "Choose a category of a different weight belonging to one of the two selected weapon families.",
+    "Elige una categoría de peso diferente que pertenezca a una de las dos familias de armas seleccionadas."
+  ],
+  "Espada Curta (Arma Específica)": [
+    "Short Sword (Specific Weapon)",
+    "Espada Corta (Arma Específica)"
+  ],
+  "Espadas (Geral)": [
+    "Swords (General)",
+    "Espadas (General)"
+  ],
+  "Espadas Leves": [
+    "Light Swords",
+    "Espadas Ligeras"
+  ],
+  "Espadas Pesadas": [
+    "Heavy Swords",
+    "Espadas Pesadas"
+  ],
+  "Florete (Arma Específica)": [
+    "Rapier (Specific Weapon)",
+    "Estoque (Arma Específica)"
+  ],
+  "Lanças Leves": [
+    "Light Spears",
+    "Lanzas Ligeras"
+  ],
+  "Lanças Pesadas": [
+    "Heavy Spears",
+    "Lanzas Pesadas"
+  ],
+  "Machados Leves": [
+    "Light Axes",
+    "Hachas Ligeras"
+  ],
+  "Machados Pesados": [
+    "Heavy Axes",
+    "Hachas Pesadas"
+  ],
+  "Martelos Leves": [
+    "Light Hammers",
+    "Martillos Ligeros"
+  ],
+  "Martelos Pesados": [
+    "Heavy Hammers",
+    "Martillos Pesados"
+  ],
+  "Maças Leves": [
+    "Light Maces",
+    "Mazas Ligeras"
+  ],
+  "Maças Pesadas": [
+    "Heavy Maces",
+    "Mazas Pesadas"
+  ],
+  "Primeira categoria": [
+    "First category",
+    "Primera categoría"
+  ],
+  "Segunda categoria": [
+    "Second category",
+    "Segunda categoría"
+  ],
+  "Sem especialização": [
+    "No specialization",
+    "Sin especialización"
+  ],
+  "Animação inválida.": [
+    "Invalid animation.",
+    "Animación no válida."
+  ],
+  "Animação inválida ou resolução acima do limite.": [
+    "Invalid animation or resolution above the limit.",
+    "Animación no válida o resolución superior al límite."
+  ],
+  "Animações devem ter até 1920 pixels por lado e 2.073.600 pixels no total.": [
+    "Animations must have at most 1920 pixels per side and 2.073.600 pixels in total.",
+    "Las animaciones deben tener como máximo 1920 píxeles por lado y 2.073.600 píxeles en total."
+  ],
+  "Arquivo de vídeo inválido.": [
+    "Invalid video file.",
+    "Archivo de vídeo no válido."
+  ],
+  "Arquivo inválido ou muito grande.": [
+    "Invalid file or file too large.",
+    "Archivo no válido o demasiado grande."
+  ],
+  "GIF incompleto.": [
+    "Incomplete GIF.",
+    "GIF incompleto."
+  ],
+  "GIF inválido.": [
+    "Invalid GIF.",
+    "GIF no válido."
+  ],
+  "GIF muito complexo: limite de 300 quadros e 32 milhões de pixels decodificados.": [
+    "GIF too complex: limit of 300 frames and 32 million decoded pixels.",
+    "GIF demasiado complejo: límite de 300 fotogramas y 32 millones de píxeles decodificados."
+  ],
+  "GIF sem paleta.": [
+    "GIF has no palette.",
+    "GIF sin paleta."
+  ],
+  "GIF sem quadros.": [
+    "GIF has no frames.",
+    "GIF sin fotogramas."
+  ],
+  "GIF truncado.": [
+    "Truncated GIF.",
+    "GIF truncado."
+  ],
+  "GIF: máximo de 10 MB.": [
+    "GIF: maximum 10 MB.",
+    "GIF: máximo de 10 MB."
+  ],
+  "Imagem: máximo de 20 MB.": [
+    "Image: maximum 20 MB.",
+    "Imagen: máximo de 20 MB."
+  ],
+  "Limite de 2 vídeos por mapa.": [
+    "Limit of 2 videos per map.",
+    "Límite de 2 vídeos por mapa."
+  ],
+  "Limite de 4 GIFs por mapa.": [
+    "Limit of 4 GIFs per map.",
+    "Límite de 4 GIF por mapa."
+  ],
+  "Não foi possível carregar a animação.": [
+    "Could not load the animation.",
+    "No se pudo cargar la animación."
+  ],
+  "O recorte de animações não está disponível. Você pode redimensionar mantendo a proporção.": [
+    "Animation cropping is unavailable. You can resize while preserving the aspect ratio.",
+    "El recorte de animaciones no está disponible. Puedes cambiar el tamaño manteniendo la proporción."
+  ],
+  "Tempo esgotado ao carregar o vídeo.": [
+    "Video loading timed out.",
+    "Se agotó el tiempo de carga del vídeo."
+  ],
+  "Use PNG, JPEG, WebP, GIF, MP4 ou WebM.": [
+    "Use PNG, JPEG, WebP, GIF, MP4 or WebM.",
+    "Usa PNG, JPEG, WebP, GIF, MP4 o WebM."
+  ],
+  "Vídeo de mapa: máximo de 40 MB.": [
+    "Map video: maximum 40 MB.",
+    "Vídeo de mapa: máximo de 40 MB."
+  ],
+  "Vídeo incompatível. Use MP4 ou WebM.": [
+    "Unsupported video. Use MP4 or WebM.",
+    "Vídeo no compatible. Usa MP4 o WebM."
+  ],
+  "Vídeo: máximo de 40 MB.": [
+    "Video: maximum 40 MB.",
+    "Vídeo: máximo de 40 MB."
+  ],
+  "Proficiência": [
+    "Proficiency",
+    "Competencia"
+  ],
+  "Desvantagem em ataques e -3 em rolagens de ataque.": [
+    "Disadvantage on attacks and -3 to attack rolls.",
+    "Desventaja en ataques y -3 en tiradas de ataque."
+  ],
+  "O saber manusear tal equipamento ou armamento, permite que você consiga utilizar o equipamento sem quaisquer desvantagens, salvo efeitos que alteram essa situação.": [
+    "Knowing how to handle this equipment or weapon allows you to use it without disadvantages, except for effects that alter this situation.",
+    "Saber manejar este equipo o arma te permite usarlo sin desventajas, salvo efectos que alteren esta situación."
+  ],
+  "Tem uma atribuição parecida com a Proficiência, é o saber intermediário de tal equipamento, podendo utilizar, mas recebendo um bônus negativo de -2 nas rolagens de ataque.": [
+    "It serves a purpose similar to Proficiency: intermediate knowledge of the equipment lets you use it, but with a -2 penalty to attack rolls.",
+    "Tiene una función similar a la Competencia: el conocimiento intermedio del equipo permite usarlo, pero con una penalización de -2 en las tiradas de ataque."
+  ],
+  "Adicionar imagem, GIF (10 MB) ou vídeo em loop (40 MB)": [
+    "Add image, GIF (10 MB) or looping video (40 MB)",
+    "Añadir imagen, GIF (10 MB) o vídeo en bucle (40 MB)"
+  ],
+  "GIF: até 10 MB · MP4/WebM: até 40 MB · Até 4 GIFs e 2 vídeos por mapa.": [
+    "GIF: up to 10 MB · MP4/WebM: up to 40 MB · Up to 4 GIFs and 2 videos per map.",
+    "GIF: hasta 10 MB · MP4/WebM: hasta 40 MB · Hasta 4 GIF y 2 vídeos por mapa."
+  ]
+}

@@ -1,113 +1,91 @@
-﻿// ===== AUDIO.JS =====
-
-// Detecta base dos áudios conforme localização da página
-const _audioBase = (function () {
-  const path = window.location.pathname.replace(/\\/g, '/');
-  return path.includes('/pages/') ? '../assets/audio/' : 'assets/audio/';
-})();
-
+// Player compartilhado por todas as páginas, incluindo configurações.
+const _audioBase = location.pathname.replace(/\\/g,'/').includes('/pages/') ? '../assets/audio/' : 'assets/audio/';
 const MUSICAS = [
-  { nome: 'Espera',             arquivo: _audioBase + 'Espera.mp3' },
-  { nome: 'Nossa Canção',  arquivo: _audioBase + 'TocareinNossaCanção.MP3' },
-  { nome: 'Porque ser Forte?',             arquivo: _audioBase + 'Dequevaleserforte.mp3' },
-  { nome: 'Dinheiro é VIDA',          arquivo: _audioBase + 'Dinheiroévida.mp3' },
-  { nome: 'Serei o Amanhecer',     arquivo: _audioBase + 'SerOAmanhecer.mp3' },
+  {nome:'Espera',arquivo:_audioBase+'Espera.mp3'},
+  {nome:'Nossa Canção',arquivo:_audioBase+'TocareinNossaCanção.MP3'},
+  {nome:'Porque ser Forte?',arquivo:_audioBase+'Dequevaleserforte.MP3'},
+  {nome:'Dinheiro é VIDA',arquivo:_audioBase+'Dinheiroévida.MP3'},
+  {nome:'Serei o Amanhecer',arquivo:_audioBase+'SerOAmanhecer.MP3'}
 ];
-
-(function () {
-  const config = JSON.parse(localStorage.getItem('primordios_config') || '{}');
-
-  const volume = (config.volume ?? 20) / 100;
-  const modo   = config.modo || 'unica';
-  let   idx    = config.musicaIdx ?? 0;
-
-  const audio  = new Audio();
-  audio.volume = volume;
-  audio.crossOrigin = 'anonymous'; // necessário para Web Audio API
-
-  // Expõe globalmente SEMPRE — necessário para espera-vinil.js e beat detection
-  window._primordiosAudio = audio;
-  window._primordiosMusicaAtual = null;
-
-  // Se música estiver desativada, não inicia — mas o elemento fica exposto
-  if (config.musicaAtiva === false) return;
-
-  // Salva posição a cada segundo
-  setInterval(() => {
-    if (!audio.paused && audio.duration)
-      sessionStorage.setItem('primordios_audio_pos', audio.currentTime);
-  }, 1000);
-
-  window.addEventListener('beforeunload', () => {
-    if (!audio.paused && audio.duration)
-      sessionStorage.setItem('primordios_audio_pos', audio.currentTime);
-  });
-
-  function dispararEventoMusica(nome) {
+(() => {
+  const mesaDaSessao=location.pathname.endsWith('/editor-mapa.html')&&/^\d{6}$/.test(new URLSearchParams(location.search).get('sessao')||'');
+  const suspenso=()=>mesaDaSessao||window.PrimordiosAudioSuspenso;
+  try{if(window.parent!==window&&window.parent.PrimordiosSessao)window.PrimordiosAudioSuspenso=true;}catch{}
+  const lerConfig = () => { try { return JSON.parse(localStorage.getItem('primordios_config') || '{}') || {}; } catch { return {}; } };
+  const indice = valor => Math.max(0,Math.min(MUSICAS.length-1,Math.trunc(Number(valor)||0)));
+  const audio = document.getElementById('audioPlayer') || new Audio();
+  audio.crossOrigin = 'anonymous';
+  let idx = indice(lerConfig().musicaIdx);
+  // Migração única da posição usada por versões anteriores do player.
+  try{
+    const saved=JSON.parse(sessionStorage.getItem('primordios_audio_estado')||'null');
+    const old=sessionStorage.getItem('primordios_audio_pos');
+    let valid=saved&&Number.isInteger(saved.indice)&&saved.indice>=0&&saved.indice<MUSICAS.length&&Number.isFinite(saved.segundos)&&saved.segundos>=0;
+    if(!valid&&old!==null&&Number.isFinite(Number(old))&&Number(old)>=0){sessionStorage.setItem('primordios_audio_estado',JSON.stringify({indice:idx,segundos:Number(old)}));valid=true;}
+    if(valid)sessionStorage.removeItem('primordios_audio_pos');
+  }catch{}
+  let retomando = false;
+  window._primordiosAudio = audio; window._primordiosMusicaAtual = null;
+  function evento(nome) {
     window._primordiosMusicaAtual = nome;
-    // Usa setTimeout 0 para garantir que listeners registrados no mesmo frame ainda recebam
-    setTimeout(() => {
-      window.dispatchEvent(new CustomEvent('primordios:musica', { detail: { nome } }));
-    }, 0);
+    window.dispatchEvent(new CustomEvent('primordios:musica',{detail:{nome}}));
   }
-
-  function tocar(i, posicao) {
-    idx = ((i % MUSICAS.length) + MUSICAS.length) % MUSICAS.length;
+  function tocar() {
+    if(suspenso())return;
+    if (retomando || !window.ConsentimentoAudio?.permitido() || lerConfig().musicaAtiva !== true) return;
+    audio.play().catch(() => {});
+  }
+  function carregar(i, retomar = false) {
+    idx = indice(i);
+    let salvo; try { salvo = JSON.parse(sessionStorage.getItem('primordios_audio_estado')); } catch {}
+    const pos = retomar ? Math.max(0,Number(salvo?.indice === idx ? salvo.segundos : 0)||0) : 0;
+    if (!retomar) { try { sessionStorage.setItem('primordios_audio_estado',JSON.stringify({indice:idx,segundos:0})); } catch {} }
+    retomando = true;
+    const concluir = () => { retomando = false; salvarPosicao(); tocar(); };
+    audio.onseeked = () => { if (retomando) concluir(); };
+    audio.onloadedmetadata = () => {
+      if (pos && Number.isFinite(audio.duration)) {
+        audio.currentTime = Math.min(pos,Math.max(0,audio.duration-.1));
+        if (audio.seeking) return;
+      }
+      concluir();
+    };
     audio.src = MUSICAS[idx].arquivo;
-
-    audio.addEventListener('canplay', () => {
-      if (posicao) audio.currentTime = posicao;
-      audio.play()
-        .then(() => dispararEventoMusica(MUSICAS[idx].nome))
-        .catch(() => {});
-    }, { once: true });
-
-    const cfg = JSON.parse(localStorage.getItem('primordios_config') || '{}');
-    cfg.musicaIdx   = idx;
-    cfg.musicaAtiva = true;
-    localStorage.setItem('primordios_config', JSON.stringify(cfg));
+    audio.load();
   }
-
+  function aplicar() {
+    if(suspenso()){salvarPosicao();audio.pause();return;}
+    const cfg = lerConfig();
+    audio.volume = Math.max(0,Math.min(1,(Number(cfg.volume ?? 20)||0)/100));
+    if (!window.ConsentimentoAudio?.permitido() || cfg.musicaAtiva !== true) { audio.pause(); return; }
+    if (!audio.getAttribute('src')) carregar(cfg.musicaIdx,true);
+    else if (indice(cfg.musicaIdx) !== idx) carregar(cfg.musicaIdx);
+    else tocar();
+  }
+  audio.addEventListener('play', () => evento(MUSICAS[idx].nome));
+  audio.addEventListener('pause', () => evento(null));
+  function salvarPosicao() {
+    if (retomando || !Number.isFinite(audio.duration)) return;
+    try {
+      sessionStorage.setItem('primordios_audio_estado',JSON.stringify({indice:idx,segundos:audio.currentTime}));
+    } catch {}
+  }
+  audio.addEventListener('timeupdate',salvarPosicao);
+  window.addEventListener('pagehide',salvarPosicao);
+  window.addEventListener('beforeunload',salvarPosicao);
   audio.addEventListener('ended', () => {
-    sessionStorage.removeItem('primordios_audio_pos');
-    if (modo === 'aleatoria') tocar(Math.floor(Math.random() * MUSICAS.length));
-    else tocar(idx);
+    const cfg = lerConfig();
+    cfg.musicaIdx = cfg.modo === 'aleatoria' ? Math.floor(Math.random()*MUSICAS.length) : idx;
+    localStorage.setItem('primordios_config',JSON.stringify(cfg));
+    carregar(cfg.musicaIdx);
+    window.dispatchEvent(new CustomEvent('primordios:faixa',{detail:{idx:cfg.musicaIdx}}));
   });
-
-  const posSalva = parseFloat(sessionStorage.getItem('primordios_audio_pos') || '0');
-  const idxSalvo = config.musicaIdx ?? 0;
-
-  const iniciar = () => {
-    tocar(idxSalvo, posSalva > 0 ? posSalva : null);
-    document.removeEventListener('click', iniciar);
-  };
-
-  // Tentativa de autoplay; se bloqueado aguarda primeiro clique
-  audio.src = MUSICAS[idxSalvo].arquivo;
-  audio.addEventListener('canplay', () => {
-    if (posSalva > 0) audio.currentTime = posSalva;
-    const p = audio.play();
-    if (p) {
-      p.then(() => dispararEventoMusica(MUSICAS[idx].nome))
-       .catch(() => document.addEventListener('click', iniciar, { once: true }));
-    } else {
-      dispararEventoMusica(MUSICAS[idxSalvo].nome);
-    }
-  }, { once: true });
-
-  // Sincroniza com mudanças feitas na tela de configurações
-  window.addEventListener('storage', e => {
-    if (e.key !== 'primordios_config') return;
-    const c = JSON.parse(e.newValue || '{}');
-    audio.volume = (c.volume ?? 20) / 100;
-    if (c.musicaAtiva === false) {
-      audio.pause();
-      dispararEventoMusica(null);
-    } else if (audio.paused) {
-      tocar(c.musicaIdx ?? idx);
-    } else if (c.musicaIdx !== idx) {
-      sessionStorage.removeItem('primordios_audio_pos');
-      tocar(c.musicaIdx);
-    }
-  });
+  window.addEventListener('storage',e => { if (e.key === 'primordios_config') aplicar(); });
+  window.addEventListener('primordios:config',aplicar);
+  window.addEventListener('primordios:audio-sessao',aplicar);
+  document.addEventListener('click',() => { if (audio.paused) aplicar(); });
+  window.AudioPrimordios = {audio,carregar,salvarPosicao,state:()=>({track:MUSICAS[idx],indice:idx,playing:!audio.paused&&!audio.ended&&!suspenso(),position:audio.currentTime})};
+  audio.volume = Math.max(0,Math.min(1,(Number(lerConfig().volume ?? 20)||0)/100));
+  if (!suspenso() && window.ConsentimentoAudio?.permitido() && lerConfig().musicaAtiva === true) carregar(idx,true);
+  window.dispatchEvent(new Event('primordios:audio-pronto'));
 })();

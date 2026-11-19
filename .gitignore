@@ -1,0 +1,22 @@
+node_modules/
+.backend-build/
+dist/
+.vercel/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+scripts/auth-online.js
+scripts/i18n-content.js
+scripts/gerados/idiomas/
+.local-certs/
+
+scripts/gerados/alcance.js
+
+scripts/gerados/visao.js
+
+scripts/gerados/visao-mapa.js
+
+# Cache local da CLI; não faz parte do projeto publicado.
+supabase/.temp/
+supabase/.branches/

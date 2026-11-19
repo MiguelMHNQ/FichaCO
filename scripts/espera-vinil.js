@@ -11,7 +11,6 @@
 
   // ─── Tabela de configurações por música ──────────────────────────────────────
   // nomeMusica : deve bater exatamente com MUSICAS[i].nome em audio.js
-  // srcMusica  : fragmento do src do <audio> para detectar qual está tocando
   // imgNormal  : chibi em repouso
   // imgSeguro  : chibi sendo carregado
   // tema       : classe CSS adicionada ao <body>
@@ -22,7 +21,6 @@
   const TEMAS = [
     {
       nomeMusica: 'Espera',
-      srcMusica:  'Espera',
       imgNormal:  BASE + 'Kur.png',
       imgSeguro:  BASE + 'KurSeg.png',
       tema:       'tema-espera',
@@ -31,12 +29,11 @@
       nomeLabel:  'ESPERA',
       tamanho:    '140px',
       tamanhoSeg: '140px',
-      offsetY:    -80,
+      pontoSeg:   { x: 0.405, y: 0.014 },
       beatRgb:    '210, 112, 45',
     },
     {
       nomeMusica: 'Nossa Canção',
-      srcMusica:  'TocareinNossaCanção',
       imgNormal:  BASE + 'Agata.png',
       imgSeguro:  BASE + 'AgataSeg.png',
       tema:       'tema-cancao',
@@ -45,12 +42,11 @@
       nomeLabel:  'NOSSA CANÇÃO',
       tamanho:    '140px',
       tamanhoSeg: '140px',
-      offsetY:    -80,
+      pontoSeg:   { x: 0.6, y: 0.012 },
       beatRgb:    '46, 107, 79',
     },
     {
       nomeMusica: 'Porque ser Forte?',
-      srcMusica:  'Dequevaleserforte',
       imgNormal:  BASE + 'Gustavo.png',
       imgSeguro:  BASE + 'GustavoSeg.png',
       tema:       'tema-forte',
@@ -59,12 +55,11 @@
       nomeLabel:  'SER FORTE?',
       tamanho:    '130px',
       tamanhoSeg: '90px',
-      offsetY:    0,
+      pontoSeg:   { x: 0.5, y: 0.61 },
       beatRgb:    '192, 57, 43',
     },
     {
       nomeMusica: 'Dinheiro é VIDA',
-      srcMusica:  'Dinheiroévida',
       imgNormal:  BASE + 'Paral.png',
       imgSeguro:  BASE + 'ParalSeg.png',
       tema:       'tema-dinheiro',
@@ -73,12 +68,11 @@
       nomeLabel:  'DINHEIRO',
       tamanho:    '140px',
       tamanhoSeg: '140px',
-      offsetY:    -80,
+      pontoSeg:   { x: 0.456, y: 0.045 },
       beatRgb:    '142, 68, 173',
     },
     {
       nomeMusica: 'Serei o Amanhecer',
-      srcMusica:  'SerOAmanhecer',
       imgNormal:  BASE + 'Bastos.png',
       imgSeguro:  BASE + 'BastosSeg.png',
       tema:       'tema-amanhecer',
@@ -87,11 +81,14 @@
       nomeLabel:  'AMANHECER',
       tamanho:    '130px',
       tamanhoSeg: '160px',
-      offsetY:    -80,
+      pontoSeg:   { x: 0.51, y: 0.025 },
       beatRgb:    '41, 128, 185',
     },
   ];
 
+  // Coordenadas normalizadas na arte original, incluindo as margens transparentes.
+  // Pré-carrega as poses para conhecer a proporção antes do primeiro arrasto.
+  TEMAS.forEach(cfg => { cfg.poseSeg = new Image(); cfg.poseSeg.src = cfg.imgSeguro; });
   const TODOS_TEMAS = TEMAS.map(t => t.tema);
 
   // ─── Injeta os elementos no body ─────────────────────────────────────────────
@@ -146,6 +143,7 @@
   // ─── Ativa tema ──────────────────────────────────────────────────────────────
   function ativarTema(cfg) {
     if (temaAtivo === cfg) return;
+    if (arrastando) onUp();
 
     // Remove qualquer tema anterior
     TODOS_TEMAS.forEach(t => document.body.classList.remove(t));
@@ -178,6 +176,7 @@
 
   function desativarTema() {
     if (!temaAtivo) return;
+    if (arrastando) onUp();
     temaAtivo = null;
     TODOS_TEMAS.forEach(t => document.body.classList.remove(t));
     vinil.classList.remove('vinil-visivel');
@@ -192,6 +191,7 @@
     kurImg.style.bottom    = '';
     kurImg.style.zIndex    = '';
     kurImg.style.transform = '';
+    kurImg.style.transformOrigin = '';
     kurImg.style.cursor    = 'grab';
     kurImg.style.display   = 'none';
     kurWrap.style.animationPlayState = '';
@@ -244,7 +244,6 @@
     let soma = 0;
     for (let i = 0; i < 8; i++) soma += buf[i];
     const media = soma / 8;
-    // Log temporário removido
     const agora = performance.now();
     if (media > 30 && agora - _ultimoBeat > 200) {
       _ultimoBeat = agora;
@@ -287,6 +286,20 @@
 
   // ─── Drag ────────────────────────────────────────────────────────────────────
   let arrastando = false, ox = 0, oy = 0, kx = 0, ky = 0, prevX = 0, dragVel = 0;
+  let ponteiro = { x: 0, y: 0 };
+  function alinharPegada() {
+    if (!arrastando || !temaAtivo) return;
+    const cfg = temaAtivo, tamanho = parseFloat(cfg.tamanhoSeg || cfg.tamanho);
+    const img = cfg.poseSeg, escala = tamanho / Math.max(img.naturalWidth || 1, img.naturalHeight || 1);
+    const w = img.naturalWidth ? img.naturalWidth * escala : tamanho;
+    const h = img.naturalHeight ? img.naturalHeight * escala : tamanho;
+    // object-fit: contain centraliza a arte dentro da caixa quadrada.
+    ox = (tamanho - w) / 2 + cfg.pontoSeg.x * w;
+    oy = (tamanho - h) / 2 + cfg.pontoSeg.y * h;
+    kurImg.style.transformOrigin = ox + 'px ' + oy + 'px';
+    kx = ponteiro.x - ox; ky = ponteiro.y - oy;
+    kurImg.style.left = kx + 'px'; kurImg.style.top = ky + 'px';
+  }
 
   function xy(e) {
     return e.touches
@@ -316,9 +329,13 @@
     vinil.style.opacity    = '0';
     vinil.style.transition = 'opacity 0.2s ease';
     const { x, y } = xy(e);
-    ox = x - kx;
-    // offsetY positivo = chibi fica abaixo do cursor; 0 = centralizado
-    oy = y - ky + (temaAtivo ? temaAtivo.offsetY : 50);
+    ponteiro = { x, y };
+    angle = 0; vel = 0; kurImg.style.transform = '';
+    alinharPegada();
+    if (temaAtivo && !temaAtivo.poseSeg.complete) {
+      const cfg = temaAtivo;
+      cfg.poseSeg.addEventListener('load', () => { if (arrastando && temaAtivo === cfg) alinharPegada(); }, { once: true });
+    }
     prevX = x; dragVel = 0;
   }
 
@@ -326,6 +343,7 @@
     if (!arrastando) return;
     e.preventDefault();
     const { x, y } = xy(e);
+    ponteiro = { x, y };
     kx = x - ox; ky = y - oy;
     kurImg.style.left = kx + 'px';
     kurImg.style.top  = ky + 'px';
@@ -337,6 +355,13 @@
   function onUp() {
     if (!arrastando) return;
     arrastando = false;
+    // Preserva o centro da caixa ao retornar ao tamanho de repouso.
+    const tamanhoSeg = parseFloat(temaAtivo?.tamanhoSeg || '140');
+    const tamanhoNormal = parseFloat(temaAtivo?.tamanho || '140');
+    kx += (tamanhoSeg - tamanhoNormal) / 2;
+    ky += (tamanhoSeg - tamanhoNormal) / 2;
+    kurImg.style.left = kx + 'px'; kurImg.style.top = ky + 'px';
+    kurImg.style.transformOrigin = '';
     kurImg.src = imgNormal;
     kurImg.style.cursor  = 'grab';
     kurImg.style.display = 'block';
@@ -345,8 +370,8 @@
       kurImg.style.height = temaAtivo.tamanho;
     }
     kurWrap.style.animationPlayState = 'running';
-    const discoLeft = kx + (140 / 2) - (200 / 2);
-    const discoTop  = ky + (140 / 2) - (200 / 2);
+    const discoLeft = kx + (tamanhoNormal / 2) - (200 / 2);
+    const discoTop  = ky + (tamanhoNormal / 2) - (200 / 2);
     vinil.style.transition = 'opacity 0.3s ease';
     vinil.style.left    = discoLeft + 'px';
     vinil.style.top     = discoTop  + 'px';
@@ -362,93 +387,26 @@
   document.addEventListener('touchmove', onMove, { passive: false });
   document.addEventListener('mouseup',   onUp);
   document.addEventListener('touchend',  onUp);
+  document.addEventListener('touchcancel', onUp);
+  window.addEventListener('blur', onUp);
   // Começa invisível — só mostra quando tema ativar
   kurImg.style.cursor  = 'grab';
   kurImg.style.display = 'none';
 
-  // ─── Detecta qual música está tocando ────────────────────────────────────────
-  function cfgParaSrc(src) {
-    if (!src) return null;
-    // Decodifica a URL para comparar sem encoding (%C3%A9 → é)
-    let srcDec = src;
-    try { srcDec = decodeURIComponent(src); } catch (_) {}
-    // Também compara sem acentos para cobrir variações de encoding
-    const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    const srcNorm = normalize(srcDec);
-    return TEMAS.find(t => srcNorm.includes(normalize(t.srcMusica))) || null;
+  // O player publica prontidão e reprodução; o tema consome esse estado único.
+  function atualizarTema(){
+    const player=window.AudioPrimordios;
+    if(!player)return;
+    vincular(player.audio);
+    const state=player.state();
+    const cfg=state.playing&&window.ConsentimentoAudio?.permitido()?TEMAS.find(t=>t.nomeMusica===state.track?.nome):null;
+    if(cfg)ativarTema(cfg);else desativarTema();
   }
-
-  function cfgParaNome(nome) {
-    if (!nome) return null;
-    return TEMAS.find(t => t.nomeMusica === nome) || null;
+  function vincular(el){
+    if(el._evVinilOk)return;el._evVinilOk=true;
+    for(const event of ['play','pause','emptied','ended'])el.addEventListener(event,atualizarTema);
   }
-
-  function vincular(el) {
-    if (!el || el._evVinilOk) return;
-    el._evVinilOk = true;
-    el.addEventListener('play', () => {
-      const cfg = cfgParaSrc(el.src);
-      if (cfg) ativarTema(cfg); else desativarTema();
-    });
-    el.addEventListener('pause',   () => desativarTema());
-    el.addEventListener('emptied', () => setTimeout(() => {
-      if (!cfgParaSrc(el.src)) desativarTema();
-    }, 50));
-  }
-
-  window.addEventListener('primordios:musica', e => {
-    const cfg = cfgParaNome(e.detail && e.detail.nome);
-    if (cfg) ativarTema(cfg); else desativarTema();
-  });
-
-  function checar() {
-    const el = window._primordiosAudio || document.getElementById('audioPlayer');
-    if (!el) return;
-    vincular(el);
-    const cfg = cfgParaSrc(el.src);
-    if (cfg && !el.paused) { ativarTema(cfg); return; }
-    if (cfg)               { ativarTema(cfg); return; }
-    // Fallback: lê localStorage
-    if (!el.src || el.src === window.location.href) {
-      try {
-        const c = JSON.parse(localStorage.getItem('primordios_config') || '{}');
-        if (c.musicaAtiva !== false) {
-          // Ordem espelha MUSICAS[] no audio.js
-          const nomes = [
-            'Espera',           // 0
-            'Nossa Canção',     // 1
-            'Brisa Em Waterfall', // 2
-            'Porque ser Forte?', // 3
-            'Dinheiro é VIDA',  // 4
-            'Serei o Amanhecer', // 5
-          ];
-          const cfgIdx = cfgParaNome(nomes[c.musicaIdx ?? 0] || '');
-          if (cfgIdx) ativarTema(cfgIdx);
-        }
-      } catch (_) {}
-    }
-  }
-
-  checar();
-  setTimeout(checar, 300);
-  setTimeout(checar, 1000);
-  setTimeout(checar, 2500);
-
-  // Segurança extra: quando o audio.js termina de setar o src e começa a tocar,
-  // o evento nativo 'play' no elemento também aciona o checar
-  function tentarVincularEChecar() {
-    const el = window._primordiosAudio || document.getElementById('audioPlayer');
-    if (el) {
-      vincular(el);
-      checar();
-    }
-  }
-  // audio.js dispara primordios:musica via setTimeout(0) — nosso listener já está registrado acima
-  // mas como segurança extra, checamos também quando o documento termina de carregar
-  if (document.readyState === 'complete') {
-    tentarVincularEChecar();
-  } else {
-    window.addEventListener('load', tentarVincularEChecar);
-  }
-
+  window.addEventListener('primordios:musica',atualizarTema);
+  window.addEventListener('primordios:audio-pronto',atualizarTema);
+  atualizarTema();
 })();

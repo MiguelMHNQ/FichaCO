@@ -1,0 +1,1682 @@
+{
+  "Configurações": [
+    "Settings",
+    "Configuración"
+  ],
+  "Personalize sua experiência": [
+    "Customize your experience",
+    "Personaliza tu experiencia"
+  ],
+  "Conta": [
+    "Account",
+    "Cuenta"
+  ],
+  "Usuário": [
+    "Username",
+    "Usuario"
+  ],
+  "Alterar senha": [
+    "Change password",
+    "Cambiar contraseña"
+  ],
+  "Redefina sua senha de acesso": [
+    "Reset your password",
+    "Restablece tu contraseña"
+  ],
+  "Alterar": [
+    "Change",
+    "Cambiar"
+  ],
+  "Apagar conta": [
+    "Delete account",
+    "Eliminar cuenta"
+  ],
+  "Remove permanentemente sua conta e personagens": [
+    "Permanently removes your account and characters",
+    "Elimina permanentemente tu cuenta y personajes"
+  ],
+  "Apagar": [
+    "Delete",
+    "Eliminar"
+  ],
+  "Aparência": [
+    "Appearance",
+    "Apariencia"
+  ],
+  "Tema": [
+    "Theme",
+    "Tema"
+  ],
+  "Alterna entre tema escuro e claro": [
+    "Switch between dark and light themes",
+    "Alterna entre tema oscuro y claro"
+  ],
+  "Escuro": [
+    "Dark",
+    "Oscuro"
+  ],
+  "Claro": [
+    "Light",
+    "Claro"
+  ],
+  "Tamanho da fonte": [
+    "Font size",
+    "Tamaño de fuente"
+  ],
+  "Ajuste o tamanho do texto": [
+    "Adjust text size",
+    "Ajusta el tamaño del texto"
+  ],
+  "Idioma": [
+    "Language",
+    "Idioma"
+  ],
+  "Idioma da interface": [
+    "Interface language",
+    "Idioma de la interfaz"
+  ],
+  "Áudio": [
+    "Audio",
+    "Audio"
+  ],
+  "Sons de botões": [
+    "Button sounds",
+    "Sonidos de botones"
+  ],
+  "Efeitos sonoros ao clicar": [
+    "Sound effects on click",
+    "Efectos de sonido al hacer clic"
+  ],
+  "Música de fundo": [
+    "Background music",
+    "Música de fondo"
+  ],
+  "Nenhuma selecionada": [
+    "None selected",
+    "Ninguna seleccionada"
+  ],
+  "Mesma música": [
+    "Repeat track",
+    "Repetir canción"
+  ],
+  "Aleatório": [
+    "Shuffle",
+    "Aleatorio"
+  ],
+  "Trocar música": [
+    "Change track",
+    "Cambiar canción"
+  ],
+  "Selecionar Música": [
+    "Select music",
+    "Seleccionar música"
+  ],
+  "Inventário": [
+    "Inventory",
+    "Inventario"
+  ],
+  "Novo Personagem": [
+    "New character",
+    "Nuevo personaje"
+  ],
+  "Livro": [
+    "Rulebook",
+    "Libro"
+  ],
+  "Sair": [
+    "Sign out",
+    "Salir"
+  ],
+  "Escolha sua Classe": [
+    "Choose your class",
+    "Elige tu clase"
+  ],
+  "Construa seu Personagem": [
+    "Build your character",
+    "Crea tu personaje"
+  ],
+  "Equipamentos": [
+    "Equipment",
+    "Equipamiento"
+  ],
+  "Ficha do Personagem": [
+    "Character sheet",
+    "Ficha del personaje"
+  ],
+  "Avançar": [
+    "Next",
+    "Siguiente"
+  ],
+  "Voltar": [
+    "Back",
+    "Volver"
+  ],
+  "Salvar": [
+    "Save",
+    "Guardar"
+  ],
+  "Cancelar": [
+    "Cancel",
+    "Cancelar"
+  ],
+  "Confirmar": [
+    "Confirm",
+    "Confirmar"
+  ],
+  "Editar": [
+    "Edit",
+    "Editar"
+  ],
+  "Excluir": [
+    "Delete",
+    "Eliminar"
+  ],
+  "Senha atual": [
+    "Current password",
+    "Contraseña actual"
+  ],
+  "Nova senha": [
+    "New password",
+    "Nueva contraseña"
+  ],
+  "Confirmar nova senha": [
+    "Confirm new password",
+    "Confirmar nueva contraseña"
+  ],
+  "Alterar Senha": [
+    "Change password",
+    "Cambiar contraseña"
+  ],
+  "Apagar Conta": [
+    "Delete account",
+    "Eliminar cuenta"
+  ],
+  "Apagar tudo": [
+    "Delete everything",
+    "Eliminar todo"
+  ],
+  "Digite sua senha para confirmar": [
+    "Enter your password to confirm",
+    "Introduce tu contraseña para confirmar"
+  ],
+  "Mapas": [
+    "Maps",
+    "Mapas"
+  ],
+  "Novo mapa": [
+    "New map",
+    "Nuevo mapa"
+  ],
+  "Nome do mapa": [
+    "Map name",
+    "Nombre del mapa"
+  ],
+  "Salvar e sair": [
+    "Save and exit",
+    "Guardar y salir"
+  ],
+  "Selecionar": [
+    "Select",
+    "Seleccionar"
+  ],
+  "Lápis": [
+    "Pencil",
+    "Lápiz"
+  ],
+  "Borracha": [
+    "Eraser",
+    "Borrador"
+  ],
+  "Retângulo": [
+    "Rectangle",
+    "Rectángulo"
+  ],
+  "Elipse": [
+    "Ellipse",
+    "Elipse"
+  ],
+  "Cor": [
+    "Color",
+    "Color"
+  ],
+  "Tamanho": [
+    "Size",
+    "Tamaño"
+  ],
+  "Preencher formas": [
+    "Fill shapes",
+    "Rellenar formas"
+  ],
+  "Organizar": [
+    "Arrange",
+    "Organizar"
+  ],
+  "CAMADAS": [
+    "LAYERS",
+    "CAPAS"
+  ],
+  "Nova camada": [
+    "New layer",
+    "Nueva capa"
+  ],
+  "IMAGEM SELECIONADA": [
+    "SELECTED IMAGE",
+    "IMAGEN SELECCIONADA"
+  ],
+  "Travar imagem": [
+    "Lock image",
+    "Bloquear imagen"
+  ],
+  "Destravar imagem": [
+    "Unlock image",
+    "Desbloquear imagen"
+  ],
+  "Largura": [
+    "Width",
+    "Ancho"
+  ],
+  "Altura": [
+    "Height",
+    "Alto"
+  ],
+  "Rotação": [
+    "Rotation",
+    "Rotación"
+  ],
+  "Manter proporção": [
+    "Keep aspect ratio",
+    "Mantener proporción"
+  ],
+  "Cortar imagem": [
+    "Crop image",
+    "Recortar imagen"
+  ],
+  "Duplicar": [
+    "Duplicate",
+    "Duplicar"
+  ],
+  "Trazer para frente": [
+    "Bring to front",
+    "Traer al frente"
+  ],
+  "Deletar": [
+    "Delete",
+    "Eliminar"
+  ],
+  "Biblioteca": [
+    "Library",
+    "Biblioteca"
+  ],
+  "BIBLIOTECA": [
+    "LIBRARY",
+    "BIBLIOTECA"
+  ],
+  "Personagens": [
+    "Characters",
+    "Personajes"
+  ],
+  "Montarias": [
+    "Mounts",
+    "Monturas"
+  ],
+  "Objetos": [
+    "Objects",
+    "Objetos"
+  ],
+  "Carregando…": [
+    "Loading…",
+    "Cargando…"
+  ],
+  "Alterações não salvas": [
+    "Unsaved changes",
+    "Cambios sin guardar"
+  ],
+  "Sair sem salvar?": [
+    "Exit without saving?",
+    "¿Salir sin guardar?"
+  ],
+  "Continuar editando": [
+    "Continue editing",
+    "Seguir editando"
+  ],
+  "Sair sem salvar": [
+    "Exit without saving",
+    "Salir sin guardar"
+  ],
+  "Entrar": [
+    "Sign in",
+    "Entrar"
+  ],
+  "Senha": [
+    "Password",
+    "Contraseña"
+  ],
+  "Começar jornada": [
+    "Start journey",
+    "Comenzar aventura"
+  ],
+  "Continuar jornada": [
+    "Continue journey",
+    "Continuar aventura"
+  ],
+  "Entrar com Google": [
+    "Sign in with Google",
+    "Entrar con Google"
+  ],
+  "Entre para continuar sua jornada": [
+    "Sign in to continue your journey",
+    "Entra para continuar tu aventura"
+  ],
+  "Use sua conta Google. Na primeira entrada, você escolhe como quer ser chamado por aqui.": [
+    "Use your Google account. On your first visit, choose how you want to be known here.",
+    "Usa tu cuenta de Google. Al entrar por primera vez, elige cómo quieres que te llamen aquí."
+  ],
+  "Preparando entrada…": [
+    "Preparing sign-in…",
+    "Preparando el acceso…"
+  ],
+  "Como te chamamos?": [
+    "What should we call you?",
+    "¿Cómo te llamamos?"
+  ],
+  "Escolha o nome que os outros jogadores vão ver. Pode ser um apelido; você poderá alterá-lo nas configurações.": [
+    "Choose the name other players will see. It can be a nickname; you can change it in settings.",
+    "Elige el nombre que verán los demás jugadores. Puede ser un apodo; podrás cambiarlo en configuración."
+  ],
+  "Nome público": [
+    "Display name",
+    "Nombre público"
+  ],
+  "Seu nome de aventureiro": [
+    "Your adventurer name",
+    "Tu nombre de aventurero"
+  ],
+  "Salvar e entrar": [
+    "Save and continue",
+    "Guardar y entrar"
+  ],
+  "Salvar nome": [
+    "Save name",
+    "Guardar nombre"
+  ],
+  "Usar outra conta Google": [
+    "Use another Google account",
+    "Usar otra cuenta de Google"
+  ],
+  "Escolha como os jogadores veem você": [
+    "Choose how other players see you",
+    "Elige cómo te ven los demás jugadores"
+  ],
+  "Alterar nome": [
+    "Change name",
+    "Cambiar nombre"
+  ],
+  "Senhas locais antigas": [
+    "Old local passwords",
+    "Contraseñas locales antiguas"
+  ],
+  "Remova as senhas do cadastro antigo deste navegador sem apagar fichas ou mapas.": [
+    "Remove old sign-in passwords from this browser without deleting characters or maps.",
+    "Elimina las contraseñas del registro anterior de este navegador sin borrar fichas ni mapas."
+  ],
+  "Limpar senhas antigas": [
+    "Clear old passwords",
+    "Eliminar contraseñas antiguas"
+  ],
+  "Senhas antigas removidas deste navegador. Fichas e mapas preservados.": [
+    "Old passwords removed from this browser. Characters and maps were preserved.",
+    "Contraseñas antiguas eliminadas de este navegador. Se conservaron las fichas y los mapas."
+  ],
+  "Não foi possível limpar as senhas. Tente novamente.": [
+    "Could not clear the passwords. Try again.",
+    "No se pudieron eliminar las contraseñas. Inténtalo de nuevo."
+  ],
+  "Exclusão da conta online ainda indisponível": [
+    "Online account deletion is not available yet",
+    "La eliminación de la cuenta en línea aún no está disponible"
+  ],
+  "Importar fichas deste navegador": [
+    "Import characters from this browser",
+    "Importar fichas de este navegador"
+  ],
+  "Importar fichas locais": [
+    "Import local characters",
+    "Importar fichas locales"
+  ],
+  "Selecione apenas as fichas que são suas. Elas serão copiadas para a conta Google atual. Os originais continuarão neste navegador; repetir a importação não cria duplicatas.": [
+    "Select only your own characters. They will be copied to the current Google account. Originals stay in this browser; repeating the import does not create duplicates.",
+    "Selecciona solo tus propias fichas. Se copiarán a la cuenta de Google actual. Los originales seguirán en este navegador; repetir la importación no crea duplicados."
+  ],
+  "Nenhuma ficha será enviada sem sua seleção.": [
+    "No characters will be sent without your selection.",
+    "No se enviará ninguna ficha sin tu selección."
+  ],
+  "Nenhuma ficha local encontrada neste navegador.": [
+    "No local characters found in this browser.",
+    "No se encontraron fichas locales en este navegador."
+  ],
+  "Selecione ao menos uma ficha.": [
+    "Select at least one character.",
+    "Selecciona al menos una ficha."
+  ],
+  "Importar selecionadas": [
+    "Import selected",
+    "Importar seleccionadas"
+  ],
+  "Fechar": [
+    "Close",
+    "Cerrar"
+  ],
+  "Alterações pendentes": [
+    "Pending changes",
+    "Cambios pendientes"
+  ],
+  "Suas alterações continuam neste navegador. Em caso de conflito, salve uma cópia para preservar as duas versões.": [
+    "Your changes are still in this browser. If there is a conflict, save a copy to keep both versions.",
+    "Tus cambios siguen en este navegador. Si hay un conflicto, guarda una copia para conservar ambas versiones."
+  ],
+  "Nenhuma alteração pendente.": [
+    "No pending changes.",
+    "No hay cambios pendientes."
+  ],
+  "Alteração preservada de outra aba.": [
+    "Changes preserved from another tab.",
+    "Cambios conservados de otra pestaña."
+  ],
+  "Aguardando envio.": [
+    "Waiting to upload.",
+    "Esperando el envío."
+  ],
+  "Baixar cópia": [
+    "Download copy",
+    "Descargar copia"
+  ],
+  "Salvar como nova ficha": [
+    "Save as a new character",
+    "Guardar como ficha nueva"
+  ],
+  "Descartar edição local": [
+    "Discard local changes",
+    "Descartar cambios locales"
+  ],
+  "Tentar novamente": [
+    "Try again",
+    "Intentar de nuevo"
+  ],
+  "Ver pendências": [
+    "View pending changes",
+    "Ver cambios pendientes"
+  ],
+  "Fichas salvas online.": [
+    "Characters saved online.",
+    "Fichas guardadas en línea."
+  ],
+  "Alterações aguardando envio…": [
+    "Changes waiting to upload…",
+    "Cambios pendientes de envío…"
+  ],
+  "Há pendências que precisam da sua escolha.": [
+    "Some pending changes need your attention.",
+    "Hay cambios pendientes que requieren tu atención."
+  ],
+  "Alterações preservadas neste navegador; enviando…": [
+    "Changes preserved in this browser; uploading…",
+    "Cambios conservados en este navegador; enviando…"
+  ],
+  "Conflito: sua edição foi preservada. Veja as pendências.": [
+    "Conflict: your changes were preserved. View pending changes.",
+    "Conflicto: tus cambios se conservaron. Consulta los cambios pendientes."
+  ],
+  "Envio pendente. Suas alterações continuam neste navegador.": [
+    "Upload pending. Your changes are still in this browser.",
+    "Envío pendiente. Tus cambios siguen en este navegador."
+  ],
+  "Não foi possível carregar as fichas online. Tente novamente.": [
+    "Could not load online characters. Try again.",
+    "No se pudieron cargar las fichas en línea. Inténtalo de nuevo."
+  ],
+  "Há alterações de outra aba preservadas neste navegador. Veja as pendências.": [
+    "Changes from another tab are preserved in this browser. View pending changes.",
+    "Hay cambios de otra pestaña conservados en este navegador. Consulta los cambios pendientes."
+  ],
+  "Não foi possível conectar. Suas pendências continuam preservadas.": [
+    "Could not connect. Your pending changes are still preserved.",
+    "No se pudo conectar. Tus cambios pendientes siguen conservados."
+  ],
+  "Existem pendências que precisam da sua escolha.": [
+    "Some pending changes need your attention.",
+    "Hay cambios pendientes que requieren tu atención."
+  ],
+  "Sem espaço para preservar a edição. Reduza a foto ou baixe uma cópia.": [
+    "Not enough space to preserve these changes. Reduce the photo size or download a copy.",
+    "No hay espacio para conservar los cambios. Reduce la foto o descarga una copia."
+  ],
+  "Ficha excluída online.": [
+    "Character deleted online.",
+    "Ficha eliminada en línea."
+  ],
+  "Cópia salva online.": [
+    "Copy saved online.",
+    "Copia guardada en línea."
+  ],
+  "Edição local descartada.": [
+    "Local changes discarded.",
+    "Cambios locales descartados."
+  ],
+  "Aguarde o envio em andamento terminar.": [
+    "Wait for the current upload to finish.",
+    "Espera a que termine el envío actual."
+  ],
+  "A edição mudou. Feche e abra as pendências novamente.": [
+    "The changes have been updated. Close and reopen pending changes.",
+    "Los cambios se actualizaron. Cierra y vuelve a abrir los cambios pendientes."
+  ],
+  "Descartar esta edição local e usar a versão online? A edição local será removida.": [
+    "Discard these local changes and use the online version? The local changes will be removed.",
+    "¿Descartar estos cambios locales y usar la versión en línea? Los cambios locales se eliminarán."
+  ],
+  "Esta ficha foi alterada em outro lugar. Sua edição foi preservada neste navegador.": [
+    "This character was changed elsewhere. Your changes were preserved in this browser.",
+    "Esta ficha se modificó en otro lugar. Tus cambios se conservaron en este navegador."
+  ],
+  "A ficha foi alterada em outro lugar. Atualize a lista antes de excluir.": [
+    "The character was changed elsewhere. Refresh the list before deleting.",
+    "La ficha se modificó en otro lugar. Actualiza la lista antes de eliminarla."
+  ],
+  "Ficha não encontrada.": [
+    "Character not found.",
+    "Ficha no encontrada."
+  ],
+  "Ficha muito grande. Reduza a foto ou o conteúdo.": [
+    "Character data is too large. Reduce the photo size or content.",
+    "La ficha es demasiado grande. Reduce la foto o el contenido."
+  ],
+  "Não foi possível acessar as fichas online.": [
+    "Could not access online characters.",
+    "No se pudo acceder a las fichas en línea."
+  ],
+  "Não foi possível abrir a ficha.": [
+    "Could not open the character.",
+    "No se pudo abrir la ficha."
+  ],
+  "Não foi possível excluir a ficha.": [
+    "Could not delete the character.",
+    "No se pudo eliminar la ficha."
+  ],
+  "A cópia continua pendente. Tente novamente quando houver conexão.": [
+    "The copy is still pending. Try again when connected.",
+    "La copia sigue pendiente. Inténtalo de nuevo cuando haya conexión."
+  ],
+  "Resolva ou preserve as alterações pendentes antes de excluir.": [
+    "Resolve or preserve pending changes before deleting.",
+    "Resuelve o conserva los cambios pendientes antes de eliminar."
+  ],
+  "Abra o site pelo servidor iniciado com npm run dev.": [
+    "Open the site using the server started with npm run dev.",
+    "Abre el sitio con el servidor iniciado mediante npm run dev."
+  ],
+  "O login online ainda não foi configurado neste servidor.": [
+    "Online sign-in is not configured on this server yet.",
+    "El acceso en línea aún no está configurado en este servidor."
+  ],
+  "Não foi possível concluir a entrada com Google. Tente novamente.": [
+    "Could not complete Google sign-in. Try again.",
+    "No se pudo completar el acceso con Google. Inténtalo de nuevo."
+  ],
+  "Não foi possível iniciar a entrada com Google. Tente novamente.": [
+    "Could not start Google sign-in. Try again.",
+    "No se pudo iniciar el acceso con Google. Inténtalo de nuevo."
+  ],
+  "Não foi possível validar sua sessão. Tente novamente.": [
+    "Could not verify your session. Try again.",
+    "No se pudo verificar tu sesión. Inténtalo de nuevo."
+  ],
+  "Use de 3 a 40 caracteres, sem marcações ou caracteres de controle.": [
+    "Use 3 to 40 characters, without markup or control characters.",
+    "Usa entre 3 y 40 caracteres, sin marcas ni caracteres de control."
+  ],
+  "Entre com Google para escolher seu nome.": [
+    "Sign in with Google to choose your name.",
+    "Entra con Google para elegir tu nombre."
+  ],
+  "Não foi possível salvar seu nome. Tente novamente.": [
+    "Could not save your name. Try again.",
+    "No se pudo guardar tu nombre. Inténtalo de nuevo."
+  ],
+  "Seu nome não foi confirmado. Tente novamente.": [
+    "Your name was not confirmed. Try again.",
+    "Tu nombre no se confirmó. Inténtalo de nuevo."
+  ],
+  "Escolha seu nome público para continuar.": [
+    "Choose your display name to continue.",
+    "Elige tu nombre público para continuar."
+  ],
+  "Sua sessão expirou. Entre novamente.": [
+    "Your session has expired. Sign in again.",
+    "Tu sesión caducó. Entra de nuevo."
+  ],
+  "Uma trilha para sua jornada": [
+    "A soundtrack for your journey",
+    "Una banda sonora para tu aventura"
+  ],
+  "O Primórdios usa músicas de fundo e efeitos sonoros. Você quer ativar o áudio?": [
+    "Primórdios uses background music and sound effects. Would you like to enable audio?",
+    "Primórdios utiliza música de fondo y efectos de sonido. ¿Quieres activar el audio?"
+  ],
+  "Você pode mudar essa escolha nas configurações quando quiser.": [
+    "You can change this choice in settings at any time.",
+    "Puedes cambiar esta elección en configuración cuando quieras."
+  ],
+  "Continuar sem som": [
+    "Continue without sound",
+    "Continuar sin sonido"
+  ],
+  "Ativar áudio": [
+    "Enable audio",
+    "Activar audio"
+  ],
+  "Nenhum personagem criado ainda.": [
+    "No characters created yet.",
+    "Todavía no has creado personajes."
+  ],
+  "Clique em \"Novo Personagem\" para começar.": [
+    "Click \"New character\" to get started.",
+    "Haz clic en \"Nuevo personaje\" para empezar."
+  ],
+  "Nenhum personagem encontrado.": [
+    "No characters found.",
+    "No se encontraron personajes."
+  ],
+  "Tente buscar por outro nome, classe ou descrição.": [
+    "Try another name, class or description.",
+    "Prueba otro nombre, clase o descripción."
+  ],
+  "Ver Ficha": [
+    "View character",
+    "Ver ficha"
+  ],
+  "Sem descrição.": [
+    "No description.",
+    "Sin descripción."
+  ],
+  "Nível": [
+    "Level",
+    "Nivel"
+  ],
+  "{count} personagens": [
+    "{count} characters",
+    "{count} personajes"
+  ],
+  "{count} personagem": [
+    "{count} character",
+    "{count} personaje"
+  ],
+  "{found} de {total} personagens encontrados": [
+    "{found} of {total} characters found",
+    "{found} de {total} personajes encontrados"
+  ],
+  "{found} de {total} personagem encontrado": [
+    "{found} of {total} character found",
+    "{found} de {total} personaje encontrado"
+  ],
+  "{name} · {class} · conta local {account}": [
+    "{name} · {class} · local account {account}",
+    "{name} · {class} · cuenta local {account}"
+  ],
+  "{name} — cópia confirmada online": [
+    "{name} — copy confirmed online",
+    "{name} — copia confirmada en línea"
+  ],
+  "{done} de {total} fichas confirmadas online. Os originais foram preservados.": [
+    "{done} of {total} characters confirmed online. Originals were preserved.",
+    "{done} de {total} fichas confirmadas en línea. Se conservaron los originales."
+  ],
+  "Seus personagens": [
+    "Your characters",
+    "Tus personajes"
+  ],
+  "Buscar personagem": [
+    "Search characters",
+    "Buscar personajes"
+  ],
+  "Nome, classe ou descrição": [
+    "Name, class or description",
+    "Nombre, clase o descripción"
+  ],
+  "Ordenar por": [
+    "Sort by",
+    "Ordenar por"
+  ],
+  "Mais recentes": [
+    "Most recent",
+    "Más recientes"
+  ],
+  "Nome (A–Z)": [
+    "Name (A–Z)",
+    "Nombre (A–Z)"
+  ],
+  "Nome (Z–A)": [
+    "Name (Z–A)",
+    "Nombre (Z–A)"
+  ],
+  "Nível (maior primeiro)": [
+    "Level (highest first)",
+    "Nivel (de mayor a menor)"
+  ],
+  "Tem certeza?": [
+    "Are you sure?",
+    "¿Estás seguro?"
+  ],
+  "Esta ação é irreversível. O personagem será apagado permanentemente.": [
+    "This cannot be undone. The character will be permanently deleted.",
+    "Esta acción no se puede deshacer. El personaje se eliminará de forma permanente."
+  ],
+  "Salvamento das fichas": [
+    "Character saving",
+    "Guardado de fichas"
+  ],
+  "Não foi possível preservar a cópia neste navegador.": [
+    "Could not preserve the copy in this browser.",
+    "No se pudo conservar la copia en este navegador."
+  ],
+  "Entre para carregar suas fichas.": [
+    "Sign in to load your characters.",
+    "Entra para cargar tus fichas."
+  ],
+  "O limite atual é de 100 fichas por conta.": [
+    "The current limit is 100 characters per account.",
+    "El límite actual es de 100 fichas por cuenta."
+  ],
+  "Esta ficha já foi importada e excluída.": [
+    "This character has already been imported and deleted.",
+    "Esta ficha ya se importó y se eliminó."
+  ],
+  "Campos da ficha inválidos.": [
+    "Invalid character fields.",
+    "Campos de ficha no válidos."
+  ],
+  "Recursos da ficha inválidos.": [
+    "Invalid character resources.",
+    "Recursos de ficha no válidos."
+  ],
+  "Use uma foto PNG, JPEG, WebP ou GIF.": [
+    "Use a PNG, JPEG, WebP or GIF photo.",
+    "Usa una foto PNG, JPEG, WebP o GIF."
+  ],
+  "O conteúdo da foto é inválido.": [
+    "The photo content is invalid.",
+    "El contenido de la foto no es válido."
+  ],
+  "Ficha muito complexa.": [
+    "Character data is too complex.",
+    "Los datos de la ficha son demasiado complejos."
+  ],
+  "Campo inválido na ficha.": [
+    "Invalid character field.",
+    "Campo de ficha no válido."
+  ],
+  "Nome ou classe inválidos.": [
+    "Invalid name or class.",
+    "Nombre o clase no válidos."
+  ],
+  "Nível inválido.": [
+    "Invalid level.",
+    "Nivel no válido."
+  ],
+  "Já existe uma ficha com esse identificador.": [
+    "A character with this ID already exists.",
+    "Ya existe una ficha con ese identificador."
+  ],
+  "Não foi possível concluir a operação.": [
+    "Could not complete the operation.",
+    "No se pudo completar la operación."
+  ],
+  "O mapa “{name}” será apagado. Esta ação não pode ser desfeita.": [
+    "The map “{name}” will be deleted. This cannot be undone.",
+    "Se eliminará el mapa “{name}”. Esta acción no se puede deshacer."
+  ],
+  "alert": [
+    "confirm",
+    "prompt"
+  ],
+  "Mãos": [
+    "Hands",
+    "Manos"
+  ],
+  "Dedo": [
+    "Finger",
+    "Dedo"
+  ],
+  "Pulsos": [
+    "Wrists",
+    "Muñecas"
+  ],
+  "Pés": [
+    "Feet",
+    "Pies"
+  ],
+  "Raridade": [
+    "Rarity",
+    "Rareza"
+  ],
+  "Recarga": [
+    "Recharge",
+    "Recarga"
+  ],
+  "Pontos de esforço temporários": [
+    "Temporary effort points",
+    "Puntos de esfuerzo temporales"
+  ],
+  "Opções da ferramenta": [
+    "Tool options",
+    "Opciones de la herramienta"
+  ],
+  "Propriedades da imagem": [
+    "Image properties",
+    "Propiedades de la imagen"
+  ],
+  "Mover bloco": [
+    "Move block",
+    "Mover bloque"
+  ],
+  "Subir bloco": [
+    "Move block up",
+    "Subir bloque"
+  ],
+  "Descer bloco": [
+    "Move block down",
+    "Bajar bloque"
+  ],
+  "Controles de música": [
+    "Music controls",
+    "Controles de música"
+  ],
+  "Alcance (m)": [
+    "Range (m)",
+    "Alcance (m)"
+  ],
+  "Alcance: {value} m. Toque nos quadrados destacados ou escolha na lista.": [
+    "Range: {value} m. Tap highlighted squares or choose from the list.",
+    "Alcance: {value} m. Toca las casillas resaltadas o elige en la lista."
+  ],
+  "Alvos selecionados: {count} / {max}": [
+    "Selected targets: {count} / {max}",
+    "Objetivos seleccionados: {count} / {max}"
+  ],
+  "Confirmar e rolar": [
+    "Confirm and roll",
+    "Confirmar y tirar"
+  ],
+  "Confirme alcance e alvos conforme a regra da ação. Distância medida entre centros, sem paredes ou linha de visão.": [
+    "Confirm range and targets according to the action rules. Distance measured between centers, without walls or line of sight.",
+    "Confirma el alcance y los objetivos según las reglas de la acción. Distancia medida entre centros, sin paredes ni línea de visión."
+  ],
+  "Dados (ex.: 2d6 + 3; vazio para efeito sem dados)": [
+    "Dice (e.g.: 2d6 + 3; leave blank for an effect without dice)",
+    "Dados (ej.: 2d6 + 3; vacío para un efecto sin dados)"
+  ],
+  "Dados inválidos.": [
+    "Invalid dice.",
+    "Dados no válidos."
+  ],
+  "Desvincular": [
+    "Unlink",
+    "Desvincular"
+  ],
+  "Efeito sem rolagem de dados": [
+    "Effect without a dice roll",
+    "Efecto sin tirada de dados"
+  ],
+  "Escolha uma ficha": [
+    "Choose a character sheet",
+    "Elige una ficha"
+  ],
+  "Ficha do token": [
+    "Token character sheet",
+    "Ficha del token"
+  ],
+  "Gastar {v3} PE ao usar esta habilidade": [
+    "Spend {v3} PE when using this ability",
+    "Gastar {v3} PE al usar esta habilidad"
+  ],
+  "Há mais de um alvo neste quadrado. Escolha na lista.": [
+    "There is more than one target in this square. Choose from the list.",
+    "Hay más de un objetivo en esta casilla. Elige en la lista."
+  ],
+  "Máximo de alvos": [
+    "Maximum targets",
+    "Máximo de objetivos"
+  ],
+  "Preparar ação": [
+    "Prepare action",
+    "Preparar acción"
+  ],
+  "Selecionar alvos": [
+    "Select targets",
+    "Seleccionar objetivos"
+  ],
+  "Token": [
+    "Token",
+    "Token"
+  ],
+  "Uma ficha por token, somente nesta sessão.": [
+    "One character sheet per token, only in this session.",
+    "Una ficha por token, solo en esta sesión."
+  ],
+  "Vincular": [
+    "Link",
+    "Vincular"
+  ],
+  "Vincule esta ficha a um token visível antes de agir.": [
+    "Link this character sheet to a visible token before acting.",
+    "Vincula esta ficha a un token visible antes de actuar."
+  ],
+  "Usar sem alvo externo": [
+    "Use without an external target",
+    "Usar sin objetivo externo"
+  ],
+  "Atual": [
+    "Current",
+    "Actual"
+  ],
+  "Abrir ficha": [
+    "Open character sheet",
+    "Abrir ficha"
+  ],
+  "Escolha uma ficha da sua conta.": [
+    "Choose a character sheet from your account.",
+    "Elige una ficha de tu cuenta."
+  ],
+  "Tratar como token": [
+    "Treat as token",
+    "Tratar como token"
+  ],
+  "Formas geométricas": [
+    "Geometric shapes",
+    "Formas geométricas"
+  ],
+  "Confirme alcance e alvos conforme a regra da ação. Distância medida entre as bordas dos tokens, sem paredes ou linha de visão.": [
+    "Confirm range and targets according to the action rules. Distance measured between token edges, without walls or line of sight.",
+    "Confirma el alcance y los objetivos según las reglas de la acción. Distancia medida entre los bordes de los tokens, sin paredes ni línea de visión."
+  ],
+  "Modificador": [
+    "Modifier",
+    "Modificador"
+  ],
+  "Estilo dos dados": [
+    "Dice style",
+    "Estilo de los dados"
+  ],
+  "Marfim": [
+    "Ivory",
+    "Marfil"
+  ],
+  "Obsidiana": [
+    "Obsidian",
+    "Obsidiana"
+  ],
+  "Rubi": [
+    "Ruby",
+    "Rubí"
+  ],
+  "Safira": [
+    "Sapphire",
+    "Zafiro"
+  ],
+  "Esmeralda": [
+    "Emerald",
+    "Esmeralda"
+  ],
+  "Arcano": [
+    "Arcane",
+    "Arcano"
+  ],
+  "Metal": [
+    "Metal",
+    "Metal"
+  ],
+  "Pintado": [
+    "Speckled",
+    "Moteado"
+  ],
+  "Olho": [
+    "Eye",
+    "Ojo"
+  ],
+  "Patinhos": [
+    "Ducklings",
+    "Patitos"
+  ],
+  "Fosforescente": [
+    "Glow in the dark",
+    "Fosforescente"
+  ],
+  "Cristal": [
+    "Crystal",
+    "Cristal"
+  ],
+  "Magma": [
+    "Magma",
+    "Magma"
+  ],
+  "Nebulosa": [
+    "Nebula",
+    "Nebulosa"
+  ],
+  "Adicionar ao grimório": [
+    "Add to grimoire",
+    "Añadir al grimorio"
+  ],
+  "Adicionar magia": [
+    "Add spell",
+    "Añadir hechizo"
+  ],
+  "Conjurar · {cost} {resource}": [
+    "Cast · {cost} {resource}",
+    "Lanzar · {cost} {resource}"
+  ],
+  "Elementos mágicos": [
+    "Magic elements",
+    "Elementos mágicos"
+  ],
+  "Escolha uma magia para ler sua página.": [
+    "Choose a spell to read its page.",
+    "Elige un hechizo para leer su página."
+  ],
+  "Explorar magias": [
+    "Explore spells",
+    "Explorar hechizos"
+  ],
+  "Grimório": [
+    "Grimoire",
+    "Grimorio"
+  ],
+  "Grimório arcano": [
+    "Arcane grimoire",
+    "Grimorio arcano"
+  ],
+  "MAGIAS ANOTADAS": [
+    "INSCRIBED SPELLS",
+    "HECHIZOS ANOTADOS"
+  ],
+  "Magia não encontrada no livro": [
+    "Spell not found in the book",
+    "Hechizo no encontrado en el libro"
+  ],
+  "Magias anotadas: {count} / {max}": [
+    "Inscribed spells: {count} / {max}",
+    "Hechizos anotados: {count} / {max}"
+  ],
+  "Nenhuma magia deste elemento no grimório.": [
+    "No spells of this element in the grimoire.",
+    "No hay hechizos de este elemento en el grimorio."
+  ],
+  "Outras": [
+    "Other",
+    "Otras"
+  ],
+  "SEU ATLAS ARCANO": [
+    "YOUR ARCANE ATLAS",
+    "TU ATLAS ARCANO"
+  ],
+  "Uma nova página espera por você.": [
+    "A new page awaits you.",
+    "Una nueva página te espera."
+  ],
+  "Vol.": [
+    "Vol.",
+    "Vol."
+  ],
+  "Conjuração realizada · {cost} {resource}": [
+    "Spell cast · {cost} {resource}",
+    "Hechizo lanzado · {cost} {resource}"
+  ],
+  "Recebe a magia Ressuscitar Mortos; se já a possuir, seu custo é reduzido em 2 Mana. Ao conjurá-la, escolha um benefício: criar um servo adicional a partir de uma pilha de ossos ou restos; aumentar os PV do servo em 2 + seu nível de Mago; ou conceder +2 à Defesa e à Constituição do servo (o bônus aumenta para +4 no nível 12). Se escolher outro benefício, ele também vale para ambos os servos.": [
+    "Receives the Raise Dead spell; if you already have it, its cost is reduced by 2 EP. When you cast it, choose one benefit: create an additional servant from a pile of bones or scraps; increase the servo's HP by 2 + its Level by Mage; or grant +2 to the minion's Defense and Constitution (Bonus increases to +4 on Level 12). If you choose another benefit, it also applies to both servants.",
+    "Recibe el hechizo Levantar a los muertos; si ya lo tienes, su coste se reduce en 2 Mana. Cuando lo lances, elige un beneficio: crear un sirviente adicional a partir de un montón de huesos o restos; aumentar el PV del servo en 2 + su Nivel en Mago; o otorgar +2 a la Defensa del minion y Constitución (Bonificación aumenta a +4 en Nivel 12). Si elige otro beneficio, también aplica para ambos servidores."
+  ],
+  "Ao finalizar uma criatura, por qualquer meio, recupera PV ou Mana em quantidade igual ao seu nível + modificador de Inteligência. A recuperação não pode exceder os limites máximos seus ou da criatura. Não funciona contra mortos-vivos ou maquinário.": [
+    "When finishing a creature, by any means, it recovers HP or EP in an amount equal to its Level + Intelligence modifier. Recovery can't exceed your or the creature's maximum limits. Does not work against undead or machinery.",
+    "Al terminar una criatura, por cualquier medio, recupera PV o Mana en una cantidad igual a su modificador Nivel + Inteligencia. La recuperación no puede exceder tus límites máximos o los de la criatura. No funciona contra muertos vivientes ni maquinaria."
+  ],
+  "Com uma ação completa e 20 Mana, toque uma criatura a até 1,5m. Ela faz um teste de Constituição contra sua CD; se falhar, sofre 7d10 + 20 de dano necrótico e Decomposição. Se passar, sofre metade do dano e evita a condição. Ignora resistências; se reduzir a criatura a 0 PV, ela morre imediatamente, sem salvaguardas contra a morte.": [
+    "As a full action and 20 EP, touch a creature within 1,5m. She rolls Constitution against her DC; if failed, suffers 7d10 + 20 necrotic damage and Decay. If it passes, it takes half damage and avoids the condition. Ignores resistance; if you reduce the creature to 0 HP, it dies immediately, without Saving Throws against death.",
+    "Como acción completa y 20 Mana, toca una criatura dentro de 1,5m. Lanza Constitución contra su CD; si falla, sufre daño necrótico y descomposición 7d10 + 20. Si pasa, recibe la mitad del daño y evita la condición. Ignora la resistencia; si reduces la criatura a 0 PV, muere inmediatamente, sin Tiradas de Salvación contra la muerte."
+  ],
+  "Escolhe o tipo Elemental. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 Mana a menos.": [
+    "Choose the Elemental type. Your spells of this type gain +2 to DC for saving throws and cost 2 EP less.",
+    "Elija el tipo Elemental. Tus hechizos de este tipo ganan de +2 a CD para tiros de salvación y cuestan 2 Mana menos."
+  ],
+  "Escolhe o tipo Orgânica. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 Mana a menos.": [
+    "Choose the Organic type. Your spells of this type gain +2 to DC for saving throws and cost 2 EP less.",
+    "Elija el tipo Orgánico. Tus hechizos de este tipo ganan de +2 a CD para tiros de salvación y cuestan 2 Mana menos."
+  ],
+  "Escolhe o tipo Mística. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 Mana a menos.": [
+    "Choose the Mystic type. Your spells of this type receive +2 on DC for saving throws and cost 2 EP less.",
+    "Elige el tipo Místico. Tus hechizos de este tipo reciben +2 sobre CD para tiros de salvación y cuestan 2 Mana menos."
+  ],
+  "Possui cargas iguais ao modificador de Inteligência. Como ação bônus, gaste uma carga para recuperar 1d6 + Inteligência de Mana. Recupera as cargas em descanso longo.": [
+    "It has Charges equal to the Intelligence modifier. As Bonus Action, spend a charge to regain 1d6 + Intelligence Mana. Recovers Charges on long rest.",
+    "Tiene Cargas igual al modificador Inteligencia. Como Acción Adicional, gasta una carga para recuperar Mana 1d6 + Inteligencia. Recupera Cargas con un descanso prolongado."
+  ],
+  "Gaste 2 Mana para aumentar o alcance de uma magia em uma etapa; ataques mágicos ignoram penalidades de cobertura parcial.": [
+    "Spend 2 EP to increase the range of a spell by one step; Magic attacks ignore partial cover penalties.",
+    "Gasta 2 Mana para aumentar el alcance de un hechizo en un paso; Los ataques mágicos ignoran las penalizaciones por cobertura parcial."
+  ],
+  "Toque um aliado e gaste 2 Mana para conceder +1d8 em testes baseados em Inteligência por 10 minutos.": [
+    "Touch an ally and spend 2 EP to grant +1d8 on Intelligence-based rolls for 10 minutes.",
+    "Toca a un aliado y gasta 2 Mana para otorgar +1d8 en tiradas basadas en Inteligencia durante minutos de 10."
+  ],
+  "Uma vez por turno, ao lançar uma magia, pode lançar outra de volume 3 ou menor e do mesmo elemento na mesma ação, pagando o dobro da Mana original.": [
+    "Once per turn, when casting a spell, you can cast another spell of 3 or less in volume and of the same element in the same action, paying double the original mana.",
+    "Una vez por turno, al lanzar un hechizo, puedes lanzar otro hechizo de 3 o menos en volumen y del mismo elemento en la misma acción, pagando el doble de maná original."
+  ],
+  "Mana (Mago):": [
+    "Mana (Mage):",
+    "Mana (Mago):"
+  ],
+  "Para o Mago, essa reserva se chama Mana: magias e habilidades consomem a mesma barra. Efeitos que gastam ou recuperam PE afetam sua Mana, sem criar uma segunda reserva.": [
+    "For the Mage, this resource is called Mana: spells and abilities consume the same bar. Effects that spend or restore PE affect their Mana, without creating a second resource.",
+    "Para el Mago, esta reserva se llama Mana: los hechizos y las habilidades consumen la misma barra. Los efectos que gastan o recuperan PE afectan su Mana, sin crear una segunda reserva."
+  ],
+  "Mana inicial": [
+    "Initial Mana",
+    "Mana inicial"
+  ],
+  "Mana por nível": [
+    "Mana per level",
+    "Mana por nivel"
+  ],
+  "VIDA & MANA": [
+    "HEALTH & MANA",
+    "VIDA Y MANA"
+  ],
+  "Mana temporária": [
+    "Temporary Mana",
+    "Mana temporal"
+  ],
+  "Dados de Vida & Mana": [
+    "Health & Mana",
+    "Datos de Vida y Mana"
+  ],
+  "Gastar {v4} {v5} ao usar esta habilidade": [
+    "Spend {v4} {v5} when using this ability",
+    "Gastar {v4} {v5} al usar esta habilidad"
+  ],
+  "{v6} inicial": [
+    "{v6} initial",
+    "{v6} inicial"
+  ],
+  "Permite manipular a ativação do feitiço, guardando-o na manga após invocá-lo com a ação e Mana correspondentes. Pode projetá-lo com uma": [
+    "Allows you to manipulate the spell's activation, storing it in your sleeve after invoking it with the corresponding action and EP. You can design it with a",
+    "Permite manipular la activación del hechizo, almacenándolo en tu manga luego de invocarlo con la acción correspondiente y Mana. Puedes diseñarlo con un"
+  ],
+  "Escolha {v9} entre:": [
+    "Choose {v9} from:",
+    "Elige {v9} entre:"
+  ],
+  "recuperou {v0} {v1}": [
+    "recovered {v0} {v1}",
+    "recuperó {v0} {v1}"
+  ],
+  "{v0} já está no máximo": [
+    "{v0} is already at maximum",
+    "{v0} ya está al máximo"
+  ],
+  "A linha precisa de comprimento e largura confirmados.": [
+    "The line needs a confirmed length and width.",
+    "La línea necesita longitud y anchura confirmadas."
+  ],
+  "A magia permite vários pilares. Posicione uma área por vez.": [
+    "The spell allows multiple pillars. Position one area at a time.",
+    "El hechizo permite varios pilares. Coloca un área cada vez."
+  ],
+  "A área não informa claramente raio ou diâmetro. Confirme o raio.": [
+    "The area does not clearly specify radius or diameter. Confirm the radius.",
+    "El área no especifica claramente radio o diámetro. Confirma el radio."
+  ],
+  "Abertura do cone (graus)": [
+    "Cone angle (degrees)",
+    "Apertura del cono (grados)"
+  ],
+  "Alvo individual": [
+    "Individual target",
+    "Objetivo individual"
+  ],
+  "Ataque": [
+    "Attack",
+    "Ataque"
+  ],
+  "Comprimento (m)": [
+    "Length (m)",
+    "Longitud (m)"
+  ],
+  "Cone": [
+    "Cone",
+    "Cono"
+  ],
+  "Confirme as métricas do livro. Áreas atingem qualquer parte do token; paredes e linha de visão não são calculadas.": [
+    "Confirm the book measurements. Areas hit any part of a token; walls and line of sight are not calculated.",
+    "Confirma las medidas del libro. Las áreas alcanzan cualquier parte del token; no se calculan paredes ni línea de visión."
+  ],
+  "Conjurador": [
+    "Caster",
+    "Lanzador"
+  ],
+  "Cura": [
+    "Healing",
+    "Curación"
+  ],
+  "Formato da área": [
+    "Area shape",
+    "Forma del área"
+  ],
+  "Largura (m)": [
+    "Width (m)",
+    "Anchura (m)"
+  ],
+  "Linha": [
+    "Line",
+    "Línea"
+  ],
+  "O cabeçalho e a descrição apresentam comprimentos diferentes. Confira as medidas.": [
+    "The heading and description give different lengths. Check the measurements.",
+    "El encabezado y la descripción indican longitudes diferentes. Comprueba las medidas."
+  ],
+  "O centro da área está fora do alcance.": [
+    "The area center is out of range.",
+    "El centro del área está fuera del alcance."
+  ],
+  "O livro não define a abertura do cone. Confirme o ângulo.": [
+    "The book does not define the cone angle. Confirm it.",
+    "El libro no define la apertura del cono. Confirma el ángulo."
+  ],
+  "O livro não define um alcance numérico para esta ação.": [
+    "The book does not define a numeric range for this action.",
+    "El libro no define un alcance numérico para esta acción."
+  ],
+  "Origem da área": [
+    "Area origin",
+    "Origen del área"
+  ],
+  "Permitir selecionar o próprio personagem": [
+    "Allow selecting your own character",
+    "Permitir seleccionar tu propio personaje"
+  ],
+  "Ponto no mapa": [
+    "Point on the map",
+    "Punto en el mapa"
+  ],
+  "Raio (m)": [
+    "Radius (m)",
+    "Radio (m)"
+  ],
+  "Reposicionar área": [
+    "Reposition area",
+    "Reposicionar área"
+  ],
+  "Suporte": [
+    "Support",
+    "Apoyo"
+  ],
+  "Tipo de ação": [
+    "Action type",
+    "Tipo de acción"
+  ],
+  "Toque no mapa para orientar a área.": [
+    "Tap the map to orient the area.",
+    "Toca el mapa para orientar el área."
+  ],
+  "Toque no mapa para posicionar a área.": [
+    "Tap the map to position the area.",
+    "Toca el mapa para colocar el área."
+  ],
+  "Adicionar ponto de área": [
+    "Add area point",
+    "Añadir punto de área"
+  ],
+  "A fórmula ou a distribuição desta magia precisa de confirmação; não foi presumida a partir de números ambíguos.": [
+    "This spell’s formula or distribution needs confirmation; ambiguous numbers were not interpreted automatically.",
+    "La fórmula o distribución de esta magia necesita confirmación; no se interpretaron automáticamente números ambiguos."
+  ],
+  "Confirme acertos, resistência e o momento do efeito. Danos posteriores e condições não são aplicados automaticamente.": [
+    "Confirm hits, saves and effect timing. Later damage and conditions are not applied automatically.",
+    "Confirma impactos, resistencia y momento del efecto. Los daños posteriores y las condiciones no se aplican automáticamente."
+  ],
+  "Os dados são por alvo ou projétil, nunca divididos pelo número de alvos. Confirme acertos e resistências antes de rolar; não desconta PV.": [
+    "Dice are per target or projectile, never divided by the number of targets. Confirm hits and saves before rolling; HP is not deducted.",
+    "Los dados son por objetivo o proyectil, nunca divididos por el número de objetivos. Confirma impactos y resistencias antes de tirar; no resta PV."
+  ],
+  "Projéteis distribuídos: {used} / {count}. Os dados são por projétil.": [
+    "Projectiles assigned: {used} / {count}. Dice are per projectile.",
+    "Proyectiles asignados: {used} / {count}. Los dados son por proyectil."
+  ],
+  "Abrir a fissura": [
+    "Open the fissure",
+    "Abrir la fisura"
+  ],
+  "Acender: explosão": [
+    "Ignite: explosion",
+    "Encender: explosión"
+  ],
+  "Ataque do cipó": [
+    "Vine attack",
+    "Ataque de la enredadera"
+  ],
+  "Atravessar a jaula": [
+    "Cross the cage",
+    "Atravesar la jaula"
+  ],
+  "Conjurar sem dano imediato": [
+    "Cast without immediate damage",
+    "Conjurar sin daño inmediato"
+  ],
+  "Contato": [
+    "Contact",
+    "Contacto"
+  ],
+  "Dano com falha na resistência": [
+    "Damage on a failed save",
+    "Daño al fallar la resistencia"
+  ],
+  "Dano comum a todos": [
+    "Base damage for everyone",
+    "Daño común para todos"
+  ],
+  "Dano do turno": [
+    "Turn damage",
+    "Daño del turno"
+  ],
+  "Dano residual": [
+    "Residual damage",
+    "Daño residual"
+  ],
+  "Dano total": [
+    "Full damage",
+    "Daño completo"
+  ],
+  "Distribuir projéteis": [
+    "Assign projectiles",
+    "Distribuir proyectiles"
+  ],
+  "Distribuição dos dados": [
+    "Dice distribution",
+    "Distribución de los dados"
+  ],
+  "Errou / evitou": [
+    "Missed / avoided",
+    "Falló / evitó"
+  ],
+  "Falha na resistência": [
+    "Failed save",
+    "Resistencia fallida"
+  ],
+  "Falha: aprisionar sem dano": [
+    "Failure: imprison without damage",
+    "Fallo: aprisionar sin daño"
+  ],
+  "Fechar a fissura": [
+    "Close the fissure",
+    "Cerrar la fisura"
+  ],
+  "Impacto inicial": [
+    "Initial impact",
+    "Impacto inicial"
+  ],
+  "Invocar sem dano imediato": [
+    "Summon without immediate damage",
+    "Invocar sin daño inmediato"
+  ],
+  "Momento do efeito": [
+    "Effect timing",
+    "Momento del efecto"
+  ],
+  "Projéteis neste alvo": [
+    "Projectiles on this target",
+    "Proyectiles en este objetivo"
+  ],
+  "Quantidade de projéteis": [
+    "Number of projectiles",
+    "Cantidad de proyectiles"
+  ],
+  "Rajada contra uma criatura": [
+    "Blast against one creature",
+    "Ráfaga contra una criatura"
+  ],
+  "Resultado neste alvo": [
+    "Result on this target",
+    "Resultado en este objetivo"
+  ],
+  "Segundo turno": [
+    "Second turn",
+    "Segundo turno"
+  ],
+  "Sucesso na resistência": [
+    "Successful save",
+    "Resistencia superada"
+  ],
+  "Sucesso: dano sem prisão": [
+    "Success: damage without imprisonment",
+    "Éxito: daño sin prisión"
+  ],
+  "Terreno em chamas": [
+    "Burning terrain",
+    "Terreno en llamas"
+  ],
+  "Uma rolagem para a área": [
+    "One roll for the area",
+    "Una tirada para el área"
+  ],
+  "Uma rolagem por alvo": [
+    "One roll per target",
+    "Una tirada por objetivo"
+  ],
+  "O dano diminui a cada alvo após o primeiro. Resolva os alvos em ordem com suas fórmulas específicas.": [
+    "Damage decreases for each target after the first. Resolve targets in order with their specific formulas.",
+    "El daño disminuye para cada objetivo después del primero. Resuelve los objetivos en orden con sus fórmulas específicas."
+  ],
+  "Confirme se o dano indicado é por explosão ou pela conjuração e como sobreposições são resolvidas.": [
+    "Confirm whether the listed damage is per explosion or per cast and how overlapping areas are resolved.",
+    "Confirma si el daño indicado es por explosión o por conjuro y cómo se resuelven las áreas superpuestas."
+  ],
+  "Alvos adicionais usam a distância a partir do primeiro alvo, não do conjurador. Resolva os saltos separadamente.": [
+    "Additional targets use distance from the first target, not the caster. Resolve the jumps separately.",
+    "Los objetivos adicionales usan la distancia desde el primer objetivo, no desde el conjurador. Resuelve los saltos por separado."
+  ],
+  "A porta precisa estar na borda da mesma parede.": [
+    "The door must lie on the edge of the same wall.",
+    "La puerta debe estar en el borde de la misma pared."
+  ],
+  "Abrir porta": [
+    "Open door",
+    "Abrir puerta"
+  ],
+  "As luzes são compartilhadas. Paredes e portas fechadas bloqueiam a luz.": [
+    "Lights are shared. Walls and closed doors block light.",
+    "Las luces son compartidas. Las paredes y las puertas cerradas bloquean la luz."
+  ],
+  "Clique em dois pontos na mesma borda para criar a porta.": [
+    "Click two points on the same edge to create the door.",
+    "Haz clic en dos puntos del mismo borde para crear la puerta."
+  ],
+  "Clique no ícone de uma porta no mapa para abrir ou fechar.": [
+    "Click a door icon on the map to open or close it.",
+    "Haz clic en el icono de una puerta del mapa para abrirla o cerrarla."
+  ],
+  "Clique nos dois cantos ou arraste para desenhar a parede.": [
+    "Click both corners or drag to draw the wall.",
+    "Haz clic en ambas esquinas o arrastra para dibujar la pared."
+  ],
+  "Criar porta": [
+    "Create door",
+    "Crear puerta"
+  ],
+  "Emitir luz": [
+    "Emit light",
+    "Emitir luz"
+  ],
+  "Escurecer todo o mapa": [
+    "Darken the entire map",
+    "Oscurecer todo el mapa"
+  ],
+  "Esmaecer nas pontas": [
+    "Fade at the edges",
+    "Desvanecer en los bordes"
+  ],
+  "Fechar porta": [
+    "Close door",
+    "Cerrar puerta"
+  ],
+  "Luz da imagem": [
+    "Image light",
+    "Luz de la imagen"
+  ],
+  "Luz e paredes": [
+    "Light and walls",
+    "Luz y paredes"
+  ],
+  "Parede circular": [
+    "Circular wall",
+    "Pared circular"
+  ],
+  "Parede quadrada": [
+    "Square wall",
+    "Pared cuadrada"
+  ],
+  "Parede reta": [
+    "Straight wall",
+    "Pared recta"
+  ],
+  "Parede retangular": [
+    "Rectangular wall",
+    "Pared rectangular"
+  ],
+  "Paredes e portas": [
+    "Walls and doors",
+    "Paredes y puertas"
+  ],
+  "Porta": [
+    "Door",
+    "Puerta"
+  ],
+  "Raio de luz (m)": [
+    "Light radius (m)",
+    "Radio de luz (m)"
+  ],
+  "Remover parede": [
+    "Remove wall",
+    "Eliminar pared"
+  ],
+  "Remover porta": [
+    "Remove door",
+    "Eliminar puerta"
+  ],
+  "Ver como jogador": [
+    "View as player",
+    "Ver como jugador"
+  ],
+  "Visão e luz": [
+    "Vision and light",
+    "Visión y luz"
+  ],
+  "A tocha revela luz apenas quando seu centro é alcançado pela visão de um rosto.": [
+    "The torch reveals light only when its center is reached by face vision.",
+    "La antorcha revela luz solo cuando su centro es alcanzado por la visión de un rostro."
+  ],
+  "Abrir / fechar porta": [
+    "Open / close door",
+    "Abrir / cerrar puerta"
+  ],
+  "Altura (m)": [
+    "Height (m)",
+    "Altura (m)"
+  ],
+  "Apagar selecionado": [
+    "Delete selection",
+    "Eliminar selección"
+  ],
+  "Clique esquerdo adiciona pontos. Clique direito termina a linha.": [
+    "Left click adds points. Right click finishes the line.",
+    "El clic izquierdo añade puntos. El clic derecho termina la línea."
+  ],
+  "Escolha uma ferramenta de parede ou Fog.": [
+    "Choose a wall or Fog tool.",
+    "Elige una herramienta de pared o Fog."
+  ],
+  "Espessura (px)": [
+    "Thickness (px)",
+    "Grosor (px)"
+  ],
+  "Fog": [
+    "Fog",
+    "Fog"
+  ],
+  "Linha contínua": [
+    "Continuous line",
+    "Línea continua"
+  ],
+  "Medida (m)": [
+    "Size (m)",
+    "Medida (m)"
+  ],
+  "Objetos de visão": [
+    "Vision objects",
+    "Objetos de visión"
+  ],
+  "Parede": [
+    "Wall",
+    "Pared"
+  ],
+  "Paredes": [
+    "Walls",
+    "Paredes"
+  ],
+  "Paredes e Fog": [
+    "Walls and Fog",
+    "Paredes y Fog"
+  ],
+  "Selecionar e editar": [
+    "Select and edit",
+    "Seleccionar y editar"
+  ],
+  "Selecione um formato. Arraste para mover ou use as alças para esticar. Delete apaga.": [
+    "Select a shape. Drag to move or use handles to resize. Delete removes it.",
+    "Selecciona una forma. Arrastra para mover o usa los controles para redimensionar. Supr elimina."
+  ],
+  "Tipo de luz": [
+    "Light type",
+    "Tipo de luz"
+  ],
+  "Tocha condicional": [
+    "Conditional torch",
+    "Antorcha condicional"
+  ],
+  "Visão do rosto": [
+    "Face vision",
+    "Visión del rostro"
+  ],
+  "A linha aceita até 64 pontos.": [
+    "The line supports up to 64 points.",
+    "La línea admite hasta 64 puntos."
+  ],
+  "A tocha revela luz quando sua área iluminada encontra a visão de um rosto.": [
+    "The torch reveals light when its lit area overlaps face vision.",
+    "La antorcha revela luz cuando su área iluminada se cruza con la visión de un rostro."
+  ],
+  "O token não pode atravessar uma parede ou porta fechada.": [
+    "The token cannot pass through a wall or closed door.",
+    "El token no puede atravesar una pared o puerta cerrada."
+  ],
+  "Imagem indisponível.": [
+    "Image unavailable.",
+    "Imagen no disponible."
+  ],
+  "Use até 24 luzes ativas no mapa.": [
+    "Use up to 24 active lights on the map.",
+    "Usa hasta 24 luces activas en el mapa."
+  ],
+  "A tocha amplia a visão ao encontrar a luz de um rosto, respeitando as paredes vistas por ele.": [
+    "The torch extends vision when its light meets face vision, respecting walls from that viewer’s position.",
+    "La antorcha amplía la visión al encontrar la luz de un rostro, respetando las paredes desde su punto de vista."
+  ]
+}

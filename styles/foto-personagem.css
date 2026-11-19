@@ -1,0 +1,25 @@
+#recorteFoto{position:fixed;inset:0;margin:auto;width:min(460px,calc(100vw - 28px));max-height:92dvh;overflow:auto;padding:28px;border:1px solid #c9a84c55;border-radius:14px;background:#13111c;color:#e0d6c8;box-shadow:0 24px 80px #0008}
+#recorteFoto::backdrop{background:#080810bd;backdrop-filter:blur(6px)}
+#recorteFoto .foto-recorte-fechar{position:absolute;right:12px;top:10px;border:0;background:transparent;color:inherit;padding:10px;cursor:pointer}
+.foto-recorte-legenda{font-size:.62rem;letter-spacing:2.5px;color:#c9a84c;margin-bottom:8px}
+#recorteFoto h2{font-size:1.4rem;font-weight:normal;color:#c9a84c;margin-bottom:10px}
+.foto-recorte-ajuda{font-size:.8rem;line-height:1.65;color:#aaa;margin-bottom:18px}
+.foto-recorte-area{position:relative;width:min(100%,300px);aspect-ratio:1;margin:auto;background:repeating-conic-gradient(#27242e 0% 25%,#1c1922 0% 50%) 0 0/20px 20px;border-radius:4px;overflow:hidden;outline:1px solid #c9a84c88}
+#recorteFotoCanvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab;outline:none}
+#recorteFotoCanvas:active{cursor:grabbing}
+#recorteFotoCanvas:focus-visible{outline:2px solid #c9a84c;outline-offset:-3px}
+.foto-recorte-guias{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,transparent 33.1%,#ffffff40 33.2%,#ffffff40 33.5%,transparent 33.6%,transparent 66.4%,#ffffff40 66.5%,#ffffff40 66.8%,transparent 66.9%),linear-gradient(to bottom,transparent 33.1%,#ffffff40 33.2%,#ffffff40 33.5%,transparent 33.6%,transparent 66.4%,#ffffff40 66.5%,#ffffff40 66.8%,transparent 66.9%)}
+.foto-recorte-zoom{display:flex;align-items:center;gap:12px;font-size:.78rem;margin:20px 0 6px}
+.foto-recorte-zoom input{flex:1;min-width:0;accent-color:#c9a84c}
+.foto-recorte-zoom output{min-width:42px;text-align:right;font-size:.7rem}
+#recorteFotoErro{font-size:.75rem;line-height:1.5;color:#dc9c91;min-height:1.5em;margin:8px 0}
+.foto-recorte-acoes{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.foto-recorte-acoes button{border:1px solid #3a3550;border-radius:5px;background:transparent;color:inherit;font:inherit;font-size:.75rem;padding:9px 12px;cursor:pointer}
+#recorteFotoAplicar{background:#c9a84c;color:#13111c;border-color:#c9a84c}
+.foto-recorte-acoes button:disabled{opacity:.4;cursor:default}
+body.tema-claro #recorteFoto{background:#fffdf8;color:#514b42;border-color:#d9cfbd}
+.foto-moldura{position:relative;display:flex;align-items:center;justify-content:center;width:100px;height:100px;padding:0;border:2px dashed #3a3550;border-radius:4px;overflow:hidden;cursor:pointer;background:transparent;color:#888;font:inherit}
+.foto-moldura:hover{border-color:var(--cor-principal,#c9a84c);color:var(--cor-principal,#c9a84c)}
+.foto-moldura img{width:100%;height:100%;object-fit:contain;display:block}
+.foto-moldura-vazia{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.6rem;letter-spacing:1px}
+.foto-moldura-vazia svg{width:25px;height:25px}

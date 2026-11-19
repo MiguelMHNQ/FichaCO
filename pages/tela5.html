@@ -7,7 +7,20 @@
 <link rel="icon" href="../assets/images/LogoT.png" type="image/png">
 <link rel="stylesheet" href="../styles/global.css">
 <link rel="stylesheet" href="../styles/tela1.css">
-<link rel="stylesheet" href="../styles/tela5.css">
+<link rel="stylesheet" href="../styles/tela5.css?v=mobile-1">
+<link rel="stylesheet" href="../styles/grimorio.css?v=damage-2">
+<link rel="stylesheet" href="../styles/dados.css?v=materiais-2">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<link rel="stylesheet" href="../styles/foto-personagem.css">
+<link rel="stylesheet" href="../styles/fichas-online.css">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js"></script>
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<script>if(window.parent!==window&&new URLSearchParams(location.search).get("mesa")==="1"){document.documentElement.classList.add("ficha-embutida");window.PrimordiosAudioSuspenso=true;}</script>
+<style>.ficha-embutida #navLogo,.ficha-embutida .titulo-tela,.ficha-embutida .subtitulo-tela,.ficha-embutida .tela>div:first-of-type,.ficha-embutida #vinil-container{display:none!important}.ficha-embutida .tela{padding:14px 10px;min-height:0}.ficha-embutida .ficha-grid{grid-template-columns:1fr!important}</style>
+<link rel="stylesheet" href="../styles/proficiencias.css?v=1">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -31,7 +44,7 @@
     <button class="btn-avancar habilitado" onclick="Sons.back();window.location.href='inventario.html'">← Voltar ao Inventário</button>
   </div>
 
-  <button id="btnEditarFicha" onclick="toggleModoEdicao()" style="position:fixed;bottom:24px;right:24px;z-index:900;width:auto;padding:8px 16px;font-size:0.72rem;letter-spacing:1px;background:#13111c;border:1px solid #3a3550;border-radius:4px;color:#aaa;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--cor-principal)';this.style.color='var(--cor-principal)'" onmouseout="this.style.borderColor='#3a3550';this.style.color='#aaa'">✏ Editar Ficha</button>
+  <button type="button" id="btnEditarFicha" class="ficha-editar-btn" onclick="toggleModoEdicao()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14zM4 20h16"/></svg><span>Editar Ficha</span></button>
 
   <!-- Toolbar de edição -->
   <div id="fichaEditToolbar" style="display:none;width:100%;max-width:1000px;margin:0 auto 16px;background:#13111c;border:1px solid #c9a84c55;border-radius:4px;padding:14px 18px;gap:18px;flex-wrap:wrap;align-items:center;">
@@ -56,7 +69,7 @@
     <button class="c-btn edit-btn-finalizar" style="width:auto;padding:0 12px;font-size:0.72rem;" onclick="toggleModoEdicao()">✔ Finalizar Edição</button>
   </div>
 
-  <div id="fichaConteudo" style="width:100%;max-width:1000px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;"></div>
+  <div class="ficha-viewport"><div id="fichaConteudo" style="width:100%;max-width:1000px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;"></div></div>
 </section>
 
 <!-- Popup Equipamento -->
@@ -66,6 +79,7 @@
       <span id="popupEquipTitulo" class="popup-box-titulo"></span>
       <button class="c-btn" onclick="fecharPopupEquip()" style="color:#aaa;">&#x2715;</button>
     </div>
+    <input type="search" id="popupEquipBusca" class="equipamento-busca" placeholder="Buscar equipamento" aria-label="Buscar equipamento" autocomplete="off" oninput="renderListaEquipamentos()">
     <div id="popupEquipLista" class="popup-box-lista"></div>
   </div>
 </div>
@@ -104,266 +118,41 @@
   </div>
 </div>
 
-<!-- ===== ROLADOR DE DADOS ===== -->
-<style>
-@keyframes dice-pulse {
-  0%,100% { box-shadow: 0 0 0px #c9a84c00; }
-  50%      { box-shadow: 0 0 12px #c9a84c55; }
-}
-@keyframes dice-flip {
-  0%   { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
-@keyframes panel-in {
-  from { opacity:0; transform: translateY(10px) scale(0.97); }
-  to   { opacity:1; transform: translateY(0)   scale(1); }
-}
-@keyframes panel-out {
-  from { opacity:1; transform: translateY(0)   scale(1); }
-  to   { opacity:0; transform: translateY(10px) scale(0.97); }
-}
-@keyframes chip-in {
-  0%   { transform: scale(0);   opacity:0; }
-  70%  { transform: scale(1.15); opacity:1; }
-  100% { transform: scale(1);   opacity:1; }
-}
-@keyframes chip-out {
-  from { transform: scale(1); opacity:1; }
-  to   { transform: scale(0); opacity:0; }
-}
-@keyframes roll-pop {
-  0%   { transform: translateY(6px); opacity:0; }
-  60%  { transform: translateY(-2px); opacity:1; }
-  100% { transform: translateY(0);   opacity:1; }
-}
-@keyframes crit-bang {
-  0%   { transform: scale(1);    text-shadow: 0 0 0px #c9a84c00; }
-  25%  { transform: scale(1.45); text-shadow: 0 0 18px #c9a84c, 0 0 36px #c9a84c88; }
-  55%  { transform: scale(1.15); text-shadow: 0 0 10px #c9a84caa; }
-  100% { transform: scale(1);    text-shadow: 0 0 4px #c9a84c55; }
-}
-@keyframes fail-slump {
-  0%   { transform: rotate(0deg);    opacity:1; color:#e0d6c8; }
-  40%  { transform: rotate(-18deg);  opacity:0.5; }
-  100% { transform: rotate(-22deg);  opacity:0.32; color:#555; }
-}
-@keyframes shimmer {
-  0%   { width:0%; opacity:0.8; }
-  100% { width:100%; opacity:0; }
-}
-#diceBtn { animation: dice-pulse 2.8s ease-in-out infinite; }
-#diceBtn.open { animation: none; box-shadow: 0 0 16px #c9a84c55; }
-#diceBtn:hover { transform: rotate(12deg) scale(1.08) !important; }
-#dicePanel.closing { animation: panel-out 0.18s ease forwards; pointer-events:none; }
-</style>
-
-<div id="diceBtn" onclick="toggleDice()" title="Rolar dados"
-  style="position:fixed;bottom:24px;left:24px;z-index:950;width:50px;height:50px;background:#13111c;border:1px solid #3a3550;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;">
-  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="13,1 25,7 25,19 13,25 1,19 1,7" stroke="#c9a84c" stroke-width="1.4" fill="#1a1726"/>
-    <polygon points="13,1 25,7 13,10 1,7" stroke="#c9a84c" stroke-width="0.8" fill="#c9a84c18"/>
-    <polygon points="1,7 13,10 13,25 1,19" stroke="#c9a84c" stroke-width="0.8" fill="#c9a84c0d"/>
-    <polygon points="25,7 13,10 13,25 25,19" stroke="#c9a84c" stroke-width="0.8" fill="#c9a84c22"/>
-    <text x="13" y="17" text-anchor="middle" font-size="7" font-family="Georgia,serif" fill="#c9a84c" font-weight="bold">20</text>
-  </svg>
-</div>
-
-<div id="dicePanel" style="display:none;position:fixed;bottom:86px;left:24px;z-index:950;background:#13111c;border:1px solid #c9a84c44;border-radius:12px;padding:14px;width:268px;box-shadow:0 12px 40px #00000099;overflow:hidden;">
-  <!-- linha brilhante no topo -->
-  <div id="diceShimmer" style="position:absolute;top:0;left:0;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);width:0%;pointer-events:none;"></div>
-  <!-- header -->
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <button id="diceBtnRolar" onclick="rolarDados()"
-      style="background:transparent;border:1px solid #c9a84c66;border-radius:5px;color:#c9a84c;font-family:'Georgia',serif;font-size:0.7rem;letter-spacing:1.5px;padding:4px 12px;cursor:pointer;transition:all 0.2s;"
-      onmouseover="this.style.background='#c9a84c22';this.style.boxShadow='0 0 8px #c9a84c44'"
-      onmouseout="this.style.background='transparent';this.style.boxShadow='none'">⚄ ROLAR</button>
-    <button onclick="limparDados()"
-      style="background:transparent;border:1px solid #ff444433;border-radius:5px;color:#ff4444aa;font-family:'Georgia',serif;font-size:0.7rem;padding:4px 10px;cursor:pointer;transition:all 0.2s;"
-      onmouseover="this.style.background='#ff444422';this.style.color='#ff4444'"
-      onmouseout="this.style.background='transparent';this.style.color='#ff4444aa'">✕</button>
-  </div>
-  <!-- seletor -->
-  <div id="dicePicker" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;"></div>
-  <!-- fila -->
-  <div id="diceQueue" style="min-height:26px;display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;"></div>
-  <!-- resultado -->
-  <div id="diceResult" style="display:none;border-top:1px solid #2a2535;padding-top:10px;">
-    <div id="diceRolls" style="font-size:0.78rem;color:#aaa;line-height:2;word-break:break-all;"></div>
-    <div id="diceSum" style="font-size:1.15rem;color:#c9a84c;font-weight:bold;margin-top:6px;letter-spacing:1px;"></div>
-  </div>
-</div>
-
-<script>
-  const DADOS = [2,4,6,8,10,12,20,100];
-  let _diceOpen = false;
-  let _diceQueue = [];
-
-  (function() {
-    const p = document.getElementById('dicePicker');
-    DADOS.forEach(d => {
-      const b = document.createElement('button');
-      b.textContent = 'd' + d;
-      b.style.cssText = 'background:#1a1726;border:1px solid #3a3550;border-radius:5px;color:#888;font-family:Georgia,serif;font-size:0.7rem;padding:4px 8px;cursor:pointer;transition:all 0.18s;';
-      b.onmouseover = () => { b.style.borderColor='#c9a84c'; b.style.color='#c9a84c'; b.style.background='#c9a84c11'; };
-      b.onmouseout  = () => { b.style.borderColor='#3a3550'; b.style.color='#888'; b.style.background='#1a1726'; };
-      b.onclick = () => { adicionarDado(d); b.style.transform='scale(0.88)'; setTimeout(()=>b.style.transform='',120); };
-      p.appendChild(b);
-    });
-  })();
-
-  function toggleDice() {
-    const panel = document.getElementById('dicePanel');
-    const btn   = document.getElementById('diceBtn');
-    if (_diceOpen) {
-      panel.classList.add('closing');
-      btn.classList.remove('open');
-      setTimeout(() => { panel.style.display='none'; panel.classList.remove('closing'); }, 180);
-    } else {
-      panel.style.display = 'block';
-      panel.style.animation = 'panel-in 0.22s cubic-bezier(0.34,1.56,0.64,1) forwards';
-      btn.classList.add('open');
-      btn.style.animation = 'dice-flip 0.45s ease';
-      setTimeout(() => { btn.style.animation = 'none'; btn.style.boxShadow = '0 0 16px #c9a84c55'; }, 460);
-      _doShimmer();
-    }
-    _diceOpen = !_diceOpen;
-  }
-
-  function _doShimmer() {
-    const s = document.getElementById('diceShimmer');
-    s.style.transition = 'none'; s.style.width = '0%'; s.style.opacity = '0.9';
-    requestAnimationFrame(() => {
-      s.style.transition = 'width 0.5s ease, opacity 0.5s ease';
-      s.style.width = '100%'; s.style.opacity = '0';
-    });
-  }
-
-  function adicionarDado(d) {
-    _diceQueue.push(d);
-    renderQueue(true);
-  }
-
-  function removerDado(i) {
-    const chips = document.getElementById('diceQueue').children;
-    const chip  = chips[i];
-    if (chip) {
-      chip.style.animation = 'chip-out 0.15s ease forwards';
-      setTimeout(() => { _diceQueue.splice(i,1); renderQueue(false); }, 140);
-    }
-  }
-
-  function limparDados() {
-    _diceQueue = [];
-    renderQueue(false);
-    const r = document.getElementById('diceResult');
-    r.style.transition = 'opacity 0.2s';
-    r.style.opacity = '0';
-    setTimeout(() => { r.style.display='none'; r.style.opacity='1'; r.style.transition=''; }, 200);
-  }
-
-  function renderQueue(animate) {
-    const el = document.getElementById('diceQueue');
-    el.innerHTML = '';
-    _diceQueue.forEach((d, i) => {
-      const chip = document.createElement('span');
-      chip.textContent = 'd' + d;
-      chip.title = 'Clique para remover';
-      chip.style.cssText = 'background:#1a1726;border:1px solid #c9a84c55;border-radius:5px;color:#c9a84c;font-size:0.7rem;padding:3px 8px;cursor:pointer;display:inline-block;transition:border-color 0.15s,color 0.15s;';
-      if (animate && i === _diceQueue.length - 1)
-        chip.style.animation = 'chip-in 0.22s cubic-bezier(0.34,1.56,0.64,1) forwards';
-      chip.onmouseover = () => { chip.style.borderColor='#ff4444'; chip.style.color='#ff4444'; chip.style.textDecoration='line-through'; };
-      chip.onmouseout  = () => { chip.style.borderColor='#c9a84c55'; chip.style.color='#c9a84c'; chip.style.textDecoration=''; };
-      chip.onclick = () => removerDado(i);
-      el.appendChild(chip);
-    });
-  }
-
-  function rolarDados(bonus = 0, descricao = '', aoConcluir = null) {
-    if (!_diceQueue.length && !bonus) return;
-    const resultados = _diceQueue.map(d => ({ d, v: Math.floor(Math.random() * d) + 1 }));
-    const soma = resultados.reduce((s, r) => s + r.v, 0) + bonus;
-    const rollsEl = document.getElementById('diceRolls');
-    const sumEl   = document.getElementById('diceSum');
-    const resEl   = document.getElementById('diceResult');
-    rollsEl.innerHTML = '';
-    resEl.style.display = 'block';
-    sumEl.textContent = '';
-    if (descricao) {
-      const titulo = document.createElement('div');
-      titulo.textContent = descricao;
-      titulo.style.cssText = 'color:#c9a84c;font-size:0.72rem;margin-bottom:6px;';
-      rollsEl.appendChild(titulo);
-    }
-    if (bonus) {
-      const modificador = document.createElement('div');
-      modificador.textContent = `Bônus: +${bonus}`;
-      modificador.style.cssText = 'color:#aaa;font-size:0.72rem;margin-bottom:4px;';
-      rollsEl.appendChild(modificador);
-    }
-    if (!_diceQueue.length) {
-      const fixo = document.createElement('div');
-      fixo.textContent = 'Dano fixo';
-      fixo.style.cssText = 'color:#aaa;font-size:0.72rem;';
-      rollsEl.appendChild(fixo);
-    }
-    // aparece cada resultado com stagger
-    resultados.forEach((r, i) => {
-      const span = document.createElement('span');
-      span.style.cssText = 'display:inline-block;margin-right:10px;opacity:0;animation:roll-pop 0.25s ease forwards;';
-      span.style.animationDelay = (i * 80) + 'ms';
-      const isCrit = r.v === r.d;
-      const isFail = r.v === 1;
-      const numStyle = isCrit
-        ? 'font-weight:bold;font-size:0.9rem;color:#c9a84c;display:inline-block;'
-        : isFail
-        ? 'font-weight:bold;font-size:0.9rem;color:#555;display:inline-block;'
-        : 'font-weight:bold;font-size:0.9rem;color:#c9a84c;display:inline-block;';
-      span.innerHTML = `<span style="color:#555;font-size:0.68rem;">d${r.d}</span> <span class="_dnum" style="${numStyle}">${r.v}</span>`;
-      rollsEl.appendChild(span);
-      if (isCrit || isFail) {
-        const anim = isCrit ? 'crit-bang' : 'fail-slump';
-        const dur  = isCrit ? '0.55s' : '0.5s';
-        const fill = isCrit ? 'forwards' : 'forwards';
-        setTimeout(() => {
-          const numEl = span.querySelector('._dnum');
-          if (numEl) numEl.style.animation = `${anim} ${dur} ease ${fill}`;
-        }, i * 80 + 260);
-      }
-    });
-    // contador animado na soma
-    const delay = resultados.length * 80 + 120;
-    setTimeout(() => _animarSoma(sumEl, soma, aoConcluir), delay);
-    _doShimmer();
-  }
-
-  function rolagemRapida(dados, bonus, descricao, aoConcluir = null) {
-    _diceQueue = [...dados];
-    renderQueue(false);
-    if (!_diceOpen) toggleDice();
-    rolarDados(bonus, descricao, aoConcluir);
-  }
-
-  function _animarSoma(el, alvo, aoConcluir = null) {
-    let cur = 0;
-    const step = Math.max(1, Math.floor(alvo / 18));
-    const iv = setInterval(() => {
-      cur = Math.min(cur + step, alvo);
-      el.textContent = '= ' + cur;
-      if (cur >= alvo) {
-        clearInterval(iv);
-        if (aoConcluir) aoConcluir(alvo);
-      }
-    }, 28);
-  }
-</script>
-
-<script src="../scripts/estado.js"></script>
+<!-- ===== BANDEJA DE DADOS ===== -->
+<button type="button" id="diceBtn" class="dice-launcher" onclick="toggleDice()" title="Rolar dados" aria-label="Rolar dados" aria-expanded="false" aria-controls="dicePanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="m12 2 10 6v8l-10 6-10-6V8zM2 8l10 6 10-6M12 14v8M12 2v12"/></svg></button>
+<section id="dicePanel" class="dice-panel" aria-label="Bandeja de dados" hidden>
+  <div class="dice-panel-header"><div><small>PRIMÓRDIOS</small><h2>Bandeja de dados</h2></div><button type="button" class="dice-icon-button" onclick="toggleDice()" aria-label="Fechar">✕</button></div>
+  <div id="diceStyles" class="dice-styles" role="group" aria-label="Estilo dos dados"></div>
+  <div class="dice-tray"><canvas id="diceCanvas" role="img" aria-label="Animação dos dados; resultados disponíveis abaixo"></canvas><div class="dice-tray-note" id="diceTrayNote">Escolha os dados e role</div></div>
+  <div id="dicePicker" class="dice-picker" aria-label="Escolher dados"></div>
+  <div class="dice-queue-line"><div id="diceQueue" class="dice-queue"></div><button type="button" id="diceClear" class="dice-icon-button" onclick="limparDados()" title="Limpar dados" aria-label="Limpar dados"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7"/></svg></button></div>
+  <label class="dice-bonus-label" for="diceBonus">Modificador <input id="diceBonus" type="number" step="1" min="-10000" max="10000" value="0"></label>
+  <button type="button" id="diceBtnRolar" class="dice-roll-button" onclick="rolarDadosManuais()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m12 2 10 6v8l-10 6-10-6V8zM2 8l10 6 10-6M12 14v8"/></svg><span>Rolar dados</span></button>
+  <div id="diceResult" class="dice-result" role="status" aria-live="polite" hidden><div id="diceRolls"></div><div id="diceSum"></div></div>
+  <p class="dice-help">d4: leia o vértice superior. d100: dezenas + unidades; 00 + 0 vale 100.</p>
+</section>
+<script src="../scripts/dados-3d.js?v=estilo-compartilhado-1"></script>
+<script src="../scripts/dados-ficha.js?v=mana-1"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
+<script src="../scripts/consentimento-audio.js"></script>
 <script src="../scripts/audio.js"></script>
 <script src="../scripts/sons.js"></script>
 <script src="../scripts/itens.js"></script>
-<script src="../scripts/habilidades.js"></script>
+<script src="../scripts/proficiencias.js?v=1"></script>
+<script src="../scripts/armas-detalhes.js"></script>
+<script src="../scripts/habilidades.js?v=mana-1"></script>
 <script src="../scripts/livro-dados.js"></script>
-<script src="../scripts/ficha.js"></script>
+<script src="../scripts/ficha-recursos.js?v=mana-1"></script>
+<script src="../scripts/ficha-magias.js?v=grimorio-1"></script>
+<script src="../scripts/regras-acoes.js?v=damage-2"></script>
+<script src="../scripts/grimorio-ui.js?v=damage-2"></script>
+<script src="../scripts/ficha-acessorios.js?v=mana-1"></script>
+<script src="../scripts/ficha-inventario.js?v=organizacao-1"></script>
+<script src="../scripts/ficha-layout.js?v=grimorio-1"></script>
+<script src="../scripts/ficha-blocos.js?v=mana-1"></script>
+<script src="../scripts/ficha-render.js?v=grimorio-1"></script>
+<script src="../scripts/ficha.js?v=mana-1"></script>
+<script src="../scripts/foto-personagem.js"></script>
 <script>
   const logoImg = document.querySelector('#navLogo img');
   logoImg.classList.add('logo-entrada');
@@ -386,53 +175,29 @@
   });
 
   function sair() {
-    localStorage.removeItem('primordios_logado');
-    window.location.href = 'tela0.html';
+    return PrimordiosAuth.sair();
   }
 
-  function novoPersonagem() {
-    Object.assign(estado, {
-      personagem: null, classe: null, nivel: 1, caminho: null,
-      constancias: { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 },
-      constanciasEscolhidas: [], arma: null, armadura: null, acessorio: null, acessoriosEquipados: {}, acessoriosCargas: {}, talentos: [], nomePersonagem: ''
-    });
-    salvarEstado();
-    window.location.href = 'tela1.html';
-  }
 
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
+    const personagemDaSessao=new URLSearchParams(location.search).get('personagem');
+    if(personagemDaSessao&&window.CloudFichas){try{restaurarDadosFicha(await CloudFichas.get(personagemDaSessao));}catch{location.replace('inventario.html');return;}}
+    if (window.CloudFichas) await CloudFichas.init();
     carregarEstadoBase();
+    if (window.CloudFichas && estado.persistido && estado.id) {
+      try { restaurarDadosFicha(await CloudFichas.get(estado.id)); carregarEstadoBase(); }
+      catch (error) {
+        if (error.status === 404) { alert('Esta ficha foi excluída ou não está disponível.'); location.replace('inventario.html'); return; }
+      }
+    }
     renderFicha();
     salvarPersonagem();
   });
 
-  function salvarPersonagem() {
-    const user = JSON.parse(localStorage.getItem('primordios_logado') || 'null');
-    if (!user) return;
-    if (!estado.nomePersonagem || !estado.classe) return;
-    const lista = JSON.parse(localStorage.getItem('primordios_personagens_' + user.usuario) || '[]');
-    const foto  = sessionStorage.getItem('fragmentados_foto') || '';
-    const desc  = sessionStorage.getItem('fragmentados_desc') || '';
-    const novo  = {
-      nomePersonagem: estado.nomePersonagem,
-      classe:         estado.classe,
-      nivel:          estado.nivel,
-      foto, desc,
-      pvMax: sessionStorage.getItem('fragmentados_pvmax'),
-      peMax: sessionStorage.getItem('fragmentados_pemax'),
-      pv:    sessionStorage.getItem('fragmentados_pv'),
-      pe:    sessionStorage.getItem('fragmentados_pe'),
-      ca:    sessionStorage.getItem('fragmentados_ca'),
-      xp:    sessionStorage.getItem('fragmentados_xp'),
-      dados: coletarDadosFicha(),
-      estadoCompleto: { ...estado }
-    };
-    const existente = lista.findIndex(p => p.nomePersonagem === novo.nomePersonagem);
-    if (existente !== -1) lista[existente] = novo;
-    else lista.push(novo);
-    gravarPersonagens(user.usuario, lista);
-  }
+  function salvarPersonagem() { salvarFichaAtual(); }
 </script>
+<script src="../scripts/ficha-mesa.js?v=damage-2"></script>
 <script src="../scripts/espera-vinil.js"></script>
 </body>
 </html>

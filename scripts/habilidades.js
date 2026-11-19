@@ -58,7 +58,7 @@ HABILIDADES.Bardo = {
   ],
   caminhos: {
     'Bravura': {
-      proficiencias: 'Vontade, Espadas Longas, Arcos Longos e Curtos',
+      proficiencias: 'Aptidão em Vontade; proficiência em Espadas Longas, Arcos Longos e Curtos',
       habs: [
         { nome: 'Ataque Extra', nivel: 6, desc: 'Ao acertar um ataque, pode atacar +1 vez com a mesma ação.', acao: 'Passiva', ativavel: true, evo: 'Nível 9: +2 ataques | Nível 13: +3 ataques' },
         { nome: 'Contra Peso', nivel: 9, desc: 'Música que deixa o clima mais leve. Aliados que escutam têm vantagem contra Amedrontado, Apavorado ou Encantado por 1 minuto.', acao: 'Ação Padrão' },
@@ -68,7 +68,7 @@ HABILIDADES.Bardo = {
       ]
     },
     'Pavor': {
-      proficiencias: 'Intimidação',
+      proficiencias: 'Aptidão em Intimidação',
       habs: [
         { nome: 'Fiddle', nivel: 6, desc: 'Ao acertar com arma, gaste PE para causar 1d8 psíquico. Teste de Vontade: falha = +1d4 psíquico + Amedrontado; passa = só dano adicional.', acao: 'Passiva' },
         { nome: 'Terror Contagiante', nivel: 9, desc: 'Ao causar Amedrontado, alvos adjacentes em 1,5m também fazem teste de resistência ou ficam amedrontados pelo mesmo tempo.', acao: 'Passiva' },
@@ -78,7 +78,7 @@ HABILIDADES.Bardo = {
       ]
     },
     'Vigor': {
-      proficiencias: 'Persuasão, Magias de Cura (regra de Mago)',
+      proficiencias: 'Aptidão em Persuasão; Magias de Cura (regra de Mago)',
       habs: [
         { nome: 'Toque Acolhedor', nivel: 6, desc: 'Cura 1d8 + Persuasão a um aliado em 12m. Recupera feridas leves.', acao: 'Ação Padrão', evo: 'Nível 9: 2d8 | Nível 13: 3d8 | Nível 17: 4d8' },
         { nome: 'Ajuda Temporária', nivel: 9, desc: 'Concede 12 PV e 10 PE temporários a aliados que escutam (não acumulativo).', acao: 'Ação Bônus', evo: 'Nível 13: 16 PV / 14 PE | Nível 17: 28 PV / 26 PE' },
@@ -87,7 +87,7 @@ HABILIDADES.Bardo = {
       ]
     },
     'Perdição': {
-      proficiencias: 'Intimidação',
+      proficiencias: 'Aptidão em Intimidação',
       habs: [
         { nome: 'Onda Potente', nivel: 6, desc: 'Empurra alvos em 4,5m ao redor a 18m de distância, causando 2d8 trovejante.', acao: 'Ação Padrão' },
         { nome: 'Nota Aguda', nivel: 9, desc: 'Acorde agudo em área de 9m. Salvaguarda de Vigor: falha = 3d8 + Intimidação trovejante; passa = metade.', acao: 'Ação Padrão' },
@@ -97,7 +97,7 @@ HABILIDADES.Bardo = {
       ]
     },
     'Soneto': {
-      proficiencias: 'Atuação, pode usar o mundo ao redor como instrumento',
+      proficiencias: 'Aptidão em Atuação; pode usar o mundo ao redor como instrumento',
       habs: [
         { nome: 'Rima Certeira', nivel: 6, desc: 'Quando aliado que escuta falhar em ataque, gaste reação + 2 PE para ele rolar novamente. Deve aceitar o segundo resultado.', acao: 'Passiva' },
         { nome: 'Via Sonora', nivel: 9, desc: 'Gaste ação de movimento para emitir onda sonora em 12m e se locomover junto a ela. Vantagem em ataques no mesmo turno.', acao: 'Ação de Movimento' },
@@ -129,29 +129,29 @@ HABILIDADES.Mago = {
     'Caminho do Necromante': {
       proficiencias: 'Nenhuma adicional',
       habs: [
-        { nome: 'Servos Mortos-Vivos', nivel: 6, desc: 'Recebe a magia Ressuscitar Mortos; se já a possuir, seu custo é reduzido em 2 PE. Ao conjurá-la, escolha um benefício: criar um servo adicional a partir de uma pilha de ossos ou restos; aumentar os PV do servo em 2 + seu nível de Mago; ou conceder +2 à Defesa e à Constituição do servo (o bônus aumenta para +4 no nível 12). Se escolher outro benefício, ele também vale para ambos os servos.', acao: 'Passiva' },
-        { nome: 'Ceifador Energético', nivel: 9, desc: 'Ao finalizar uma criatura, por qualquer meio, recupera PV ou PE em quantidade igual ao seu nível + modificador de Inteligência. A recuperação não pode exceder os limites máximos seus ou da criatura. Não funciona contra mortos-vivos ou maquinário.', acao: 'Passiva' },
+        { nome: 'Servos Mortos-Vivos', nivel: 6, desc: 'Recebe a magia Ressuscitar Mortos; se já a possuir, seu custo é reduzido em 2 Mana. Ao conjurá-la, escolha um benefício: criar um servo adicional a partir de uma pilha de ossos ou restos; aumentar os PV do servo em 2 + seu nível de Mago; ou conceder +2 à Defesa e à Constituição do servo (o bônus aumenta para +4 no nível 12). Se escolher outro benefício, ele também vale para ambos os servos.', acao: 'Passiva' },
+        { nome: 'Ceifador Energético', nivel: 9, desc: 'Ao finalizar uma criatura, por qualquer meio, recupera PV ou Mana em quantidade igual ao seu nível + modificador de Inteligência. A recuperação não pode exceder os limites máximos seus ou da criatura. Não funciona contra mortos-vivos ou maquinário.', acao: 'Passiva' },
         { nome: 'Mortos Superiores', nivel: 13, desc: 'Ao conjurar Ressuscitar Mortos, escolha dois benefícios em vez de um. Adiciona à lista: +4,5m a todos os deslocamentos do servo; bônus igual ao seu bônus de classe em testes de duas constâncias à sua escolha; ou +1d12 de dano corpo a corpo (aumenta para +2d10 no nível 18).', acao: 'Passiva' },
         { nome: 'Ceifador Perfeito', nivel: 17, desc: 'Ceifador Energético também pode afetar um servo morto-vivo seu a até 6m. Se houver mais de um servo na área, escolha qual será afetado; os limites de recuperação continuam valendo.', acao: 'Passiva' },
-        { nome: 'Aniquilador Necrótico', nivel: 20, desc: 'Com uma ação completa e 20 PE, toque uma criatura a até 1,5m. Ela faz um teste de Constituição contra sua CD; se falhar, sofre 7d10 + 20 de dano necrótico e Decomposição. Se passar, sofre metade do dano e evita a condição. Ignora resistências; se reduzir a criatura a 0 PV, ela morre imediatamente, sem salvaguardas contra a morte.', acao: 'Ação Completa' },
+        { nome: 'Aniquilador Necrótico', nivel: 20, desc: 'Com uma ação completa e 20 Mana, toque uma criatura a até 1,5m. Ela faz um teste de Constituição contra sua CD; se falhar, sofre 7d10 + 20 de dano necrótico e Decomposição. Se passar, sofre metade do dano e evita a condição. Ignora resistências; se reduzir a criatura a 0 PV, ela morre imediatamente, sem salvaguardas contra a morte.', acao: 'Ação Completa' },
       ]
     },
     'Especialista Arcano — Elemental': {
       proficiencias: 'Nenhuma adicional',
       habs: [
-        { nome: 'Especialidade Mágica — Elemental', nivel: 6, desc: 'Escolhe o tipo Elemental. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 PE a menos.', acao: 'Passiva' },
+        { nome: 'Especialidade Mágica — Elemental', nivel: 6, desc: 'Escolhe o tipo Elemental. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 Mana a menos.', acao: 'Passiva' },
       ]
     },
     'Especialista Arcano — Orgânica': {
       proficiencias: 'Nenhuma adicional',
       habs: [
-        { nome: 'Especialidade Mágica — Orgânica', nivel: 6, desc: 'Escolhe o tipo Orgânica. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 PE a menos.', acao: 'Passiva' },
+        { nome: 'Especialidade Mágica — Orgânica', nivel: 6, desc: 'Escolhe o tipo Orgânica. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 Mana a menos.', acao: 'Passiva' },
       ]
     },
     'Especialista Arcano — Mística': {
       proficiencias: 'Nenhuma adicional',
       habs: [
-        { nome: 'Especialidade Mágica — Mística', nivel: 6, desc: 'Escolhe o tipo Mística. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 PE a menos.', acao: 'Passiva' },
+        { nome: 'Especialidade Mágica — Mística', nivel: 6, desc: 'Escolhe o tipo Mística. Suas magias desse tipo recebem +2 na CD para testes de resistência e custam 2 Mana a menos.', acao: 'Passiva' },
       ]
     },
   }
@@ -335,7 +335,7 @@ const TALENTOS = {
     { nome: 'Tema de Batalha', desc: 'Canção Bárbica concede +2 em testes de ataque ao alvo pela duração.', evo: 'O bônus aumenta para +3 em testes de ataque.', evoNivel: 10 },
     { nome: 'Remix de Cura', desc: 'Canção de Cura recebe +1d6 PV para os alvos na área.', evo: 'O dado adicional muda para +1d8 PV.', evoNivel: 10 },
     { nome: 'Caixa de Som', desc: 'Habilidades que afetam área recebem +3m de área de efeito.', evo: 'O bônus aumenta para +4,5m de área de efeito.', evoNivel: 10 },
-    { nome: 'Coral Potente', desc: 'Escolha duas constâncias com proficiência. Você e aliados a até 4,5m recebem +2 em testes feitos à base dessas constâncias.' },
+    { nome: 'Coral Potente', desc: 'Escolha duas constâncias com aptidão. Você e aliados a até 4,5m recebem +2 em testes feitos à base dessas constâncias.' },
     { nome: 'Versatilidade', desc: 'Aprenda um talento de outra classe (exceto Aspectomante, Sonoriante, Obscuro, Feitiçeiro e Mago).' },
     { nome: 'Interrompendo Roteiro', desc: 'Habilidades que utilizam ação bônus agora podem ser utilizadas fora do seu turno.' },
   ],
@@ -353,14 +353,14 @@ const TALENTOS = {
   Mago: [
     { nome: 'Performance Mestre', desc: 'Ao acertar um ataque mágico, pode utilizar um truque na mesma ação.' },
     { nome: 'Nerd Mágico', desc: 'Descobre rapidamente pelo menos um detalhe de uma magia que veja. Recebe +3 em testes de Arcanismo para identificar magias, objetos, estruturas ou portadores de magia.' },
-    { nome: 'Reserva Mental', desc: 'Possui cargas iguais ao modificador de Inteligência. Como ação bônus, gaste uma carga para recuperar 1d6 + Inteligência de energia. Recupera as cargas em descanso longo.' },
+    { nome: 'Reserva Mental', desc: 'Possui cargas iguais ao modificador de Inteligência. Como ação bônus, gaste uma carga para recuperar 1d6 + Inteligência de Mana. Recupera as cargas em descanso longo.' },
     { nome: 'Mente Arcana', desc: 'Se não usar a ação de movimento no turno, recebe +2 em ataques mágicos até o fim do turno.' },
     { nome: 'Magia Silenciosa', desc: '+4 em Arcanismo para esconder a execução ou os rastros de suas magias.' },
-    { nome: 'Mira Arcana', desc: 'Gaste 2 PE para aumentar o alcance de uma magia em uma etapa; ataques mágicos ignoram penalidades de cobertura parcial.' },
-    { nome: 'Auxílio Mágico', desc: 'Toque um aliado e gaste 2 PE para conceder +1d8 em testes baseados em Inteligência por 10 minutos.' },
+    { nome: 'Mira Arcana', desc: 'Gaste 2 Mana para aumentar o alcance de uma magia em uma etapa; ataques mágicos ignoram penalidades de cobertura parcial.' },
+    { nome: 'Auxílio Mágico', desc: 'Toque um aliado e gaste 2 Mana para conceder +1d8 em testes baseados em Inteligência por 10 minutos.' },
     { nome: 'Continuidade Paciente', desc: 'Pode guardar duas magias controladas adicionais.' },
     { nome: 'Controle Manual', desc: '+2 nos ataques de magias controladas.' },
-    { nome: 'Magia Empilhada', desc: 'Uma vez por turno, ao lançar uma magia, pode lançar outra de volume 3 ou menor e do mesmo elemento na mesma ação, pagando o dobro da mana original.' },
+    { nome: 'Magia Empilhada', desc: 'Uma vez por turno, ao lançar uma magia, pode lançar outra de volume 3 ou menor e do mesmo elemento na mesma ação, pagando o dobro da Mana original.' },
     { nome: 'Tiro Acumulado', desc: 'Pode lançar até duas magias guardadas usando uma ação bônus.' },
     { nome: 'Presença Mágica', desc: 'Enxerga rastros e auras mágicas através de até 1m de barreira sólida e recebe +4 em testes de Inteligência para identificá-los.' },
   ],

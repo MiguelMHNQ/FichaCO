@@ -9,6 +9,14 @@
 <link rel="stylesheet" href="../styles/tela1.css">
 <link rel="stylesheet" href="../styles/tabletop.css">
 <link rel="stylesheet" href="../styles/confirmacao.css">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<link rel="stylesheet" href="../styles/sessoes.css?v=dados-livres-1">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js?v=sessoes-2"></script>
+<script src="../scripts/persistencia-mapas.js"></script>
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -38,11 +46,10 @@
       <span class="tt-card-desc">Crie e gerencie seus mapas</span>
     </button>
 
-    <button class="tt-card tt-card-desabilitado" disabled>
+    <button class="tt-card" id="abrirSessoes" onclick="Sons.click(); abrirSessoes()">
       <span class="tt-card-icone">⚔</span>
       <span class="tt-card-titulo">Entrar</span>
       <span class="tt-card-desc">Entre em uma sessão</span>
-      <span class="tt-card-badge">Em breve</span>
     </button>
 
   </div>
@@ -89,10 +96,13 @@
     </div>
 </dialog>
 
-<script src="../scripts/estado.js"></script>
-<script src="../scripts/audio.js"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
+<script src="../scripts/consentimento-audio.js"></script>
+<script src="../scripts/audio.js?v=sessoes-2"></script>
 <script src="../scripts/sons.js"></script>
 <script src="../scripts/espera-vinil.js"></script>
+<script src="../scripts/sessoes-cliente.js?v=acoes-1"></script>
+<script src="../scripts/sessoes-lobby.js?v=2"></script>
 <script>
   // ===== NAVBAR =====
   const logoImg = document.querySelector('#navLogo img');
@@ -112,17 +122,16 @@
     if (!document.getElementById('navLogo').contains(e.target))
       document.getElementById('navMenu').classList.remove('aberto');
   });
-  function sair() { localStorage.removeItem('primordios_logado'); window.location.href = 'tela0.html'; }
-  function novoPersonagem() { sessionStorage.removeItem('primordios_estado'); window.location.href = 'tela1.html'; }
+  function sair() { return PrimordiosAuth.sair(); }
 
   // ===== MAPAS — localStorage =====
   function getUsuario() {
-    try { return JSON.parse(localStorage.getItem('primordios_logado') || 'null'); } catch { return null; }
+    try { return lerJSON(localStorage, 'primordios_logado', null); } catch { return null; }
   }
   function getMapas() {
     const u = getUsuario();
     if (!u) return [];
-    try { const lista = JSON.parse(localStorage.getItem('primordios_mapas_' + u.usuario) || '[]'); return Array.isArray(lista) ? lista : []; } catch { return []; }
+    try { const lista = lerJSON(localStorage, 'primordios_mapas_' + u.usuario, []); return Array.isArray(lista) ? lista : []; } catch { return []; }
   }
   function salvarMapas(lista) {
     const u = getUsuario();
@@ -207,16 +216,20 @@
   function abrirDeleteMapa(idx) {
     _idxDeleteMapa = idx;
     const mapa = getMapas()[idx];
-    document.getElementById('descricaoDeleteMapa').textContent = 'O mapa “' + (mapa?.nome || 'Sem nome') + '” será apagado. Esta ação não pode ser desfeita.';
+    PrimordiosI18n.set(document.getElementById('descricaoDeleteMapa'),'O mapa “{name}” será apagado. Esta ação não pode ser desfeita.',{name:mapa?.nome || 'Sem nome'});
     document.getElementById('popupDeleteMapa').showModal();
   }
   function fecharDeleteMapa() {
     _idxDeleteMapa = null;
     document.getElementById('popupDeleteMapa').close();
   }
-  function confirmarDeleteMapa() {
+  async function confirmarDeleteMapa() {
     if (_idxDeleteMapa === null) return;
     const lista = getMapas();
+    const mapa = lista[_idxDeleteMapa];
+    if (!mapa) return;
+    try { await excluirDadosMapas(getUsuario().usuario, mapa.id); }
+    catch { alert('Não foi possível apagar o mapa. Tente novamente.'); return; }
     lista.splice(_idxDeleteMapa, 1);
     if (!salvarMapas(lista)) return;
     fecharDeleteMapa();
@@ -231,7 +244,8 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { fecharDeleteMapa(); fecharEditar(); }
   });
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
     const user = getUsuario();
     if (!user) { window.location.href = 'tela0.html'; return; }
   });

@@ -299,3 +299,4 @@ body.tema-amanhecer .btn-avancar.habilitado:hover { background: var(--esm); colo
 body.tema-amanhecer .c-btn        { color: var(--esm-light); }
 body.tema-amanhecer .c-btn:hover  { border-color: var(--esm-light); background: rgba(41, 128, 185, 0.15); }
 body.tema-amanhecer .vinil-disco  { filter: drop-shadow(0 0 10px rgba(41, 128, 185, 0.55)); }
+html.auth-pendente body { visibility: hidden; }

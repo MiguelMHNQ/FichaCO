@@ -1,5 +1,10 @@
 ﻿// ===== ESTADO GLOBAL =====
-const estado = {
+function criarEstadoInicial() { return {
+  id: null,
+  persistido: false,
+  revisaoNuvem: null,
+  usuarioDono: null,
+  ganhosNivel: {},
   personagem: null,
   classe: null,
   nivel: 1,
@@ -11,6 +16,8 @@ const estado = {
   arma: null,
   armadura: null,
   acessorio: null,
+  proficienciasGuerreiro: { conhecimentos: [], familiaridade: null },
+  especializacaoArma: null,
   acessoriosEquipados: {},
   acessoriosCargas: {},
   talentos: [],
@@ -20,59 +27,59 @@ const estado = {
   artesDaEspada: [],
   caminhoEspada: [],
   nomePersonagem: ''
-};
+}; }
+const estado = criarEstadoInicial();
 
-(function () {
-  const isFichaKey = key => typeof key === 'string' && key.startsWith('fragmentados_');
+function lerJSON(storage, chave, padrao) {
+  try { const valor = JSON.parse(storage.getItem(chave)); return valor ?? padrao; }
+  catch { return padrao; }
+}
 
-  const originalSetItem = Storage.prototype.setItem;
-  const originalGetItem = Storage.prototype.getItem;
-  const originalRemoveItem = Storage.prototype.removeItem;
+function escaparHTML(valor) {
+  return String(valor ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
-  Storage.prototype.setItem = function (key, value) {
-    const texto = String(value);
-    if (isFichaKey(key)) {
-      try {
-        originalSetItem.call(localStorage, key, texto);
-      } catch (e) {
-        console.warn('Não foi possível persistir a ficha no localStorage:', e);
-      }
+function obterPersonagens(usuario) {
+  if (window.CloudFichas && lerJSON(localStorage, 'primordios_logado', null)?.online) return CloudFichas.list();
+  const lista = lerJSON(localStorage, 'primordios_personagens_' + usuario, []);
+  if (!Array.isArray(lista)) return [];
+  let mudou = false;
+  for (const p of lista) {
+    if (!p || typeof p !== 'object') continue;
+    if (!p.id) { p.id = crypto.randomUUID(); mudou = true; }
+    if (p.estadoCompleto && p.estadoCompleto.id !== p.id) {
+      p.estadoCompleto.id = p.id; p.estadoCompleto.usuarioDono = usuario; mudou = true;
     }
-    return originalSetItem.call(this, key, texto);
-  };
-
-  Storage.prototype.getItem = function (key) {
-    if (isFichaKey(key) && this === window.sessionStorage) {
-      try {
-        const salvoLocal = originalGetItem.call(localStorage, key);
-        if (salvoLocal !== null) return salvoLocal;
-      } catch (e) {
-        console.warn('Não foi possível ler a ficha do localStorage:', e);
-      }
-    }
-    return originalGetItem.call(this, key);
-  };
-
-  Storage.prototype.removeItem = function (key) {
-    if (isFichaKey(key)) {
-      try {
-        originalRemoveItem.call(localStorage, key);
-      } catch (e) {
-        console.warn('Não foi possível remover a ficha do localStorage:', e);
-      }
-    }
-    return originalRemoveItem.call(this, key);
-  };
-})();
+  }
+  if (mudou && !gravarPersonagens(usuario, lista)) throw new Error('Não foi possível atualizar os identificadores dos personagens.');
+  return lista.filter(p => p && typeof p === 'object');
+}
 
 function salvarEstado() {
   sessionStorage.setItem('fragmentados_estado', JSON.stringify(estado));
 }
 
 function carregarEstadoBase() {
-  const salvo = sessionStorage.getItem('fragmentados_estado');
+  let salvo = sessionStorage.getItem('fragmentados_estado');
+  const user = lerJSON(localStorage, 'primordios_logado', null);
+  // Migra somente um personagem antigo que pertença à conta atual; nunca lê PV globais.
+  if (!salvo && user?.usuario && !user.online) {
+    const antigo = lerJSON(localStorage, 'fragmentados_estado', null);
+    const lista = obterPersonagens(user.usuario);
+    const p = antigo && lista.find(p => p.id === antigo.id || (!antigo.id && p.nomePersonagem === antigo.nomePersonagem && p.classe === antigo.classe));
+    if (p) { restaurarDadosFicha(p); salvo = sessionStorage.getItem('fragmentados_estado'); }
+  }
   if (!salvo) return false;
-  Object.assign(estado, JSON.parse(salvo));
+  const dados = lerJSON(sessionStorage, 'fragmentados_estado', null);
+  if (!dados || (dados.usuarioDono && dados.usuarioDono !== user?.usuario)) { limparDadosFicha(); return false; }
+  Object.assign(estado, criarEstadoInicial(), dados);
+  if (!estado.id) {
+    const p = user?.usuario && obterPersonagens(user.usuario).find(p => p.nomePersonagem === estado.nomePersonagem);
+    estado.id = p?.id || crypto.randomUUID();
+  }
+  estado.usuarioDono = user?.usuario || null;
+  if (!estado.ganhosNivel) estado.ganhosNivel = {};
+  salvarEstado();
   if (!estado.constanciasEscolhidas) estado.constanciasEscolhidas = [];
   if (!estado.racaEscolhas) estado.racaEscolhas = {};
   if (!estado.truques) estado.truques = [];
@@ -86,13 +93,11 @@ function carregarEstadoBase() {
 }
 
 // ===== SALVAMENTO PERMANENTE DA FICHA =====
-// A ficha que está aberta fica no sessionStorage (some ao fechar o navegador).
-// Por isso tudo é copiado para o personagem salvo no localStorage (que NÃO some)
-// e devolvido para o sessionStorage quando a ficha é aberta de novo.
+// A ficha aberta é isolada por aba; o registro permanente é isolado por conta e ID.
 const CHAVES_FICHA = [
   'fragmentados_pvmax', 'fragmentados_pemax',
   'fragmentados_pv', 'fragmentados_pe',
-  'fragmentados_ca', 'fragmentados_xp', 'fragmentados_pce',
+  'fragmentados_ca', 'fragmentados_ca_ajuste', 'fragmentados_xp', 'fragmentados_pce',
   'fragmentados_pesomax', 'fragmentados_inventario', 'fragmentados_const_checks',
   'fragmentados_anel_escama_cargas', 'fragmentados_anel_escama_ativo',
   'fragmentados_puxa_corte_cargas', 'fragmentados_colar_cura_cargas',
@@ -114,7 +119,7 @@ function restaurarDadosFicha(p) {
   const guardar = (k, v) => {
     try { sessionStorage.setItem(k, v); } catch (e) { console.warn('Não consegui carregar', k, e); }
   };
-  [...CHAVES_FICHA, 'fragmentados_foto', 'fragmentados_desc'].forEach(k => sessionStorage.removeItem(k));
+  limparDadosFicha();
   // personagens salvos antes desta atualização só têm os campos antigos
   const dados = p.dados || {
     fragmentados_pvmax: p.pvMax, fragmentados_pemax: p.peMax,
@@ -129,6 +134,9 @@ function restaurarDadosFicha(p) {
   const estadoSalvo = p.estadoCompleto || {};
   guardar('fragmentados_estado', JSON.stringify({
     ...estadoSalvo,
+    id: p.id || estadoSalvo.id || crypto.randomUUID(),
+    persistido: true,
+    usuarioDono: lerJSON(localStorage, 'primordios_logado', null)?.usuario || null,
     magiasGrimorio: Array.isArray(estadoSalvo.magiasGrimorio) ? estadoSalvo.magiasGrimorio : [],
     grimorioInicializado: Boolean(estadoSalvo.grimorioInicializado)
   }));
@@ -136,6 +144,7 @@ function restaurarDadosFicha(p) {
 
 // Grava a lista de personagens avisando se o navegador ficar sem espaço
 function gravarPersonagens(usuario, lista) {
+  if (window.CloudFichas && lerJSON(localStorage, 'primordios_logado', null)?.online) return false;
   try {
     localStorage.setItem('primordios_personagens_' + usuario, JSON.stringify(lista));
     return true;
@@ -150,29 +159,55 @@ function gravarPersonagens(usuario, lista) {
 }
 
 function novoPersonagem() {
-  Object.assign(estado, {
-    personagem: null,
-    classe: null,
-    nivel: 1,
-    caminho: null,
-    raca: null,
-    racaEscolhas: {},
-    constancias: { Vigor: 0, Destreza: 0, Sabedoria: 0, 'Intelig\u00eancia': 0, 'For\u00e7a': 0, Carisma: 0 },
-    constanciasEscolhidas: [],
-    arma: null,
-    armadura: null,
-    acessorio: null,
-    acessoriosEquipados: {},
-    acessoriosCargas: {},
-    talentos: [],
-    truques: [],
-    magiasGrimorio: [],
-    grimorioInicializado: false,
-    nomePersonagem: ''
-  });
+  limparDadosFicha();
+  Object.assign(estado, criarEstadoInicial(), {id:crypto.randomUUID(), usuarioDono:lerJSON(localStorage,'primordios_logado',null)?.usuario || null});
   salvarEstado();
   window.location.href = 'tela1.html';
 }
+
+function limparDadosFicha() {
+  for (let i = sessionStorage.length - 1; i >= 0; i--) {
+    const chave = sessionStorage.key(i);
+    if (chave?.startsWith('fragmentados_')) sessionStorage.removeItem(chave);
+  }
+}
+
+function salvarFichaAtual() {
+  const user = lerJSON(localStorage, 'primordios_logado', null);
+  if (!user?.usuario || !estado.nomePersonagem || !estado.classe || (estado.usuarioDono && estado.usuarioDono !== user.usuario)) return false;
+  estado.id ||= crypto.randomUUID(); estado.usuarioDono = user.usuario;
+  const lista = obterPersonagens(user.usuario);
+  const idx = lista.findIndex(p => p.id === estado.id);
+  if (idx < 0 && estado.persistido) return false; // Não ressuscita personagens excluídos em outra aba.
+  estado.persistido = true;
+  const registro = {
+    id:estado.id, nomePersonagem:estado.nomePersonagem, classe:estado.classe, nivel:estado.nivel,
+    foto:sessionStorage.getItem('fragmentados_foto') || '', desc:sessionStorage.getItem('fragmentados_desc') || '',
+    dados:coletarDadosFicha(), estadoCompleto:JSON.parse(JSON.stringify(estado))
+  };
+  if (window.CloudFichas && user.online) {
+    const result = CloudFichas.queue(registro); if (!result) estado.persistido = idx >= 0;
+    salvarEstado(); return result;
+  }
+  if (idx < 0) lista.push(registro); else lista[idx] = {...lista[idx], ...registro};
+  if (!gravarPersonagens(user.usuario, lista)) { estado.persistido = idx >= 0; return false; }
+  salvarEstado(); return true;
+}
+
+window.addEventListener('primordios:ficha-salva', event => {
+  if (estado.id === event.detail.id) { estado.revisaoNuvem = event.detail.version; salvarEstado(); }
+});
+window.addEventListener('primordios:ficha-copiada', event => {
+  if (estado.id !== event.detail.original) return;
+  restaurarDadosFicha(event.detail.record); carregarEstadoBase();
+  if (typeof renderFicha === 'function') renderFicha();
+});
+window.addEventListener('primordios:ficha-recarregar', event => {
+  if (estado.id !== event.detail.id) return;
+  if (!event.detail.record) { limparDadosFicha(); location.replace('inventario.html'); return; }
+  restaurarDadosFicha(event.detail.record); carregarEstadoBase();
+  if (typeof renderFicha === 'function') renderFicha();
+});
 
 // ===== CONSTANTES COMPARTILHADAS =====
 const CONSTANCIAS = ['Vigor','Destreza','Sabedoria','Inteligência','Força','Carisma'];
@@ -186,6 +221,8 @@ const CONSTANCIAS_MAP = {
   Vigor:         ['Constituição']
 };
 
+function nomeEnergiaClasse(classe=estado.classe){return classe==='Mago'?'Mana':'PE';}
+
 function calcBonus(pontos) { return pontos >= 2 ? Math.floor(pontos / 2) : 0; }
 
 function pontosTotal() {
@@ -198,10 +235,10 @@ function limiteAtributo() {
   return estado.nivel === 1 ? 7 : 20;
 }
 
-function bonusDeClasse() {
-  if (estado.nivel >= 15) return 5;
-  if (estado.nivel >= 10) return 4;
-  if (estado.nivel >= 5)  return 3;
+function bonusDeClasse(nivel = estado.nivel) {
+  if (nivel >= 15) return 5;
+  if (nivel >= 10) return 4;
+  if (nivel >= 5)  return 3;
   return 2;
 }
 
@@ -236,11 +273,13 @@ const CLASSES_PREVIEW = {
     energiaInicial: 'Atributo de Força + Atributo de Vigor',
     energiaNivel: 'Bônus de classe + Atributo de Vigor',
     energiaAtributos: ['Força', 'Vigor'],
+    energiaNivelAtributo: 'Vigor',
     constanciasFixas: ['Combate', 'Constituição'],
     constanciasEscolha: ['Atletismo', 'Pontaria', 'Percepção', 'Sobrevivência', 'Acrobacia', 'Iniciativa'],
     constanciasEscolhaQtd: 2,
-    armas: ['Armas simples', 'Espadas curtas', 'Espadas longas', 'Armas marciais', 'Arcos curtos'],
-    armaduras: ['Leves', 'Médias', 'Pesadas'],
+    conhecimento: ["Escolha duas categorias entre Espadas Leves, Machados Pesados, Martelos Pesados, Lanças Leves e Maças Leves.","Arco Curto (Arma Específica)"],
+    familiaridade: ["Escolha uma categoria de peso diferente, pertencente a uma das duas famílias de armas selecionadas."],
+    armaduras: ["Leves","Médias","Pesadas"],
     especificacoes: 'Nenhuma',
     famosos: ['Darton o Estilhaçador', 'Maldivan a Muralha', 'Garruk Mão Vazia']
   },
@@ -252,12 +291,14 @@ const CLASSES_PREVIEW = {
     vidaNivel: '1d8 (ou 5) + Vigor',
     energiaInicial: 'Atributo de Sabedoria + Atributo de Vigor',
     energiaNivel: 'Bônus de classe + Atributo de Sabedoria',
-    energiaAtributos: ['Sabedoria', 'Destreza'],
+    energiaAtributos: ['Sabedoria', 'Vigor'],
+    energiaNivelAtributo: 'Sabedoria',
     constanciasFixas: ['Furtividade', 'Conjurar'],
     constanciasEscolha: ['Percepção', 'Intuição', 'Investigação', 'Intimidação', 'Acrobacia', 'Reflexo'],
     constanciasEscolhaQtd: 2,
-    armas: ['Armas simples', 'Espadas curtas', 'Adagas', 'Arcos curtos'],
-    armaduras: ['Leves', 'Médias'],
+    conhecimento: ["Adagas Leves","Espada Curta (Arma Específica)","Arco Curto (Arma Específica)"],
+    familiaridade: ["Espadas Leves","Besta de Mão (Arma Específica)"],
+    armaduras: ["Leves"],
     especificacoes: 'Nenhuma',
     famosos: ['Seraphine Umbra', 'Vael o Vazio', 'Serin a Silenciosa']
   },
@@ -270,11 +311,13 @@ const CLASSES_PREVIEW = {
     energiaInicial: 'Atributo de Sabedoria + Atributo de Destreza',
     energiaNivel: 'Bônus de Classe + Atributo de Destreza',
     energiaAtributos: ['Sabedoria', 'Destreza'],
+    energiaNivelAtributo: 'Destreza',
     constanciasFixas: ['Combate', 'Reflexos'],
     constanciasEscolha: ['Acrobacia', 'Intuição', 'Percepção', 'Prestidigitação', 'Sobrevivência', 'Vontade'],
     constanciasEscolhaQtd: 2,
-    armas: ['Armas simples', 'Qualquer tipo de espada'],
-    armaduras: ['Leves', 'Médias'],
+    conhecimento: ["Espadas (Geral)"],
+    familiaridade: ["Adagas Leves"],
+    armaduras: ["Leves","Médias"],
     especificacoes: 'O Espadachim possui Pontos de Conhecimento sobre Espadas (PCE), uma fonte de energia especial recuperada em qualquer descanso. Níveis 1–4: 2 PCE | 5–8: 5 | 9–12: 9 | 13–16: 11 | 17–20: 15.',
     famosos: ['-', '-', '-']
   },
@@ -286,12 +329,14 @@ const CLASSES_PREVIEW = {
     vidaNivel: '1d8 (ou 5) + Vigor',
     energiaInicial: 'Atributo de Carisma + Atributo de Vigor',
     energiaNivel: 'Bônus de classe + Atributo de Carisma',
-    energiaAtributos: ['Carisma', 'Sabedoria'],
+    energiaAtributos: ['Carisma', 'Vigor'],
+    energiaNivelAtributo: 'Carisma',
     constanciasFixas: ['Atuação', 'Persuasão'],
     constanciasEscolha: ['Percepção', 'Intimidação', 'Enganação', 'Intuição', 'Medicina', 'Acrobacia'],
     constanciasEscolhaQtd: 2,
-    armas: ['Armas simples', 'Espadas curtas', 'Arcos curtos', 'Arcos longos'],
-    armaduras: ['Leves'],
+    conhecimento: ["Espada Curta (Arma Específica)","Florete (Arma Específica)","Arco Curto"],
+    familiaridade: ["Adagas Leves"],
+    armaduras: ["Leves"],
     especificacoes: 'Um Bardo tem sua CD (Resistência mágica) igual a 8 + CS de Persuasão, utilizada quando uma magia necessita de teste de resistência.',
     famosos: ['Lyren Cordaclara', 'Belldona Vesper', 'Bren o Sussurro']
   },
@@ -304,12 +349,13 @@ const CLASSES_PREVIEW = {
     energiaInicial: 'Atributo de Sabedoria + Atributo de Inteligência',
     energiaNivel: 'Bônus de classe + Arcanismo',
     energiaAtributos: ['Sabedoria', 'Inteligência'],
-    energiaNivelAtributo: 'Inteligência',
+    energiaNivelConstancia: 'Arcanismo',
     constanciasFixas: ['Arcanismo', 'História'],
     constanciasEscolha: ['Conjurar', 'Enganação', 'Furtividade', 'Intuição', 'Medicina', 'Natureza', 'Reflexo'],
     constanciasEscolhaQtd: 2,
-    armas: ['Armas simples'],
-    armaduras: ['Leves'],
+    conhecimento: ["Adaga (Arma Específica)","Bastão (Arma Específica)"],
+    familiaridade: ["Demais Adagas Leves"],
+    armaduras: ["Leves"],
     especificacoes: 'Começa com um grimório e escolhe 3 magias de volume 1. O limite de magias anotadas é Arcanismo + nível. Só pode conjurar magias transcritas e traduzidas no grimório; transcrever uma magia leva 2 horas menos o bônus de Arcanismo. Magias controladas podem ser guardadas: limite de 1 + modificador de Inteligência, lançando até uma por ação bônus. Dano mágico pode somar Inteligência.',
     famosos: []
   }
@@ -321,7 +367,7 @@ const RACAS = {
     descricao: 'Adaptáveis e determinados, os humanos prosperam em qualquer ambiente. Adultos aos 18–20 anos, vivem até ~80.',
     bonusAtributos: { escolha: 2 },
     habilidades: [
-      { nome: 'Treinamento', desc: 'Proficiência em uma constância adicional à escolha.', acao: 'Passiva' },
+      { nome: 'Treinamento', desc: 'Aptidão em uma constância adicional à escolha.', acao: 'Passiva' },
       { nome: 'Determinação', desc: 'Possuem o talento Nova Tentativa por padrão, sem gastar slot de talento.', acao: 'Passiva' },
     ],
     info: '+1 em 2 atributos à escolha · Deslocamento 9m · Idiomas: Comum + 1'
@@ -340,7 +386,7 @@ const RACAS = {
     descricao: 'Seres longevos de 1,50m a 1,80m, vivem até ~1200 anos. Graciosos e perceptivos.',
     bonusAtributos: { fixo: { 'Destreza': 1, 'Sabedoria': 1 } },
     habilidades: [
-      { nome: 'Perceptíveis a Tudo', desc: 'Proficiência em Percepção.', acao: 'Passiva' },
+      { nome: 'Perceptíveis a Tudo', desc: 'Aptidão em Percepção.', acao: 'Passiva' },
       { nome: 'Imune ao Sono', desc: 'Meditam em vez de dormir (metade do tempo). Imunes a efeitos de soníferos.', acao: 'Passiva' },
       { nome: 'Vantagem Mágica', desc: 'Vantagem em testes de resistência contra controle mental.', acao: 'Passiva' },
     ],
@@ -450,7 +496,7 @@ const RACAS = {
     bonusAtributos: { fixo: { 'Vigor': 1, 'Sabedoria': 1 } },
     habilidades: [
       { nome: 'Resistência Rochosa', desc: 'Reduz em 1 o dano físico não mágico recebido.', acao: 'Passiva' },
-      { nome: 'Tradição do Ofício', desc: 'Treinado em uma ferramenta de ofício e uma Constância de Sabedoria à escolha.', acao: 'Passiva' },
+      { nome: 'Tradição do Ofício', desc: 'Proficiência em uma ferramenta de ofício e aptidão em uma Constância de Sabedoria à escolha.', acao: 'Passiva' },
       { nome: 'Postura Inabalável', desc: 'Vantagem em testes para resistir a ser derrubado, empurrado ou deslocado (com os pés no chão).', acao: 'Passiva' },
     ],
     info: '+1 Vigor · +1 Sabedoria · Deslocamento 7,5m · RD 1 físico · Ignora penalidades de armadura pesada'
@@ -490,7 +536,7 @@ const RACAS = {
     habilidades: [
       { nome: 'Forma Vampírica', desc: '1x por dia: por turnos = bônus de Sabedoria. +4 Força, +2 Destreza, -3 Inteligência.', acao: 'Ação Padrão' },
       { nome: 'Mordida', desc: '1d4 perfurante + tentativa de drenar sangue (1d8).', acao: 'Passiva' },
-      { nome: 'Charme', desc: 'Proficiência em Enganação, Persuasão, Intimidação e Lábia com Bônus de Classe.', acao: 'Passiva' },
+      { nome: 'Charme', desc: 'Aptidão em Enganação, Persuasão, Intimidação e Lábia com Bônus de Classe.', acao: 'Passiva' },
       { nome: 'Resistência Vampírica', desc: 'Dano necrótico e veneno reduzidos pelo bônus de Constituição.', acao: 'Passiva' },
     ],
     info: '+1 Força · +1 Destreza · Voo 15m · Fraquezas: luz solar, madeira no coração'

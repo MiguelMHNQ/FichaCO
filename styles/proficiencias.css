@@ -1,0 +1,13 @@
+.proficiencias-painel {min-width:0;font-size:.75rem;color:inherit}
+.proficiencias-painel h5 {margin:12px 0 7px;font:inherit;font-size:.7rem;color:#c9a84c;letter-spacing:1px}
+.proficiencias-painel h5:first-child {margin-top:0}
+.proficiencias-tags {display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.proficiencias-tags span {font-size:.68rem;padding:4px 7px;border:1px solid #3a3550;border-radius:4px;color:#aaa;line-height:1.5}
+.proficiencias-painel label {display:flex;flex-direction:column;gap:5px;margin:8px 0;font-size:.68rem;color:#aaa}
+.proficiencias-painel select {box-sizing:border-box;max-width:100%;width:100%;padding:7px 8px;background:#14111d;color:#e0d6c8;border:1px solid #3a3550;border-radius:5px;font:inherit}
+.proficiencias-painel select:focus {outline:1px solid #c9a84c}
+.proficiencias-painel select:disabled {opacity:.5}
+.proficiencias-painel small {display:block;font-size:.68rem;line-height:1.6;color:#888}
+body.tema-claro .proficiencias-painel select {background:#fffdf7;color:#443b30;border-color:#c8bca6}
+body.tema-claro .proficiencias-painel h5 {color:#79612d}
+body.tema-claro .proficiencias-tags span,body.tema-claro .proficiencias-painel label,body.tema-claro .proficiencias-painel small {color:#665a48}

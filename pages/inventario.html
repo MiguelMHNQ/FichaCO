@@ -8,6 +8,13 @@
 <link rel="stylesheet" href="../styles/global.css">
 <link rel="stylesheet" href="../styles/tela1.css">
 <link rel="stylesheet" href="../styles/inventario.css">
+<link rel="stylesheet" href="../styles/preferencias.css">
+<script src="../scripts/i18n-content.js"></script>
+<script src="../scripts/preferencias.js"></script>
+<script src="../scripts/auth-online.js"></script>
+<link rel="stylesheet" href="../styles/fichas-online.css">
+<link rel="stylesheet" href="../styles/consentimento-audio.css">
+<link rel="stylesheet" href="../styles/mobile.css?v=mobile-1">
 </head>
 <body>
 
@@ -32,7 +39,7 @@
   <div id="controlesPersonagens" class="inv-controles" hidden>
     <label class="inv-busca">
       <span>Buscar personagem</span>
-      <input id="buscaPersonagem" type="search" placeholder="Nome, classe ou descrição" oninput="renderLista()">
+      <input id="buscaPersonagem" type="search" placeholder="Nome, classe ou descrição" data-i18n-placeholder="Nome, classe ou descrição" oninput="renderLista()">
     </label>
     <label class="inv-ordenacao">
       <span>Ordenar por</span>
@@ -61,7 +68,8 @@
   </div>
 </div>
 
-<script src="../scripts/estado.js"></script>
+<script src="../scripts/estado.js?v=mana-1"></script>
+<script src="../scripts/consentimento-audio.js"></script>
 <script src="../scripts/audio.js"></script>
 <script src="../scripts/sons.js"></script>
 <script>
@@ -87,26 +95,25 @@
   });
 
   function sair() {
-    localStorage.removeItem('primordios_logado');
-    window.location.href = 'tela0.html';
+    return PrimordiosAuth.sair();
   }
 
   // ===== PERSONAGENS =====
   function getUsuarioLogado() {
     const s = localStorage.getItem('primordios_logado');
-    return s ? JSON.parse(s).usuario : null;
+    return lerJSON(localStorage, 'primordios_logado', null)?.usuario || null;
   }
 
   function getPersonagens() {
     const user = getUsuarioLogado();
     if (!user) return [];
-    return JSON.parse(localStorage.getItem('primordios_personagens_' + user) || '[]');
+    return obterPersonagens(user);
   }
 
   function salvarPersonagens(lista) {
     const user = getUsuarioLogado();
     if (!user) return;
-    localStorage.setItem('primordios_personagens_' + user, JSON.stringify(lista));
+    return gravarPersonagens(user, lista);
   }
 
   // ===== RENDER LISTA =====
@@ -119,8 +126,7 @@
     const ordenacao = document.getElementById('ordenacaoPersonagens').value;
     container.innerHTML = '';
     controles.hidden = personagens.length === 0;
-    document.getElementById('resumoPersonagens').textContent =
-      `${personagens.length} ${personagens.length === 1 ? 'personagem' : 'personagens'}`;
+    PrimordiosI18n.set(document.getElementById('resumoPersonagens'),personagens.length===1?'{count} personagem':'{count} personagens',{count:personagens.length});
 
     if (personagens.length === 0) {
       container.innerHTML = `
@@ -138,7 +144,7 @@
         const campos = [personagem.nomePersonagem, personagem.classe, personagem.desc];
         const texto = campos.filter(campo => typeof campo === 'string').join(' ')
           .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
-        return texto.includes(termo);
+        return texto.includes(termo) || !!window.PrimordiosI18n?.match(personagem.classe || '',termo);
       });
 
     encontrados.sort((a, b) => {
@@ -155,9 +161,7 @@
     });
 
     const resumo = document.getElementById('resumoPersonagens');
-    resumo.textContent = busca
-      ? `${encontrados.length} de ${personagens.length} ${personagens.length === 1 ? 'personagem encontrado' : 'personagens encontrados'}`
-      : `${personagens.length} ${personagens.length === 1 ? 'personagem' : 'personagens'}`;
+    PrimordiosI18n.set(resumo, busca ? (personagens.length===1?'{found} de {total} personagem encontrado':'{found} de {total} personagens encontrados') : (personagens.length===1?'{count} personagem':'{count} personagens'),{found:encontrados.length,total:personagens.length,count:personagens.length});
 
     if (encontrados.length === 0) {
       container.innerHTML = `
@@ -175,27 +179,42 @@
       card.innerHTML = `
         <div class="inv-card-foto" onclick="abrirFicha(${idx})">
           ${p.foto
-            ? `<img src="${p.foto}" alt="${p.nomePersonagem}">`
-            : `<div class="inv-card-foto-vazia">✦</div>`}
+            ? `<img data-i18n-skip src="${/^data:image\/(png|jpe?g|webp|gif);/i.test(p.foto) ? escaparHTML(p.foto) : ''}" alt="${escaparHTML(p.nomePersonagem)}">`
+            : p.hasPhoto ? `<img data-i18n-skip data-retrato="${escaparHTML(p.id)}" alt="${escaparHTML(p.nomePersonagem)}" loading="lazy">` : `<div class="inv-card-foto-vazia">✦</div>`}
         </div>
         <div class="inv-card-info" onclick="abrirFicha(${idx})">
-          <div class="inv-card-nome">${p.nomePersonagem || '—'}</div>
-          <div class="inv-card-classe">${p.classe || ''} ${p.nivel ? '· Nível ' + p.nivel : ''}</div>
-          <div class="inv-card-desc">${p.desc || 'Sem descrição.'}</div>
+          <div class="inv-card-nome">${escaparHTML(p.nomePersonagem || '—')}</div>
+          <div class="inv-card-classe">${escaparHTML(p.classe || '')} ${p.nivel ? '· <span data-i18n>Nível</span> ' + p.nivel : ''}</div>
+          <div class="inv-card-desc" ${p.desc ? 'data-i18n-skip' : ''}>${p.desc ? escaparHTML(p.desc) : '<span data-i18n>Sem descrição.</span>'}</div>
         </div>
         <div class="inv-card-acoes">
           <button class="inv-btn-ver" onclick="Sons.confirm();abrirFicha(${idx})">Ver Ficha</button>
           <button class="inv-btn-del" onclick="Sons.del();abrirDelete(${idx})">✕</button>
         </div>`;
       container.appendChild(card);
+      const portrait = card.querySelector('[data-retrato]');
+      if (portrait && window.CloudFichas) {
+        const user = getUsuarioLogado();
+        CloudFichas.portrait(p.id).then(foto => { if (portrait.isConnected && getUsuarioLogado() === user && /^data:image\/(png|jpe?g|webp|gif);base64,/i.test(foto)) portrait.src = foto; }).catch(() => {});
+      }
     });
   }
 
   // ===== FICHA =====
-  function abrirFicha(idx) {
+  async function abrirFicha(idx) {
     const personagens = getPersonagens();
     const p = personagens[idx];
-    if (!p || !p.estadoCompleto || !p.estadoCompleto.classe) return;
+    if (!p) return;
+    if (window.CloudFichas) {
+      const user = getUsuarioLogado();
+      try {
+        const record = await CloudFichas.get(p.id);
+        if (getUsuarioLogado() !== user) return;
+        restaurarDadosFicha(record); window.location.href = 'tela5.html';
+      } catch (error) { alert(PrimordiosI18n.t(error.message || 'Não foi possível abrir a ficha.')); }
+      return;
+    }
+    if (!p.estadoCompleto || !p.estadoCompleto.classe) return;
 
     restaurarDadosFicha(p);
 
@@ -204,22 +223,31 @@
 
   // ===== DELETE =====
   let _idxParaDeletar = null;
+  let _idParaDeletar = null;
 
   function abrirDelete(idx) {
     _idxParaDeletar = idx;
+    _idParaDeletar = getPersonagens()[idx]?.id;
     document.getElementById('popupDelete').classList.add('aberto');
   }
 
   function fecharDelete() {
     _idxParaDeletar = null;
+    _idParaDeletar = null;
     document.getElementById('popupDelete').classList.remove('aberto');
   }
 
-  function confirmarDelete() {
+  async function confirmarDelete() {
     if (_idxParaDeletar === null) return;
+    if (window.CloudFichas) {
+      const id = _idParaDeletar; if (!id) return;
+      try { await CloudFichas.remove(id); fecharDelete(); renderLista(); }
+      catch (error) { alert(PrimordiosI18n.t(error.message || 'Não foi possível excluir a ficha.')); }
+      return;
+    }
     const lista = getPersonagens();
     lista.splice(_idxParaDeletar, 1);
-    salvarPersonagens(lista);
+    if (!salvarPersonagens(lista)) return;
     fecharDelete();
     renderLista();
   }
@@ -228,15 +256,49 @@
     if (e.target === this) fecharDelete();
   });
 
-function novoPersonagem() {
-    sessionStorage.removeItem('primordios_estado');
-    window.location.href = 'tela1.html';
-  }
 
-  window.addEventListener('load', () => {
+  window.addEventListener('load', async () => {
+    if (!await PrimordiosAuth.ready) return;
     if (!getUsuarioLogado()) { window.location.href = 'tela0.html'; return; }
+    if (window.CloudFichas) {
+      await CloudFichas.init();
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'fichas-importar-acao'; button.textContent = 'Importar fichas deste navegador'; button.onclick = abrirImportacaoFichas;
+      document.getElementById('listaPersonagens').before(button);
+    }
     renderLista();
   });
+  window.addEventListener('primordios:fichas', () => { if (window.CloudFichas) renderLista(); });
+
+  function abrirImportacaoFichas() {
+    const dialog = document.createElement('dialog'); dialog.className = 'fichas-dialog';
+    const title = document.createElement('h2'); title.textContent = 'Importar fichas locais'; dialog.append(title);
+    const help = document.createElement('p'); help.className = 'fichas-importar-aviso'; help.textContent = 'Selecione apenas as fichas que são suas. Elas serão copiadas para a conta Google atual. Os originais continuarão neste navegador; repetir a importação não cria duplicatas.'; dialog.append(help);
+    const entries = [];
+    for (const source of Object.keys(localStorage).filter(key => key.startsWith('primordios_personagens_'))) {
+      const records = lerJSON(localStorage, source, []); if (!Array.isArray(records)) continue;
+      for (const record of records) {
+        if (!record || typeof record !== 'object' || !record.nomePersonagem) continue;
+        const row = document.createElement('label'); row.className = 'fichas-importar-linha';
+        const checkbox = document.createElement('input'); checkbox.type = 'checkbox';
+        const text = document.createElement('span'); PrimordiosI18n.set(text,'{name} · {class} · conta local {account}',{name:record.nomePersonagem,class:record.classe || record.estadoCompleto?.classe || '—',account:source.slice('primordios_personagens_'.length)});
+        row.append(checkbox, text); dialog.append(row); entries.push({ source, record, checkbox, text });
+      }
+    }
+    const info = document.createElement('p'); info.setAttribute('role','status'); info.textContent = entries.length ? 'Nenhuma ficha será enviada sem sua seleção.' : 'Nenhuma ficha local encontrada neste navegador.'; dialog.append(info);
+    const send = document.createElement('button'); send.type = 'button'; send.textContent = 'Importar selecionadas'; send.disabled = !entries.length;
+    send.onclick = async () => {
+      const selected = entries.filter(entry => entry.checkbox.checked); if (!selected.length) { info.textContent = 'Selecione ao menos uma ficha.'; return; }
+      send.disabled = true; let success = 0;
+      for (const entry of selected) {
+        entry.checkbox.disabled = true;
+        try { await CloudFichas.import(entry.source, entry.record); PrimordiosI18n.set(entry.text,'{name} — cópia confirmada online',{name:entry.record.nomePersonagem}); entry.checkbox.checked = false; success++; }
+        catch (error) { delete entry.text.dataset.i18nKey;delete entry.text.dataset.i18nParams;const name=document.createElement('span');name.dataset.i18nSkip='';name.textContent=entry.record.nomePersonagem+' — ';const message=document.createElement('span');message.setAttribute('data-i18n','');message.textContent=error.message;entry.text.replaceChildren(name,message);entry.checkbox.disabled = false; }
+      }
+      PrimordiosI18n.set(info,'{done} de {total} fichas confirmadas online. Os originais foram preservados.',{done:success,total:selected.length}); send.disabled = false; renderLista();
+    };
+    const close = document.createElement('button'); close.type = 'button'; close.textContent = 'Fechar'; close.onclick = () => dialog.close();
+    dialog.append(send,close); dialog.addEventListener('close', () => dialog.remove(), { once:true }); document.body.append(dialog); dialog.showModal();
+  }
 </script>
 <script src="../scripts/espera-vinil.js"></script>
 </body>

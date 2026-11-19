@@ -1,0 +1,414 @@
+{
+  "A sala privada exige senha de até 10 caracteres.": [
+    "A private room requires a password of up to 10 characters.",
+    "Una sala privada requiere una contraseña de hasta 10 caracteres."
+  ],
+  "Abra e salve o mapa no editor antes de compartilhá-lo.": [
+    "Open and save the map in the editor before sharing it.",
+    "Abre y guarda el mapa en el editor antes de compartirlo."
+  ],
+  "Adicionar link": [
+    "Add link",
+    "Añadir enlace"
+  ],
+  "Abrir minha ficha": [
+    "Open my character sheet",
+    "Abrir mi ficha"
+  ],
+  "Arquivo indisponível nesta sessão.": [
+    "File unavailable in this session.",
+    "Archivo no disponible en esta sesión."
+  ],
+  "Arquivo inválido.": [
+    "Invalid file.",
+    "Archivo no válido."
+  ],
+  "Atualizar lista": [
+    "Refresh list",
+    "Actualizar lista"
+  ],
+  "Avançar 10 s": [
+    "Forward 10 s",
+    "Avanzar 10 s"
+  ],
+  "Banir": [
+    "Ban",
+    "Bloquear"
+  ],
+  "Banir participante?": [
+    "Ban participant?",
+    "¿Bloquear participante?"
+  ],
+  "Buscar sessão": [
+    "Find session",
+    "Buscar sesión"
+  ],
+  "Canal inválido.": [
+    "Invalid channel.",
+    "Canal no válido."
+  ],
+  "Carregar mapa": [
+    "Load map",
+    "Cargar mapa"
+  ],
+  "Conectado": [
+    "Connected",
+    "Conectado"
+  ],
+  "Desconectado": [
+    "Disconnected",
+    "Desconectado"
+  ],
+  "Sincronização indisponível.": [
+    "Synchronization unavailable.",
+    "Sincronización no disponible."
+  ],
+  "Configurações da sessão": [
+    "Session settings",
+    "Configuración de la sesión"
+  ],
+  "Criar sessão": [
+    "Create session",
+    "Crear sesión"
+  ],
+  "Código da sessão": [
+    "Session code",
+    "Código de la sesión"
+  ],
+  "Código inválido.": [
+    "Invalid code.",
+    "Código no válido."
+  ],
+  "Deixe em branco para manter": [
+    "Leave blank to keep unchanged",
+    "Deja en blanco para mantenerla"
+  ],
+  "Dono": [
+    "Owner",
+    "Dueño"
+  ],
+  "Encerrar ao terminar": [
+    "End when finished",
+    "Cerrar al terminar"
+  ],
+  "Encerrar sessão para todos?": [
+    "End the session for everyone?",
+    "¿Cerrar la sesión para todos?"
+  ],
+  "Entrar em sessão": [
+    "Join session",
+    "Entrar en una sesión"
+  ],
+  "Enviando alterações…": [
+    "Sending changes…",
+    "Enviando cambios…"
+  ],
+  "Enviando mapa…": [
+    "Uploading map…",
+    "Subiendo mapa…"
+  ],
+  "Enviar arquivo": [
+    "Upload file",
+    "Subir archivo"
+  ],
+  "Equipar acessório em {v2}": [
+    "Equip accessory in {v2}",
+    "Equipar accesorio en {v2}"
+  ],
+  "Escolha imagem, áudio ou vídeo de até 50 MB.": [
+    "Choose an image, audio or video file up to 50 MB.",
+    "Elige una imagen, audio o vídeo de hasta 50 MB."
+  ],
+  "Este vídeo do YouTube não está disponível para reprodução.": [
+    "This YouTube video is unavailable for playback.",
+    "Este vídeo de YouTube no está disponible para su reproducción."
+  ],
+  "Expulsar": [
+    "Kick",
+    "Expulsar"
+  ],
+  "Imagem inválida.": [
+    "Invalid image.",
+    "Imagen no válida."
+  ],
+  "Importe a imagem antes de compartilhar.": [
+    "Import the image before sharing it.",
+    "Importa la imagen antes de compartirla."
+  ],
+  "Informe os seis dígitos do código.": [
+    "Enter the six-digit code.",
+    "Introduce el código de seis dígitos."
+  ],
+  "Link do YouTube": [
+    "YouTube link",
+    "Enlace de YouTube"
+  ],
+  "Link do YouTube inválido.": [
+    "Invalid YouTube link.",
+    "Enlace de YouTube no válido."
+  ],
+  "Mapa inicial": [
+    "Starting map",
+    "Mapa inicial"
+  ],
+  "Mapa vazio": [
+    "Empty map",
+    "Mapa vacío"
+  ],
+  "Mapa da sessão": [
+    "Session map",
+    "Mapa de la sesión"
+  ],
+  "Moderador": [
+    "Moderator",
+    "Moderador"
+  ],
+  "Máximo de pessoas": [
+    "Maximum participants",
+    "Máximo de participantes"
+  ],
+  "Música": [
+    "Music",
+    "Música"
+  ],
+  "Música da sessão": [
+    "Session music",
+    "Música de la sesión"
+  ],
+  "Músicas do site": [
+    "Site music",
+    "Música del sitio"
+  ],
+  "Nenhum resultado encontrado.": [
+    "No results found.",
+    "No se encontraron resultados."
+  ],
+  "Nenhuma sessão pública disponível.": [
+    "No public sessions available.",
+    "No hay sesiones públicas disponibles."
+  ],
+  "Não foi possível abrir o YouTube.": [
+    "Could not open YouTube.",
+    "No se pudo abrir YouTube."
+  ],
+  "Não foi possível acessar a sessão.": [
+    "Could not access the session.",
+    "No se pudo acceder a la sesión."
+  ],
+  "Não foi possível enviar o arquivo da sessão.": [
+    "Could not upload the session file.",
+    "No se pudo subir el archivo de la sesión."
+  ],
+  "Não foi possível reproduzir este arquivo.": [
+    "Could not play this file.",
+    "No se pudo reproducir este archivo."
+  ],
+  "O YouTube não respondeu.": [
+    "YouTube did not respond.",
+    "YouTube no respondió."
+  ],
+  "O YouTube usa um player visível. O upload é a opção principal.": [
+    "YouTube uses a visible player. File upload is the main option.",
+    "YouTube utiliza un reproductor visible. La opción principal es subir archivos."
+  ],
+  "Parar": [
+    "Stop",
+    "Detener"
+  ],
+  "Parar vídeo": [
+    "Stop video",
+    "Detener vídeo"
+  ],
+  "Participantes": [
+    "Participants",
+    "Participantes"
+  ],
+  "Pausar / continuar": [
+    "Pause / resume",
+    "Pausar / continuar"
+  ],
+  "Personagem": [
+    "Character",
+    "Personaje"
+  ],
+  "Privada": [
+    "Private",
+    "Privada"
+  ],
+  "Pública": [
+    "Public",
+    "Pública"
+  ],
+  "Reconectando…": [
+    "Reconnecting…",
+    "Reconectando…"
+  ],
+  "Remover moderação": [
+    "Remove moderator role",
+    "Quitar moderación"
+  ],
+  "Repetir": [
+    "Loop",
+    "Repetir"
+  ],
+  "Sair da sessão": [
+    "Leave session",
+    "Salir de la sesión"
+  ],
+  "Salas públicas neste servidor. Para salas privadas, use o código.": [
+    "Public rooms on this server. Use the code for private rooms.",
+    "Salas públicas de este servidor. Para salas privadas, usa el código."
+  ],
+  "Sem personagem": [
+    "No character",
+    "Sin personaje"
+  ],
+  "Sessões": [
+    "Sessions",
+    "Sesiones"
+  ],
+  "Sessões disponíveis": [
+    "Available sessions",
+    "Sesiones disponibles"
+  ],
+  "Seu nome": [
+    "Your name",
+    "Tu nombre"
+  ],
+  "Sincronizado": [
+    "Synced",
+    "Sincronizado"
+  ],
+  "Sincronizar": [
+    "Sync",
+    "Sincronizar"
+  ],
+  "Som local": [
+    "Local audio",
+    "Sonido local"
+  ],
+  "Sua cor": [
+    "Your color",
+    "Tu color"
+  ],
+  "Substituir o mapa da sessão?": [
+    "Replace the session map?",
+    "¿Sustituir el mapa de la sesión?"
+  ],
+  "TABLETOP": [
+    "TABLETOP",
+    "TABLETOP"
+  ],
+  "Tornar moderador": [
+    "Make moderator",
+    "Nombrar moderador"
+  ],
+  "Trocar mapa da sessão": [
+    "Change session map",
+    "Cambiar mapa de la sesión"
+  ],
+  "Visibilidade": [
+    "Visibility",
+    "Visibilidad"
+  ],
+  "Voltar 10 s": [
+    "Back 10 s",
+    "Retroceder 10 s"
+  ],
+  "Vídeo": [
+    "Video",
+    "Vídeo"
+  ],
+  "Vídeo da sessão": [
+    "Session video",
+    "Vídeo de la sesión"
+  ],
+  "YouTube ·": [
+    "YouTube ·",
+    "YouTube ·"
+  ],
+  "Alterações pendentes": [
+    "Pending changes",
+    "Cambios pendientes"
+  ],
+  "Somente o dono controla músicas e vídeos.": [
+    "Only the owner controls music and videos.",
+    "Solo el dueño controla la música y los vídeos."
+  ],
+  "Você só pode alterar seus próprios desenhos.": [
+    "You can only edit your own drawings.",
+    "Solo puedes editar tus propios dibujos."
+  ],
+  "Sessão não encontrada.": [
+    "Session not found.",
+    "Sesión no encontrada."
+  ],
+  "Senha da sessão incorreta.": [
+    "Incorrect session password.",
+    "Contraseña de sesión incorrecta."
+  ],
+  "Esta sessão está cheia.": [
+    "This session is full.",
+    "Esta sesión está llena."
+  ],
+  "Você não participa desta sessão.": [
+    "You are not a member of this session.",
+    "No participas en esta sesión."
+  ],
+  "Você foi banido desta sessão.": [
+    "You were banned from this session.",
+    "Se te ha bloqueado el acceso a esta sesión."
+  ],
+  "Muitas tentativas. Aguarde um minuto.": [
+    "Too many attempts. Wait a minute.",
+    "Demasiados intentos. Espera un minuto."
+  ],
+  "O mapa mudou. Atualize antes de substituir.": [
+    "The map changed. Refresh before replacing it.",
+    "El mapa cambió. Actualiza antes de sustituirlo."
+  ],
+  "Essa camada não pode receber desenhos.": [
+    "You cannot draw on this layer.",
+    "No se puede dibujar en esta capa."
+  ],
+  "Esse desenho está bloqueado.": [
+    "This drawing is locked.",
+    "Este dibujo está bloqueado."
+  ],
+  "Ficha do personagem": [
+    "Character sheet",
+    "Ficha del personaje"
+  ],
+  "Nenhum personagem selecionado.": [
+    "No character selected.",
+    "Ningún personaje seleccionado."
+  ],
+  "Posição da música": [
+    "Music position",
+    "Posición de la música"
+  ],
+  "Silenciar áudio": [
+    "Mute audio",
+    "Silenciar audio"
+  ],
+  "◎ Tokens": [
+    "◎ Tokens",
+    "◎ Fichas"
+  ],
+  "Esta mídia exige permissão de administrador.": [
+    "This media requires administrator permission.",
+    "Este contenido requiere permiso de administrador."
+  ],
+  "Você só pode alterar tokens disponíveis e seus próprios desenhos.": [
+    "You can only edit available tokens and your own drawings.",
+    "Solo puedes editar las fichas disponibles y tus propios dibujos."
+  ],
+  "Limite de uploads atingido ou sessão indisponível.": [
+    "Upload limit reached or session unavailable.",
+    "Límite de archivos alcanzado o sesión no disponible."
+  ],
+  "{v5} inicial": [
+    "{v5} initial",
+    "{v5} inicial"
+  ]
+}

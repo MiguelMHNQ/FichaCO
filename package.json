@@ -1,0 +1,51 @@
+{
+  "name": "primordios",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "npm run build:client && npm run build:backend && node --env-file-if-exists=.env .backend-build/backend/dev-server.js",
+    "dev:lan": "npm run build:client && npm run build:backend && node --env-file-if-exists=.env .backend-build/backend/dev-server.js --lan",
+    "typecheck": "tsc --noEmit",
+    "check:supabase": "npm run build:backend && node --env-file-if-exists=.env .backend-build/backend/check-supabase.js",
+    "build:backend": "tsc",
+    "build:client": "node scripts/build-client.cjs",
+    "build": "npm run build:client && npm run build:backend && node scripts/build-site.cjs",
+    "test": "npm run build:backend && node --test .backend-build/backend/tests/*.test.js",
+    "test:livro": "node scripts/verificar-livro.cjs",
+    "test:sessions": "npm run build:client && npm run build:backend && node scripts/verificar-sessoes.cjs",
+    "test:auth": "npm run build:client && node scripts/verificar-auth.cjs",
+    "test:characters": "npm run build:client && node scripts/verificar-auth.cjs --characters",
+    "test:preferences": "npm run build:client && node scripts/verificar-auth.cjs --i18n",
+    "i18n:extract": "node scripts/catalogar-idiomas.cjs",
+    "test:i18n": "node scripts/verificar-idiomas.cjs",
+    "test:game-i18n": "npm run build:client && node scripts/verificar-tabletop.cjs --game-i18n",
+    "test:accessories": "npm run build:client && node scripts/verificar-tabletop.cjs --accessories",
+    "test:dice": "npm run build:client && node scripts/verificar-dados.cjs && node scripts/verificar-tabletop.cjs --dice",
+    "test:security": "npm run build:client && npm run build:backend && node scripts/verificar-tabletop.cjs --security",
+    "test:vitality": "npm run build:client && node scripts/verificar-vitalidade.cjs && node scripts/verificar-tabletop.cjs --vitality",
+    "test:proficiencies": "npm run build:client && node scripts/verificar-proficiencias.cjs && node scripts/verificar-tabletop.cjs --proficiencies",
+    "test:animations": "npm run build:client && node scripts/verificar-tabletop.cjs --animations",
+    "test:organisation": "npm run build:client && node scripts/verificar-tabletop.cjs --organisation",
+    "test:mobile": "npm run build:client && npm run build:backend && node scripts/verificar-tabletop.cjs --mobile && node scripts/verificar-sessoes.cjs --mobile",
+    "test:actions": "npm run build:client && npm run build:backend && node scripts/verificar-sessoes.cjs --actions",
+    "test:grimoire": "npm run build:client && node scripts/verificar-tabletop.cjs --grimorio",
+    "test:areas": "npm run build:client && npm run build:backend && node scripts/verificar-regras-acoes.cjs && node scripts/verificar-dano-visual.cjs && node scripts/verificar-sessoes.cjs --areas",
+    "test:vision": "npm run build:client && npm run build:backend && node scripts/verificar-sessoes.cjs --vision",
+    "test:collision": "npm run build:client && npm run build:backend && node scripts/verificar-sessoes.cjs --collision",
+    "test:vision-editor": "npm run build:client && node scripts/verificar-tabletop.cjs --vision-editor"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/pg": "8.23.1",
+    "esbuild": "0.28.2",
+    "typescript": "^5.9.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "pg": "8.23.1"
+  }
+}

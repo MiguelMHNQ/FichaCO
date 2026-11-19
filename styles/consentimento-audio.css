@@ -1,0 +1,10 @@
+#consentimentoAudio{position:fixed;inset:0;margin:auto;width:min(450px,calc(100vw - 32px));max-height:85vh;overflow:auto;padding:30px;border:1px solid #c9a84c55;border-radius:14px;background:#13111c;color:#e0d6c8;box-shadow:0 20px 70px #0008;font-family:Georgia,serif}
+#consentimentoAudio::backdrop{background:#080810c4;backdrop-filter:blur(6px)}
+#consentimentoAudio>svg{width:30px;height:30px;color:#c9a84c;margin-bottom:14px}
+#consentimentoAudio h2{font-size:1.3rem;font-weight:normal;color:#c9a84c;margin-bottom:15px}
+#consentimentoAudio p{font-size:.85rem;line-height:1.8;margin-bottom:12px}
+#consentimentoAudio small{display:block;font-size:.72rem;line-height:1.7;color:#9c958a}
+#consentimentoAudio>div{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:22px}
+#consentimentoAudio button{font:inherit;font-size:.75rem;padding:10px 13px;border:1px solid #51452d;border-radius:5px;background:transparent;color:inherit;cursor:pointer}
+#consentimentoAudio #audioPermitir{background:#c9a84c;color:#15121e}
+body.tema-claro #consentimentoAudio{background:#fffdf8;color:#514b42;border-color:#d9cfbd}

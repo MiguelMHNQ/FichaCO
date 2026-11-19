@@ -1,0 +1,322 @@
+{
+  "Guerreiro": [
+    "Warrior",
+    "Guerrero"
+  ],
+  "Guerreiros": [
+    "Warriors",
+    "Guerreros"
+  ],
+  "Obscuro": [
+    "Shadow",
+    "Oscuro"
+  ],
+  "Obscuros": [
+    "Shadows",
+    "Oscuros"
+  ],
+  "Espadachim": [
+    "Swordsman",
+    "Espadachín"
+  ],
+  "Espadachins": [
+    "Swordsmen",
+    "Espadachines"
+  ],
+  "Bardo": [
+    "Bard",
+    "Bardo"
+  ],
+  "Bardos": [
+    "Bards",
+    "Bardos"
+  ],
+  "Mago": [
+    "Mage",
+    "Mago"
+  ],
+  "Magos": [
+    "Mages",
+    "Magos"
+  ],
+  "Vigor": [
+    "Vigor",
+    "Vigor"
+  ],
+  "Destreza": [
+    "Dexterity",
+    "Destreza"
+  ],
+  "Sabedoria": [
+    "Wisdom",
+    "Sabiduría"
+  ],
+  "Inteligência": [
+    "Intelligence",
+    "Inteligencia"
+  ],
+  "Força": [
+    "Strength",
+    "Fuerza"
+  ],
+  "Carisma": [
+    "Charisma",
+    "Carisma"
+  ],
+  "Constituição": [
+    "Constitution",
+    "Constitución"
+  ],
+  "Reflexos": [
+    "Reflexes",
+    "Reflejos"
+  ],
+  "Reflexo": [
+    "Reflex",
+    "Reflejo"
+  ],
+  "Constâncias": [
+    "Skills",
+    "Competencias"
+  ],
+  "Constância": [
+    "Skill",
+    "Competencia"
+  ],
+  "Pontos de Vida": [
+    "Hit Points",
+    "Puntos de Vida"
+  ],
+  "Pontos de Esforço": [
+    "Effort Points",
+    "Puntos de Esfuerzo"
+  ],
+  "Pontos de Conhecimento sobre Espadas": [
+    "Sword Knowledge Points",
+    "Puntos de Conocimiento de Espadas"
+  ],
+  "Classe de Armadura": [
+    "Armor Class",
+    "Clase de Armadura"
+  ],
+  "Classe de Dificuldade": [
+    "Difficulty Class",
+    "Clase de Dificultad"
+  ],
+  "Bônus de Classe": [
+    "Class Bonus",
+    "Bonificación de Clase"
+  ],
+  "Bônus": [
+    "Bonus",
+    "Bonificación"
+  ],
+  "PV": [
+    "HP",
+    "PV"
+  ],
+  "PE": [
+    "EP",
+    "PE"
+  ],
+  "PCE": [
+    "SKP",
+    "PCE"
+  ],
+  "CA": [
+    "AC",
+    "CA"
+  ],
+  "CD": [
+    "DC",
+    "CD"
+  ],
+  "For": [
+    "STR",
+    "FUE"
+  ],
+  "Des": [
+    "DEX",
+    "DES"
+  ],
+  "Sab": [
+    "WIS",
+    "SAB"
+  ],
+  "Int": [
+    "INT",
+    "INT"
+  ],
+  "Car": [
+    "CHA",
+    "CAR"
+  ],
+  "Vig": [
+    "VIG",
+    "VIG"
+  ],
+  "Ação Padrão": [
+    "Standard Action",
+    "Acción Estándar"
+  ],
+  "Ação Bônus": [
+    "Bonus Action",
+    "Acción Adicional"
+  ],
+  "Ação de Movimento": [
+    "Move Action",
+    "Acción de Movimiento"
+  ],
+  "Reação": [
+    "Reaction",
+    "Reacción"
+  ],
+  "Passiva": [
+    "Passive",
+    "Pasiva"
+  ],
+  "Salvaguarda": [
+    "Saving Throw",
+    "Tirada de Salvación"
+  ],
+  "Salvaguardas": [
+    "Saving Throws",
+    "Tiradas de Salvación"
+  ],
+  "Vantagem": [
+    "Advantage",
+    "Ventaja"
+  ],
+  "Desvantagem": [
+    "Disadvantage",
+    "Desventaja"
+  ],
+  "Corpo a Corpo": [
+    "Melee",
+    "Cuerpo a Cuerpo"
+  ],
+  "CaC": [
+    "Melee",
+    "CaC"
+  ],
+  "Ld": [
+    "Ranged",
+    "Distancia"
+  ],
+  "Corte": [
+    "Slashing",
+    "Cortante"
+  ],
+  "Perfurante": [
+    "Piercing",
+    "Perforante"
+  ],
+  "Impacto": [
+    "Bludgeoning",
+    "Contundente"
+  ],
+  "Balístico": [
+    "Ballistic",
+    "Balístico"
+  ],
+  "Leve": [
+    "Light",
+    "Ligera"
+  ],
+  "Pesada": [
+    "Heavy",
+    "Pesada"
+  ],
+  "Armadura": [
+    "Armor",
+    "Armadura"
+  ],
+  "Armaduras": [
+    "Armor",
+    "Armaduras"
+  ],
+  "Arma": [
+    "Weapon",
+    "Arma"
+  ],
+  "Armas": [
+    "Weapons",
+    "Armas"
+  ],
+  "Acessório": [
+    "Accessory",
+    "Accesorio"
+  ],
+  "Acessórios": [
+    "Accessories",
+    "Accesorios"
+  ],
+  "Nível": [
+    "Level",
+    "Nivel"
+  ],
+  "Níveis": [
+    "Levels",
+    "Niveles"
+  ],
+  "Nv": [
+    "Lv",
+    "Nv"
+  ],
+  "Cargas": [
+    "Charges",
+    "Cargas"
+  ],
+  "Káita": [
+    "Káita",
+    "Káita"
+  ],
+  "Neko-te": [
+    "Neko-te",
+    "Neko-te"
+  ],
+  "Primórdios": [
+    "Primórdios",
+    "Primórdios"
+  ],
+  "Aptidão": [
+    "Aptitude",
+    "Aptitud"
+  ],
+  "Aptidões": [
+    "Aptitudes",
+    "Aptitudes"
+  ],
+  "Conhecimento": [
+    "Knowledge",
+    "Conocimiento"
+  ],
+  "Familiaridade": [
+    "Familiarity",
+    "Familiaridad"
+  ],
+  "Especialização": [
+    "Specialization",
+    "Especialización"
+  ],
+  "Maças": [
+    "Maces",
+    "Mazas"
+  ],
+  "Machados": [
+    "Axes",
+    "Hachas"
+  ],
+  "Bastão": [
+    "Staff",
+    "Bastón"
+  ],
+  "Florete": [
+    "Rapier",
+    "Estoque"
+  ],
+  "Bastões": [
+    "Staffs",
+    "Bastones"
+  ]
+}
