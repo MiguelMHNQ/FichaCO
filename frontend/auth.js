@@ -44,7 +44,7 @@ const ready = (async () => {
   try {
     const callbackError = new URL(location.href).searchParams.has('error');
     const response = await fetch('/api/auth/config', { cache: 'no-store', signal: AbortSignal.timeout(10_000) });
-    if (!response.ok) throw new Error('Abra o site pelo servidor iniciado com npm run dev.');
+    if (!response.ok) throw new Error('Login indisponível.');
     const config = await response.json();
     if (!config.enabled) throw new Error('O login online ainda não foi configurado neste servidor.');
     client = createClient(config.url, config.publishableKey, {

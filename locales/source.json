@@ -9079,7 +9079,6 @@
     "frontend/auth.js": [
       "/pages/",
       "@supabase/supabase-js",
-      "Abra o site pelo servidor iniciado com npm run dev.",
       "Arquivo indisponível nesta sessão.",
       "Arquivo inválido.",
       "Authorization",
