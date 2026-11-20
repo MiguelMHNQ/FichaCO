@@ -284,17 +284,17 @@ const CLASSES_PREVIEW = {
     famosos: ['Darton o Estilhaçador', 'Maldivan a Muralha', 'Garruk Mão Vazia']
   },
   Obscuro: {
-    desc: 'Mestre das sombras e das feras que habitam o vazio.',
+    desc: 'Molda uma sombra viva em armas, membros, mantos, vínculos e duplicações.',
     dadoVida: '1d8', dadoVidaNum: 8,
     vidaBase: 8, vidaAtributo: 'Vigor',
     vidaInicial: '8 + Vigor',
     vidaNivel: '1d8 (ou 5) + Vigor',
-    energiaInicial: 'Atributo de Sabedoria + Atributo de Vigor',
-    energiaNivel: 'Bônus de classe + Atributo de Sabedoria',
-    energiaAtributos: ['Sabedoria', 'Vigor'],
+    energiaInicial: 'Sabedoria + Destreza',
+    energiaNivel: 'Bônus de classe + Sabedoria',
+    energiaAtributos: ['Sabedoria', 'Destreza'],
     energiaNivelAtributo: 'Sabedoria',
     constanciasFixas: ['Furtividade', 'Conjurar'],
-    constanciasEscolha: ['Percepção', 'Intuição', 'Investigação', 'Intimidação', 'Acrobacia', 'Reflexo'],
+    constanciasEscolha: ['Investigação', 'Reflexo', 'Pontaria', 'Intuição', 'Prestidigitação', 'Combate', 'Percepção', 'Acrobacia'],
     constanciasEscolhaQtd: 2,
     conhecimento: ["Adagas Leves","Espada Curta (Arma Específica)","Arco Curto (Arma Específica)"],
     familiaridade: ["Espadas Leves","Besta de Mão (Arma Específica)"],
@@ -568,82 +568,52 @@ const CLASSES_INFO_EXTRA = {
   Obscuro: {
     secoes: [
       {
-        titulo: 'MECÂNICAS DE SOMBRAS',
+        titulo: 'MANTO VIVO',
         itens: [
-          { label: 'Área das feras', valor: '6 × Conjurar metros do dono' },
-          { label: 'Feras em campo', valor: 'Igual ao bônus de Sabedoria' },
-          { label: 'Arsenal (acúmulo)', valor: 'Igual à constância de Conjurar' },
+          { label: 'Primeiro Molde da cena', valor: '2 PE' },
+          { label: 'Trocar de Molde', valor: '1 PE' },
+          { label: 'Molde inicial', valor: '2 Moldes à escolha' },
+          { label: 'Molde fixo', valor: 'Duplo no nível 7' },
         ]
       },
       {
         titulo: 'CORROSÃO SOMBRIA',
-        texto: 'Gatilho: 1x por turno, ao acertar um ataque com Vantagem. As sombras corroem o alvo causando dano necrótico adicional:',
+        texto: 'Uma vez por turno, ao acertar Molde de Arma em alvo em penumbra ou escuridão:',
         tabela: [
           ['Nível 1–4', '+1d6'], ['Nível 5–8', '+2d6'], ['Nível 9–12', '+3d6'],
           ['Nível 13–16', '+4d6'], ['Nível 17–19', '+5d6'], ['Nível 20', '+6d6'],
         ]
       },
       {
-        titulo: 'SOMBRAS — REGRAS',
+        titulo: 'MOLDES',
         itens: [
-          { label: 'Habilidades', valor: 'Mesmas da criatura quando estava viva (magias, dano, PE)' },
-          { label: 'Fraqueza', valor: 'Dobro de dano contra radiante' },
-          { label: 'Vida inicial', valor: 'Afinidade×10 + Bônus Sabedoria×5 + Rank×10 + Vigor da criatura' },
-          { label: 'Consciência', valor: 'Possuem memórias próprias; podem desobedecer a depender do nível de afinidade' },
+          { label: 'Arma', valor: 'Copia arma ou munição já empunhada; usa Sabedoria e 10 + CS de Conjurar em PV' },
+          { label: 'Membro', valor: 'Alcance inicial de 3m para manipulação e ataques dimensionais' },
+          { label: 'Manto', valor: '+2 + Carisma em Enganação e Atuação; bônus de Furtividade no escuro coberto' },
+          { label: 'Vínculo', valor: 'Puxar ou prender alvo a até 9m por 2 PE' },
+          { label: 'Duplo', valor: 'Clone exclusivo com troca de posição e limite de 1 em campo' },
         ]
       },
       {
-        titulo: 'RANQUES',
+        titulo: 'SENHOR DAS FERAS SOMBRIAS',
         tabela: [
-          ['Ranque', 'Bônus', 'Nível/ND'],
-          ['—', '+0', '—'],
-          ['Vulto', '+15', '1–4'],
-          ['Elite', '+30', '5–9'],
-          ['Campeão', '+50', '10–14'],
-          ['Lenda', '+100', '15–19'],
-          ['Calamidade', '+120', '20+'],
+          ['Ranque', 'Nível/ND', 'Captura'],
+          ['Vulto', '1–4', '1× custo de invocação'],
+          ['Elite', '5–9', '2× custo de invocação'],
+          ['Campeão', '10–14', '3× custo de invocação'],
+          ['Lenda', '15–19', '4× custo de invocação'],
+          ['Calamidade', '20+', '5× custo de invocação'],
         ],
-        textoExtra: 'Os nomes dos ranques podem ser alterados a critério do jogador e do mestre.'
+        textoExtra: 'A quantidade em campo é igual ao bônus de Sabedoria; o arsenal é igual à CS de Conjurar.'
       },
       {
-        titulo: 'CONSUMIR ALMAS',
-        texto: 'Uma sombra pode consumir almas, gerando efeitos ao dono:',
+        titulo: 'CONSUMO DE ALMAS',
         lista: [
-          'Nível 1+ / Rank 1+: Regenera 1d8 PV (pode ser temporário).',
-          'Nível 5+ / Rank 3+: Regenera 1d12 PV (pode ser temp.) e +1 Afinidade.',
-          'Nível 10+ / Rank 8+: Regenera 2d10 PV (pode ser temp.) e +2 Afinidade.',
-          'Nível 13+ / Rank 12+: Regenera 2d12 PV, +1 valor em 1 Constância e +3 Afinidade.',
-          'Nível 16+ / Rank 16+: +3d10 PV máximo, +2 em 2 Constâncias, 1 habilidade da criatura e +5 Afinidade.',
-        ]
-      },
-      {
-        titulo: 'AFINIDADE',
-        texto: 'Começa em 1 ao capturar. Nível 1 exige 15 pontos; cada nível seguinte exige +2 (Nível 2 = 17, Nível 3 = 19…). Máximo: nível 15. É possível atingir valores negativos.',
-        itens: [
-          { label: 'Alimentar (descanso)', valor: '1 PE ou 2 PV gastos = +1 Afinidade (máx. 3/dia por sombra)' },
-          { label: 'Banquete (matar chefe)', valor: 'Sombra come a alma = +3 Afinidade direto' },
-          { label: 'Penalidade (destruída)', valor: '−2 Afinidade toda vez que for destruída em combate' },
-        ]
-      },
-      {
-        titulo: 'NÍVEIS DE AFINIDADE',
-        tabela: [
-          ['Nível', 'Pontos', 'Ganho'],
-          ['1', '5', 'Status base da criatura capturada'],
-          ['2', '6', '+1d10 PV Máximo'],
-          ['3', '7', '+2d10 PV e +1 em duas Constâncias'],
-          ['4', '8', '—'],
-          ['5', '9', 'Sintonia: invoca com Ação Bônus; obediência absoluta'],
-          ['6', '10', '+1 em duas Constâncias'],
-          ['7', '11', '—'],
-          ['8', '12', '—'],
-          ['9', '13', 'Despertar Predatório: dobra dados de dano base; ataques tornam-se necróticos'],
-          ['10', '14', '+2d10 PV'],
-          ['11', '15', '—'],
-          ['12', '16', '+2 em duas Constâncias'],
-          ['13', '17', '—'],
-          ['14', '18', '—'],
-          ['15 (MÁX)', '—', 'Eclipse Negro: 1x/dia, embutir sombra própria — aura escuridão 9m, +20 PV temp., resistência física, ataque extra, imunidade a paralisado/congelado/amedrontado/enfeitiçado/apavorado. Dura 1 min ou até ser derrotada.'],
+          'Vulto: regenera 1d8 PV.',
+          'Elite: regenera 1d12 PV.',
+          'Campeão: regenera 2d10 PV e +10 PV máximo permanente.',
+          'Lenda: regenera 2d12 PV, +1 em uma Constância e +20 PV máximo permanente.',
+          'Calamidade: dono ganha +3d10 PV máximo, a fera ganha +2 em duas Constâncias e uma habilidade principal da criatura consumida.',
         ]
       },
     ]

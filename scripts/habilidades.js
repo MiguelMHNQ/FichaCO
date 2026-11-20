@@ -159,34 +159,40 @@ HABILIDADES.Mago = {
 
 HABILIDADES.Obscuro = {
   base: [
-    { nome: 'Capturar', nivel: 1, desc: 'Aprisiona a sombra de um inimigo caído (ND ≤ seu Nível + Bônus de Classe). Teste de Conjurar vs Vontade da criatura. Se ganhar, ela vira sua serva. PV da fera: [Afinidade x10 + Sabedoria x5 + Rank x10 + Vigor da criatura].', acao: 'Ação Padrão', evo: 'Nível 11: pode capturar inimigos vivos com 10% ou menos de PV. Disputa muda para Sabedoria vs Inteligência.' },
-    { nome: 'Sumonar', nivel: 1, desc: 'Invoca uma fera capturada em espaço desocupado a até 4,5m. Custa 1 PE + ND da criatura. Teste de Conjurar (CD 8 + ND). Pode ancorá-la a um aliado com um comando.', acao: 'Ação Padrão', evo: 'Nível 11: gastando +2 PE e Ação de Movimento, invoca uma segunda fera no mesmo turno.' },
-    { nome: 'Olhos das Sombras', nivel: 2, desc: 'Enxerga em escuridão não-mágica e mágica como se fosse penumbra, até 18m.', acao: 'Passiva' },
-    { nome: 'Arma de Sombras', nivel: 3, desc: 'Forja uma cópia de escuridão de qualquer arma já empunhada. Mesmo dano base, mas usa bônus de Sabedoria. Possui 10 PV + Constância de Conjurar. Uma vez por turno, no primeiro acerto, gaste 2 PE para aplicar Enfraquecido até o próximo turno.', acao: 'Ação Bônus', evo: 'Nível 14: funde a arma com uma fera (ela dorme). Ganha +2 em ataques e dano, +2 CA física e Corte Intangível — ignora resistências necróticas e bônus de Armadura/Escudo.' },
-    { nome: 'Entendimento Oculto', nivel: 5, desc: 'Escolha 1 truque da lista de truques de Obscuro. Repete a cada 4 níveis até o nível 20.', acao: 'Passiva' },
-    { nome: 'Sombreamento', nivel: 7, desc: 'Cria um clone (CA 10, 1 PV, deslocamento 9m, imune a condições). Com Ação Bônus ou Reação, troca de lugar com a arma ou com o clone (clone some). Limite de 1 em campo.', acao: 'Ação Bônus', evo: 'Nível 15: até 4 clones simultâneos. Ativa Legião Vazia: inimigos que atacam você rolam 1d4/1d5; se não acertarem o número correto, acertam um clone que absorve e explode causando 3d6 necrótico.' },
-    { nome: 'Santuário Sombrio', nivel: 9, desc: 'Cria redoma de 15m de diâmetro por até 5 minutos (requer Foco). Só você enxerga dentro. Suas sombras ficam invisíveis com Vantagem. Inimigos ficam Desprevenidos (-2 CA), cegos e com Desvantagem. Dano sofrido exige Salvaguarda de Vontade CD 15 ou o tempo cai 30s.', acao: 'Ação Padrão' },
-    { nome: 'Caminho pelas Sombras', nivel: 12, desc: 'Torna-se intangível para viajar até 30m entre sombras visíveis. Ao reduzir inimigo a 0 PV, pode usar Reação para mergulhar nas sombras, ficando intangível e invisível até o início do próximo turno.', acao: 'Ação Padrão / Reação' },
+    { nome: 'Manto Vivo', nivel: 1, desc: 'Usa uma Ação Bônus e PE para moldar sua sombra viva em um Molde ativo. O primeiro Molde da cena custa 2 PE; trocar de Molde custa 1 PE. Apenas um Molde normal fica ativo por vez. Começa com 2 Moldes à escolha: Arma, Membro, Manto ou Vínculo.', acao: 'Ação Bônus' },
+    { nome: 'Olhos das Sombras', nivel: 1, desc: 'Enxerga em escuridão não-mágica e mágica como se fosse penumbra, até 18m.', acao: 'Passiva' },
+    { nome: 'Molde de Arma', nivel: 1, desc: 'Sua sombra copia perfeitamente uma arma ou munição já empunhada, usando dados originais com o bônus de Sabedoria. Tem 10 + sua CS de Conjurar em PV e pode ser arremessada até 9m, retornando ao fim do ataque.', acao: 'Ação Bônus', evo: 'Nível 3: uma vez por turno, no primeiro acerto, gaste 2 PE para aplicar Enfraquecido até seu próximo turno. Nível 14: +2 em ataques e dano, +2 de CA física e Corte Intangível contra resistência necrótica e bônus de Armadura/Escudo.' },
+    { nome: 'Molde de Membro', nivel: 1, desc: 'Estende braços e pernas sombrias em até 3m. Manipula objetos à distância e pode realizar ataques corpo a corpo em fendas próximas ao alvo.', acao: 'Ação Bônus', evo: 'Nível 9: o alcance sobe para 9m. Como reação sem custo, intercepta um ataque físico contra você ou aliado a até 3m com 1d20 + Conjurar contra o teste do atacante; em igualdade ou vitória, o dano cai pela metade.' },
+    { nome: 'Molde de Manto', nivel: 1, desc: 'Veste seu corpo com roupas, máscaras e adornos sombrios. Concede +2 + seu bônus de Carisma em Enganação e Atuação; coberto e em ambiente escuro, +8 em Furtividade.', acao: 'Ação Bônus', evo: 'Nível 9: ataques à distância contra você têm desvantagem. Uma vez por descanso curto, pode usar sua reação para ficar Fortemente Obscurecido até o início do seu próximo turno.' },
+    { nome: 'Molde de Vínculo', nivel: 1, desc: 'Liga sua sombra à sombra de uma criatura ou objeto a até 9m. A ligação tem PV igual à sua CS de Conjurar e permite rastrear direção e distância exatas; Puxar ou Prender custa ação bônus e 2 PE.', acao: 'Ação Padrão', evo: 'Nível 14: alcance sobe para 18m e o Molde pode prender 2 alvos ao mesmo tempo, permitindo 1 efeito por turno.' },
+    { nome: 'Corrosão Sombria', nivel: 2, desc: 'Uma vez por turno, ao acertar seu Molde de Arma em alvo em penumbra ou escuridão, causa dano necrótico adicional conforme o nível: 2–4 +1d6, 5–8 +2d6, 9–12 +3d6, 13–16 +4d6, 17–19 +5d6, 20 +6d6.', acao: 'Passiva' },
+    { nome: 'Entendimento Oculto', nivel: 5, desc: 'Escolha seu Caminho e 1 truque da lista de Truques do Obscuro. Escolhe novamente nos níveis 9, 13 e 17, totalizando 4 truques.', acao: 'Passiva' },
+    { nome: 'Molde de Duplo', nivel: 7, desc: 'Cria um clone de sombra adjacente com CA 10, PV igual ao bônus de Sabedoria, deslocamento 9m e imunidade a condições. Você troca de lugar com ele com ação bônus ou reação. Limite de 1 em campo e exclusivo.', acao: 'Ação Bônus', evo: 'Nível 15: cria uma Sombra Residual visível no alcance; enquanto existir, após um acerto seu com Molde de Arma ela replica o ataque causando metade do dano.' },
+    { nome: 'Manipulação Alheia', nivel: 9, desc: 'Transforma a sombra visível de outra criatura ou objeto em uma extensão física por 1 turno. Uma vez, usando Sabedoria como Força, realiza Agarrar, Derrubar, Empurrar ou Puxar contra alvo a até 3m da sombra.', acao: 'Ação Padrão', custo: '8 PE' },
+    { nome: 'Santuário Sombrio', nivel: 12, desc: 'Cria uma redoma de 15m de diâmetro por 4 turnos. Só você enxergar lá dentro, seus Moldes ficam invisíveis e ganham Vantagem; inimigos ficam Desprevenidos (-2 CA) e cegos. Pode encerrá-la como ação livre.', acao: 'Ação Padrão', custo: '10 PE' },
   ],
   caminhos: {
     'Moldador das Sombras': {
       proficiencias: 'Nenhuma adicional',
       habs: [
-        { nome: 'Fragmentos Sombrios', nivel: 6, desc: 'Cada acerto com Arma de Sombras aloja 1 fragmento (gaste 1 PE para mais, limite 3 por alvo). Ao detonar: 1d6 necrótico por fragmento (2d6 no escuro) e corta deslocamento em -3m até o próximo turno.', acao: 'Livre / Ação Bônus' },
-        { nome: 'Além do Vazio', nivel: 9, desc: 'Consome até 2 feras ativas. Por fera absorvida: +1 ataque extra, PV temporários iguais ao dano necrótico causado, +1 CA e imunidade a restrições de deslocamento. Dura 3 turnos. 1x por Descanso Longo.', acao: 'Ação Bônus', evo: 'Nível 17: dura 6 turnos, consome até 4 feras, imune a Paralisado/Agarrado/Amedrontado. Com 2+ feras: +1 Ação Padrão adicional.' },
-        { nome: 'Mestre da Lâmina Sombria', nivel: 13, desc: 'Ao acertar com Arma de Sombras, gaste 2 PE para que a lâmina atinja outro inimigo próximo com o mesmo dano. Se ambos estiverem no escuro, recupera 1d6 + Sabedoria de PE.', acao: 'Livre (1x por turno)' },
-        { nome: 'Obliterarção Sombria', nivel: 17, desc: 'Detona até 3 sombras condensadas em raio de 10,5m ou linha de 13,5m. Causa 2d20 por sombra. Salvaguarda de Destreza: passa = metade. Alvos ficam Enfraquecidos por 2 turnos. Feras usadas dormem por 4 turnos.', acao: 'Ação Completa' },
-        { nome: 'Rei das Sombras', nivel: 20, desc: 'No escuro/penumbra: +2 CA e Resistência a dano necrótico e psíquico. 1x por turno, duplica um ataque da Arma de Sombras. 1x por Descanso Longo, ativa Além do Vazio no poder máximo sem absorver sombras e sem risco de perder o controle.', acao: 'Passiva' },
+        { nome: 'Fragmentos Sombrios', nivel: 6, desc: 'Cada acerto aloja 1 fragmento gratuitamente; o mesmo acerto pode gastar 1 PE para implantar até mais 2, máximo 3 por alvo. Detonar custa 1 PE por fragmento e causa dano necrótico com escala por nível, dobrado no escuro, além de -3m de deslocamento até o próximo turno.', acao: 'Livre / Ação Bônus' },
+        { nome: 'Além do Vazio', nivel: 9, desc: 'Por 3 rodadas e 1x por Descanso Longo, vira Umbra Pura: seu Manto Vivo troca Moldes sem ação bônus e pode manter 2 Moldes normais. Recebe +2 de Defesa e 1 ataque adicional ao Atacar. Corrosão concede PV temporários iguais ao dano; críticos estendem ou reduzem a duração; ao terminar, teste de Vontade CD 16 ou perde 2 rodadas atacando aliados.', acao: 'Ação Bônus' },
+        { nome: 'Segunda Pele', nivel: 13, desc: 'Quando atingido por ataque físico ou mágico, como reação custa 3 PE e reduz o dano em dobro do seu bônus de Conjurar. Pode usar até 2 vezes por rodada; a segunda exige 2 Moldes ativos.', acao: 'Reação', custo: '3 PE' },
+        { nome: 'Reflexo Sombrio', nivel: 17, desc: 'Na primeira vez que acertar com Molde de Arma no turno, pode gastar 6 PE para marcar o alvo com uma cópia latente. Ela ataca no início do turno seguinte dele, causa apenas o dano da arma original e desaparece.', acao: 'Passiva', custo: '6 PE' },
+        { nome: 'Rei das Sombras', nivel: 20, desc: '1x por turno, pode fazer um ataque do Molde de Arma surgir de qualquer sombra a até 9m do alvo. 1x por rodada, quando atingido, uma cópia sombria recebe o golpe e desaparece em uma sombra a até 9m.', acao: 'Passiva' },
       ]
     },
     'Senhor das Feras Sombrias': {
       proficiencias: 'Nenhuma adicional',
       habs: [
-        { nome: 'Marca do Comandante', nivel: 6, desc: 'Ao acertar um inimigo com Arma de Sombras, o próximo ataque de qualquer Fera Sombria contra esse alvo ganha Vantagem e +1d6 necrótico extra.', acao: 'Livre (1x por turno)' },
-        { nome: 'Devocão do Abismo', nivel: 9, desc: 'Quando uma fera sua for destruída, gaste 3 PE: ela sobrevive com 1 PV, o dano excedente vai para você como Psíquico, e ela realiza um Contra-Ataque imediato causando o dobro do dano.', acao: 'Reação' },
-        { nome: 'Matilha Implacável', nivel: 13, desc: 'Feras ganham bônus em acerto e dano igual ao seu bônus de Sabedoria. Se você e uma fera flanquearem o mesmo alvo, ele sofre -2 CA contra a fera e ela ignora resistências a dano físico.', acao: 'Passiva' },
-        { nome: 'Quimera Sombria', nivel: 17, desc: 'Funde 2 feras invocadas numa monstruosidade única. Soma os PVs, adquire habilidades de ambas e possui 2 Ações Padrões por turno. Nível de Afinidade = média das duas. 1x por Descanso Longo.', acao: 'Ação Completa' },
-        { nome: 'Despertar do Monarca', nivel: 20, desc: 'Invoca até 4 Feras Sombrias instantaneamente sem custo de PE ou limite. Por 3 turnos as feras entram em frenesi: não falham em testes de Afinidade, são imunes a controle mental e todos os ataques acertados curam você em metade do dano causado. 1x por Descanso Longo.', acao: 'Ação Completa' },
+        { nome: 'Arsenal de Sombras', nivel: 6, desc: 'Captura sombras de inimigos caídos exclusivamente neste caminho. Mantém em campo feras iguais ao bônus de Sabedoria e um arsenal igual à CS de Conjurar. Feras podem ficar a até 6 × Conjurar metros.', acao: 'Passiva' },
+        { nome: 'Capturar', nivel: 6, desc: 'Ação Padrão ou ritual pós-combate sem custo de PE contra a sombra de inimigo caído de ND até seu nível + bônus de classe. Teste de Conjurar contra Vontade, com tentativas iguais ao bônus de Sabedoria.', acao: 'Ação Padrão', custo: '0 PE' },
+        { nome: 'Sumonar', nivel: 6, desc: 'Manifesta uma fera do arsenal a até 4,5m por ação padrão. Custa 2 PE multiplicados pela categoria da sombra e exige Conjurar CD 10 + custo. Pode ser ancorada a um aliado.', acao: 'Ação Padrão' },
+        { nome: 'Marca do Comandante', nivel: 6, desc: 'Ao acertar um inimigo com Molde de Arma, o próximo ataque de qualquer fera contra o alvo ganha Vantagem e +1d6 necrótico.', acao: 'Livre (1x por turno)' },
+        { nome: 'Devoção do Abismo', nivel: 9, desc: 'Quando uma fera seria destruída, gaste 3 PE e ela sobrevive com 1 PV. O dano excedente volta para você como dano psíquico e ela contra-ataca causando o dobro do dano normal.', acao: 'Reação', custo: '3 PE' },
+        { nome: 'Matilha Implacável', nivel: 13, desc: 'Feras ganham bônus de acerto e dano igual ao bônus de Sabedoria. Você e uma fera ameaçando o mesmo alvo impõem -2 CA a ele contra a fera, que ignora resistência a dano físico.', acao: 'Passiva' },
+        { nome: 'Quimera Sombria', nivel: 17, desc: 'Funde 2 feras invocadas em uma monstruosidade até o fim do combate. Soma PV atuais, combina habilidades e ataques e ganha 2 Ações Padrões por turno. O rank é o maior entre as duas.', acao: 'Ação Completa', uso: '1x por Descanso Longo' },
+        { nome: 'Despertar do Monarca', nivel: 20, desc: 'Invoca até 4 feras do arsenal em espaços desocupados a até 15m por 3 turnos, sem PE ou limite de invocação. São imunes a controle e cada ataque acertado cura metade do dano causado em seus PV.', acao: 'Ação Completa', uso: '1x por Descanso Longo' },
       ]
     },
   }
@@ -240,66 +246,24 @@ HABILIDADES.Guerreiro = {
 // ===== TRUQUES =====
 const TRUQUES = {
   Obscuro: [
-    {
-      nome: 'Sussurro pela Parede',
-      desc: 'Toque uma parede ou superfície escura e grave uma mensagem de até 10 palavras, audível apenas para quem encostar ali, uma única vez.',
-      evo: 'Nível 7: Vincule a mensagem a uma criatura específica. Apenas ela ouvirá, com um eco sombrio na sua voz.',
-      evoNivel: 7
-    },
-    {
-      nome: 'Passo Falso',
-      desc: 'Ataque com a Arma de Sombras. Se acertar, causa dano normal e solta fumaça densa no ponto de impacto, impedindo o alvo de realizar Ataques de Oportunidade contra você até o fim do seu turno.',
-      evo: 'Nível 12: A fumaça distrai o inimigo. O próximo aliado que atacar esse alvo antes do seu próximo turno ganha +2 na rolagem de acerto.',
-      evoNivel: 12
-    },
-    {
-      nome: 'Palavra Oculta',
-      desc: 'Comunique-se com suas sombras via ações livres. Elas podem ver sua visão e escutar ao redor enquanto não estiverem em campo.',
-      evo: 'Nível 12: Cria laço sensorial maior. Fora de campo, uma sombra pode ajudar em um teste (Reflexos, História, Natureza, Sobrevivência ou Percepção) contribuindo com seu atributo. Cada sombra usável 1x por descanso longo.',
-      evoNivel: 12
-    },
-    {
-      nome: 'Passagem',
-      desc: 'Abra uma porta de até 50cm de diâmetro em sua sombra para guardar objetos, armas e itens. Capacidade: 2 + Sabedoria m³.',
-      evo: 'Nível 7: Caixa com 3 + Sabedoria m³, porta de 1m. | Nível 12: Caixa com 4 + Sabedoria m³, porta de 1,5m.',
-      evoNivel: 7
-    },
-    {
-      nome: 'Conexão Direta',
-      desc: 'Ao tocar a sombra de um alvo (direta ou indiretamente), estabelece uma conexão mental. Conversas só são escutadas pelos conectados.',
-      evo: 'Nível 12: Conexões ilimitadas. Ao usar em inimigo (tocando a sombra ou via Arma de Sombras), aplica Marca da Ruína: +1d6 necrótico em todo dano seu ou das feras contra ele, e você sabe sua localização exata mesmo invisível ou com cobertura total.',
-      evoNivel: 12
-    },
-    {
-      nome: 'Soldados',
-      desc: '1x por descanso longo: cria até 3 criaturas de sombra (15cm, 1 PV, +1 em todos atributos, carrega 5kg cada). Duram 10 min ou até sair da área das suas sombras.',
-      evo: 'Nível 12: Até 5 criaturas. Você vê a visão delas, fala e escuta por elas. +18m de área de deslocamento delas.',
-      evoNivel: 12
-    },
-    {
-      nome: 'Penumbra',
-      desc: '1x por descanso longo: molda sombra ao redor do corpo por 5 min (roupas, máscaras, penteados — moldes pretos pequenos). Gaste 2 PE para +1 min cumulativo. +3 em Enganção e Atuação.',
-      evo: 'Nível 12: Designs complexos em cinza e preto. +5 em Enganção e Atuação. Cobertura total: +8 em Furtividade no escuro.',
-      evoNivel: 12
-    },
-    {
-      nome: 'Extensão',
-      desc: 'Ação Bônus: estende braços e pernas com sombra em +1,5m por 1 min. Pode erguer itens (peso igual ao seu limite, mesma Destreza). Gaste 2 PE para +30s cumulativos.',
-      evo: 'Nível 12: Ataques corp a corpo saem de fendas dimensionais coladas no inimigo. Alcance +4,5m. Inimigos sofrem -2 nas reações de Esquiva e Bloqueio contra você. Duração: 2 min.',
-      evoNivel: 12
-    },
+    { nome: 'Sussuro na parede', desc: 'Esconde uma mensagem na sombra de uma superfície. Qualquer criatura que tocar essa sombra pode ouvir a mensagem.' },
+    { nome: 'Olhar pela Sombra', desc: 'Observa através da sombra de um objeto ou criatura dentro do alcance, desde que exista sombra contínua entre você e ela.' },
+    { nome: 'Passagem', desc: 'Abre uma porta moldável de até 50cm de diâmetro em sua sombra. Coloca objetos e itens em uma caixa com limite de 2 + Sabedoria em metros cúbicos.' },
+    { nome: 'Sussurro Umbral', desc: 'Sussurra através da sombra de aliado disposto a até 30m cuja sombra já tenha sido vista. Só vocês dois ouvem e não pode ser interceptado por meios não-mágicos.' },
+    { nome: 'Véu de Escuridão', desc: 'Como ação bônus, apaga ou escurece uma pequena fonte de luz não-mágica a até 9m, ou reduz pela metade a intensidade de uma fonte maior por 1 minuto.' },
+    { nome: 'Ecoar nas Sombras', desc: 'Em escuridão total, percebe vibração e movimento como se enxergasse criaturas se movendo a até 4,5m, ignorando a necessidade de visão.' },
   ]
 };
 
 const TALENTOS_GERAIS = [
   { nome: 'Alerta', desc: 'Vantagem em testes de Iniciativa e não provoca ataques de oportunidade.' },
-  { nome: 'Casca Grossa', desc: 'Ao escolher, ganha PV igual a 2 × seu nível. Além disso, redução a todo tipo de dano igual ao seu bônus de Vigor.' },
+  { nome: 'Casca Grossa', desc: 'Ao escolher, recebe aumento de PV igual a 2 × seu nível. Recebe redução a dano físico (Corte, Perfuração e Impacto) igual ao bônus de Vigor.' },
   { nome: 'Combatente Letal', desc: 'Escolha um tipo de arma (corpo a corpo, à distância ou de fogo). Recebe +2 em testes de ataque e rolagens de dano com o tipo escolhido.' },
   { nome: 'Confronto em Duelo', desc: 'Após atingir o mesmo alvo duas vezes com ataques corpo a corpo, recebe +2 em testes de ataque contra esse alvo até trocar de alvo ou ele morrer.', evo: 'Além do efeito básico, recebe +3 em rolagens de dano contra o alvo específico.', evoNivel: 10 },
   { nome: 'Corredor Resiliente', desc: '+3m em seu deslocamento e +1 em CA contra ataques de oportunidade.', evo: 'Bônus aumenta para +6m de deslocamento e +2 em CA contra ataques de oportunidade.', evoNivel: 10 },
   { nome: 'Desempenho Ligeiro', desc: 'Você recebe uma ação de movimento adicional por turno.' },
   { nome: 'Empunhadura Dupla', desc: 'Se tiver duas armas corpo a corpo de uma mão, e pelo menos uma for leve, pode atacar com ambas gastando a mesma ação.' },
-  { nome: 'Empunhadura Pesada', desc: 'Ao acertar com arma corpo a corpo pesada, pode gastar 2 PE para derrubar o alvo (condição Caído).' },
+  { nome: 'Foco Arcano', desc: 'Escolha uma linha de magia entre Elemental, Orgânica ou Mística. A CD das magias dessa linha aumenta em +1 e o custo em Mana diminui em 1, mínimo 1. Substitui Empunhadura Pesada.' },
   { nome: 'Energético', desc: 'Ao escolher, ganha PE igual a 2 × seu nível. A cada nível seguinte, recebe +2 PE adicionais no total.' },
   { nome: 'Fugitivo Esperto', desc: 'Ao sofrer ataque que reduza sua vida a menos da metade, gaste sua Reação para mover até 4,5m sem provocar ataques de oportunidade e fazer teste de Furtividade instantâneo para se esconder.' },
   { nome: 'Nova Tentativa', desc: 'Sempre que tirar 1 em um teste, pode gastar 2 PE para refazer o teste. Deve aceitar o novo resultado.' },
@@ -340,15 +304,18 @@ const TALENTOS = {
     { nome: 'Interrompendo Roteiro', desc: 'Habilidades que utilizam ação bônus agora podem ser utilizadas fora do seu turno.' },
   ],
   Obscuro: [
-    { nome: 'Lâminas Vivas', desc: 'Arma de Sombras pode ser criada junto com um ataque como parte da mesma ação. O primeiro ataque da primeira rodada de combate ganha Vantagem.' },
-    { nome: 'Sombras Ligadas', desc: 'Quando você ou uma sombra/fera sofre dano, pode gastar 1 reação para dividir o dano igualmente entre até 2 outras sombras/feras em campo (não reduz o total, mas evita morte instantânea).' },
-    { nome: 'Afeição Comum', desc: 'Ao receber ganho de vida permanente para suas feras, elas ganham +1d4 de PV máximo adicional.', evo: 'As feras ganham +1d6 de PV (nível 10) e +1d10 de PV (nível 15).', evoNivel: 10 },
-    { nome: 'Impulso do Predador', desc: 'Após um Acerto Crítico ou reduzir inimigo a 0 PV no seu turno, pode usar Ação Bônus para realizar um ataque corpo a corpo adicional contra qualquer alvo ao alcance.' },
-    { nome: 'Golpe Oculto', desc: 'Sempre que atingir um alvo que não notou sua presença, recupera passivamente 1d4 de PE.' },
-    { nome: 'Corte do Vazio', desc: 'Margem de ameaça para Acerto Crítico com Arma de Sombras aumenta em +1 (crita no 19-20). Em Acertos Críticos, rola +1 dado de dano extra da arma.' },
-    { nome: 'Sacrifício Tático', desc: 'Com Ação Bônus, destrói voluntariamente uma fera invocada: recupera 3 PE e limpa instantaneamente uma condição negativa (Envenenado, Sangrando ou Atordoado).' },
-    { nome: 'Lâmina Inominável', desc: 'Ao atingir inimigo com Arma de Sombras, se ele tentar se afastar no próximo turno, deslocamento é reduzido à metade e sofre 2d6 de dano necrótico automático.' },
-    { nome: 'Troca Fantasmagórica', desc: 'Ao usar Sombreamento, inimigos a até 3m do ponto de origem fazem Salvaguarda de Vigor ou ficam Cegos até o fim do próximo turno deles.' },
+    { nome: 'Fio do Vazio', desc: 'Enquanto Molde de Arma estiver ativo, margem de Acerto Crítico sobe em +1. Sempre que causar Acerto Crítico com ele, role +1 dado de dano extra do mesmo tipo da arma.' },
+    { nome: 'Lâmina Insaciável', desc: 'Quando Molde de Arma reduzir criatura a 0 PV, recupera 1d6 PE. Uma vez por turno.' },
+    { nome: 'Braço Longo', desc: 'Molde de Membro ganha +3m de alcance, cumulativo com a evolução do nível 9. Uma vez por turno, ao acertar ataque corpo a corpo através dele, realiza uma manobra de Manipulação Alheia sem custo adicional de ação.' },
+    { nome: 'Passo Sombrio', desc: 'Enquanto estiver em penumbra ou escuridão, terreno difícil não reduz seu deslocamento.' },
+    { nome: 'Véu Perene', desc: 'Os bônus de Enganação, Atuação e Furtividade do Molde de Manto permanecem ativos por 1 rodada após desfazer o Molde ou trocar para outro.' },
+    { nome: 'Fio que Prende', desc: 'Sempre que Puxar ou Prender obtiver sucesso pelo Molde de Vínculo, o alvo fica Enfraquecido até o fim do próximo turno.' },
+    { nome: 'Duplo Autônomo', desc: 'O clone do Molde de Duplo pode permanecer em campo após você trocar de posição com ele.' },
+    { nome: 'Visão Compartilhada', desc: 'Enquanto Molde de Duplo estiver em campo, enxerga pelos olhos dele sem gastar ação.' },
+    { nome: 'Troca Fluida', desc: 'Uma vez por turno, a primeira troca de Molde não custa PE.' },
+    { nome: 'Mão Estranha', desc: 'Manipulação Alheia pode ser usada como reação por 3 PE adicionais e seu alcance aumenta para 18m.' },
+    { nome: 'Sombras Ligadas', desc: 'Restrito ao Senhor das Feras Sombrias. Ao sofrer dano você ou uma sombra/fera, gaste 1 reação para dividir o dano igualmente entre até 2 outras sombras/feras em campo. Não reduz o dano total.' },
+    { nome: 'Afeição Comum', desc: 'Restrito ao Senhor das Feras Sombrias. Feras que recebem ganho permanente de PV recebem +1d4 PV máximo adicional; evolução para +1d6 e depois +1d10.' },
   ],
   Mago: [
     { nome: 'Performance Mestre', desc: 'Ao acertar um ataque mágico, pode utilizar um truque na mesma ação.' },
