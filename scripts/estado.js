@@ -337,7 +337,7 @@ const CLASSES_PREVIEW = {
     conhecimento: ["Armas simples","Espadas curtas","Rapier"],
     familiaridade: ["Adagas Leves"],
     armaduras: ["Leves"],
-    especificacoes: 'CD do Bardo: 8 + CS de Atuação + Bônus de Classe, usada quando uma canção exigir teste de resistência.',
+    especificacoes: 'CD do Bardo: 8 + CS de Atuação + Bônus de Classe, usada quando uma canção exigir teste de resistência. Instrumento Musical: você começa com 1 instrumento à sua escolha e precisa dele em mãos para entoar canções. O tipo do instrumento define o Alcance do Som: Percussão — tambor, pandeiro ou chocalho — 15 m; Sopro — flauta, ocarina ou trompa — 12 m; Cordas — violão, bandolim, harpa ou violino — 9 m. Quando uma canção fala em alvos que possam te ouvir e não traz alcance próprio, vale esse alcance. Itens que aumentam o alcance do som somam a ele, como o Amplificador estenosante. O Caminho do Soneto dispensa o instrumento.',
     famosos: ['Lyren Cordaclara', 'Belldona Vesper', 'Bren o Sussurro']
   },
   Mago: {
