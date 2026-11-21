@@ -32,7 +32,7 @@
     if(title==='Torres Contundentes')forms.splice(0,forms.length,{shape:'circle',radius:1.5,anchor:'point'});
     if(title==='Placa Gélida'){forms[0].length=7.5;forms[0].width=null;}
     let forcedMax=null;
-    if(!spell){const radii={'Canção de Cura':level>=6?6:4.5,'Mil Cortes':4.5,'Impulso':3,'Orquestra Sinfônica':22,'Prepúcio da Morte':12,'Santuário Sombrio':7.5};if(radii[title]){range=0;self=true;forms.splice(0,forms.length,{shape:'circle',radius:radii[title],anchor:'caster'});if(title==='Canção de Cura'||title==='Orquestra Sinfônica')category='heal';if(title==='Mil Cortes')forcedMax=5;}
+    if(!spell){const radii={'Canção de Cura':level>=6?6:4.5,'Mil Cortes':4.5,'Impulso':3,'Orquestra Sinfônica':22,'Presságio da Morte':12,'Santuário Sombrio':7.5};if(radii[title]){range=0;self=true;forms.splice(0,forms.length,{shape:'circle',radius:radii[title],anchor:'caster'});if(title==='Canção de Cura'||title==='Orquestra Sinfônica')category='heal';if(title==='Mil Cortes')forcedMax=5;}
       if(title==='Toque Acolhedor'){category='heal';range=12;forcedMax=1;}if(title==='Música de Ferro'){category='support';range=15;forcedMax=100;}
     }
     const count=metrics.match(/(?:até\s+)?(\d+)\s*(?:alvos?|seres?|criaturas?)/i)||(!spell?base.match(/(?:até\s+)(\d+)\s+(?:inimigos|alvos|criaturas|aliados)/i):null);

@@ -66,4 +66,13 @@ for(const key of Object.keys(require('../locales/sessions.json')))strings.add(ke
 for(const text of ['Guerreiro','Obscuro','Espadachim','Bardo','Mago','Vigor','Destreza','Sabedoria','Inteligência','Força','Carisma','Combate','Reflexos','Constituição','Arcanismo','PV','PE','CA','CD','PCE']){strings.add(text);names.add(text);}
 const result={strings:[...strings].sort(),names:[...names].filter(readable).sort(),templates:[...templates.keys()].sort(),files:Object.fromEntries(Object.entries(files).map(([file,keys])=>[file,[...keys].sort()]))};
 fs.mkdirSync(path.join(root,'locales'),{recursive:true});fs.writeFileSync(path.join(root,'locales/source.json'),JSON.stringify(result,null,2)+'\n');
+for(const locale of ['en','es']){
+  const contentPath=path.join(root,'locales/content.json');
+  const content=JSON.parse(fs.readFileSync(contentPath,'utf8'));
+  for(const key of result.strings){
+    const section=content[locale];
+    if(!section[key])section[key]=key;
+  }
+  fs.writeFileSync(contentPath,JSON.stringify(content,null,2)+'\n');
+}
 console.log(JSON.stringify({strings:result.strings.length,names:result.names.length,templates:result.templates.length,characters:result.strings.reduce((n,s)=>n+s.length,0)}));

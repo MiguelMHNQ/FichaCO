@@ -250,7 +250,9 @@ function blocoHabilidadesFicha({info,bc}){
         : '';
       // A evolução mais recente alcançada define a faixa de custo, não o nível do personagem.
       const recursoEnergia=nomeEnergiaClasse();
-      const pe     = custoPE(nivelEvo || h.nivel);
+      const pe = nivelEvo && h.peEvolucao != null
+        ? h.peEvolucao
+        : (h.pe != null ? h.pe : custoPE(nivelEvo || h.nivel));
       const podeUsar = h.acao !== 'Passiva' || h.ativavel === true;
       const peTag  = !podeUsar ? '' : `<span style="font-size:0.65rem;color:var(--cor-principal);border:1px solid color-mix(in srgb,var(--cor-principal) 26.67%,transparent);padding:1px 6px;border-radius:2px;margin-right:4px;">${pe} ${recursoEnergia}</span>`;
       const acaTag = `<span style="font-size:0.65rem;color:#666;border:1px solid #2a2535;padding:1px 6px;border-radius:2px;">${h.acao}</span>`;

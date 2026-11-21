@@ -47,24 +47,25 @@ HABILIDADES.Espadachim = {
 
 HABILIDADES.Bardo = {
   base: [
-    { nome: 'Apoiar', nivel: 1, desc: 'Concede vantagem no próximo teste de um alvo que possa lhe ver ou escutar.', acao: 'Ação Bônus' },
-    { nome: 'Canção de Cura', nivel: 1, desc: 'Cura 1d6 + Carisma de PV a aliados em 4,5m ao redor. Só fecha ferimentos superficiais.', acao: 'Ação Padrão', evo: 'Nível 6: área expande para 6m e cura 2d6 + Carisma.' },
-    { nome: 'Canção Barbica', nivel: 2, desc: 'Motiva um alvo que possa escutar, concedendo +1d4 do mesmo tipo de dano por 1 minuto.', acao: 'Ação Bônus', evo: 'Nível 3: +1d6 | Nível 6: +1d8 | Nível 9: +1d10 | Nível 11: +1d12' },
-    { nome: 'Confusão Inimiga', nivel: 3, desc: 'Entoa sons desafinados. O alvo faz teste de Constituição contra sua CD; se falhar, recebe desvantagem em ataques até o próximo turno.', acao: 'Ação Padrão' },
-    { nome: 'Impulso', nivel: 5, desc: 'Empurra alvos em 3m ao redor a 7,5m de distância. Teste de Constituição contra CD; se falhar, causa +1d8 trovejante. Se acertar algo sólido, +1d4 de impacto.', acao: 'Ação Padrão' },
-    { nome: 'Inspirar Confiança', nivel: 7, desc: 'Uma vez por rodada, mesmo fora do turno, permite que um aliado que possa te ouvir role novamente uma jogada de ataque. Deve ficar com o segundo resultado.', acao: 'Passiva', ativavel: true },
-    { nome: 'Ala de Segredos', nivel: 9, desc: 'Escolha uma habilidade inicial de outro caminho de Bardo, ou uma habilidade nível 1–4 de outra classe (exceto Aspectomante, Obscuro, Sonariante, Necromante e Feiticeiro).', acao: 'Ação Padrão', evo: 'Nível 13: pode pegar a segunda habilidade do caminho escolhido ou sua evolução.' },
-    { nome: 'Impulsão Sonora', nivel: 12, desc: 'Causa 3 impulsões sonoras, movendo você e um aliado junto. Cada impulsão locomove 5m. Você ataca com vantagem; o aliado sem vantagem. Livre de ataque de oportunidade.', acao: 'Ação de Movimento' },
+    { nome: 'Apoiar', nivel: 1, pe: 1, peEvolucao: 2, desc: 'Concede vantagem no próximo teste a um aliado dentro do Alcance do Som que possa ver ou ouvir você. Custos: 1 PE; evolução no nível 7 vira Reação de 2 PE, uma vez por rodada.', acao: 'Ação Bônus', evo: 'Nível 7: Inspirar Confiança — reação contra ataque errado do aliado.' },
+    { nome: 'Canção de Cura', nivel: 1, pe: 2, peEvolucao: 4, desc: 'Cura 1d6 + Carisma em 4,5m ao redor por 2 PE. A cura é reduzida à metade abaixo da metade dos PV máximos.', acao: 'Ação Padrão', evo: 'Nível 6: 4 PE, área de 6m e 2d6 + Carisma.' },
+    { nome: 'Canção Bárbica', nivel: 2, pe: 1, desc: 'Por 1 PE e 1 minuto, concede dano adicional ao primeiro acerto do aliado por turno: 2–4: +1d4; 5–8: +1d6; 9–12: +1d8; 13–16: +1d10; 17–20: +1d12.', acao: 'Ação Bônus' },
+    { nome: 'Eclético', nivel: 3, pe: 2, desc: 'Antes de um teste de Constância, gaste 2 PE: Versatilidade soma seu Bônus de Classe se não tiver proficiência; ou Presença de Palco usa Atuação em Persuasão, Lábia, Enganação ou Intimidação.', acao: 'Passiva', ativavel: true },
+    { nome: 'Impulso', nivel: 5, pe: 4, desc: 'Por 4 PE, criaturas em 3m fazem Constituição contra sua CD. Falha: 1d8 trovejante e empurrão de 7,5m; impacto em obstáculo causa 1d4. Sucesso: metade e sem empurrão.', acao: 'Ação Padrão' },
+    { nome: 'Confusão Inimiga', nivel: 7, pe: 6, desc: 'Por 6 PE, até 2 criaturas no Alcance do Som fazem Constituição contra sua CD. Quem falhar fica em desvantagem em ataques até o fim do próximo turno.', acao: 'Ação Padrão' },
+    { nome: 'Inspirar Confiança', nivel: 7, pe: 2, desc: 'Evolução de Apoiar: reação de 2 PE, uma vez por rodada, após um aliado errar um ataque. Ele repete a jogada e deve ficar com o segundo resultado.', acao: 'Reação', ativavel: true },
+    { nome: 'Ala de Segredos', nivel: 9, desc: 'Escolha uma habilidade de nível 6 de outro Caminho de Bardo, pagando seu custo e usando sua CD. Evolução no nível 13: escolha outra habilidade, também podendo ser de nível 9.', acao: 'Passiva', evo: 'Nível 13: uma segunda habilidade de outro Caminho.' },
+    { nome: 'Impulsão Sonora', nivel: 12, pe: 10, desc: 'Por 10 PE, você e 1 aliado a até 4,5m criam até 3 impulsões de 4,5m em linha reta sem ataques de oportunidade. Ataques com vantagem; aliado ataca sem vantagem.', acao: 'Ação de Movimento' },
   ],
   caminhos: {
     'Bravura': {
       proficiencias: 'Aptidão em Vontade; proficiência em Espadas Longas, Arcos Longos e Curtos',
       habs: [
-        { nome: 'Ataque Extra', nivel: 6, desc: 'Ao acertar um ataque, pode atacar +1 vez com a mesma ação.', acao: 'Passiva', ativavel: true, evo: 'Nível 9: +2 ataques | Nível 13: +3 ataques' },
+        { nome: 'Ataque Extra', nivel: 6, desc: 'Se acertar um ataque com arma usando a Ação Padrão, pode atacar +1 vez com a mesma ação.', acao: 'Passiva', evo: 'Nível 13: 2 ataques extras.' },
         { nome: 'Contra Peso', nivel: 9, desc: 'Música que deixa o clima mais leve. Aliados que escutam têm vantagem contra Amedrontado, Apavorado ou Encantado por 1 minuto.', acao: 'Ação Padrão' },
-        { nome: 'Sinfonia de Guerra', nivel: 13, desc: 'Ao entoar uma magia de Bardo, gaste 5 PE e ação bônus para realizar um ataque com sua arma.', acao: 'Passiva' },
-        { nome: 'Vontade de Ferro', nivel: 17, desc: 'Por 1min30s a cada golpe acertado: aliados ganham +1 CA. A cada 3 golpes seus, alvos recebem +4 de dano adicional (máx. 3 acúmulos).', acao: 'Passiva' },
-        { nome: 'Determinação Pranteada', nivel: 20, desc: 'Aliados que escutam ganham +8 de dano trovejante por 2 minutos. Aliados em estado de morrendo voltam com 1 PV; ao fim da música, retornam ao estado de morrendo.', acao: 'Ação Completa' },
+        { nome: 'Sinfonia de Guerra', nivel: 13, desc: 'Ao entoar uma canção de Bardo com Ação Padrão, gaste 5 PE e sua ação bônus para atacar com sua arma.', acao: 'Passiva' },
+        { nome: 'Vontade de Ferro', nivel: 17, desc: 'Por 16 PE e 6 turnos, aliados que veem ou ouvem você ganham +1 CA. Ao acertar um inimigo, o próximo ataque de cada aliado causa dano adicional igual ao seu modificador de Carisma.', acao: 'Ação Bônus' },
+        { nome: 'Determinação Pranteada', nivel: 20, desc: 'Uma vez por descanso longo, por 1 minuto aliados que podem ouvir você causam +6 do mesmo tipo de seus ataques. Aliados Morrendo no início da ação voltam com 1 PV e retornam a Morrendo ao fim.', acao: 'Ação Completa' },
       ]
     },
     'Pavor': {
@@ -74,16 +75,16 @@ HABILIDADES.Bardo = {
         { nome: 'Terror Contagiante', nivel: 9, desc: 'Ao causar Amedrontado, alvos adjacentes em 1,5m também fazem teste de resistência ou ficam amedrontados pelo mesmo tempo.', acao: 'Passiva' },
         { nome: 'Olhar Perturbador', nivel: 13, desc: 'Alvo a até 15m faz salvaguarda de Carisma: falha = Apavorado por 1 min + 3d6 psíquico + desvantagem em testes de Carisma; passa = só dano.', acao: 'Ação Padrão' },
         { nome: 'Medo Inabalável', nivel: 17, desc: '1x por descanso longo. Alvo que entenda e escute faz salvaguarda de Sabedoria: falha = obedece comandos por 1 min. A cada falha no reteste, +1 na CD.', acao: 'Passiva' },
-        { nome: 'Prepúcio da Morte', nivel: 20, desc: 'Aura mortal em 12m. Salvaguarda de Carisma: falha = Paralisado por 30s; passa = 3d10 psíquico. Paralisado que receber ataque fica Apavorado.', acao: 'Ação Padrão' },
+        { nome: 'Presságio da Morte', nivel: 20, desc: 'Uma vez por descanso longo, por 2 turnos. Inimigos em 12m fazem Carisma contra sua CD; falha: Paralisado por 2 turnos; sucesso: 3d10 psíquico sem condição. Dano quebra a paralisia e causa Apavorado até o fim.', acao: 'Ação Padrão' },
       ]
     },
     'Vigor': {
       proficiencias: 'Aptidão em Persuasão; Magias de Cura (regra de Mago)',
       habs: [
         { nome: 'Toque Acolhedor', nivel: 6, desc: 'Cura 1d8 + Persuasão a um aliado em 12m. Recupera feridas leves.', acao: 'Ação Padrão', evo: 'Nível 9: 2d8 | Nível 13: 3d8 | Nível 17: 4d8' },
-        { nome: 'Ajuda Temporária', nivel: 9, desc: 'Concede 12 PV e 10 PE temporários a aliados que escutam (não acumulativo).', acao: 'Ação Bônus', evo: 'Nível 13: 16 PV / 14 PE | Nível 17: 28 PV / 26 PE' },
-        { nome: 'Música de Ferro', nivel: 13, desc: 'Atribui Resistência = Persuasão + 2 a dano psíquico a alvos em 15m.', acao: 'Ação Padrão' },
-        { nome: 'Orquestra Sinfônica', nivel: 17, desc: 'Cura 7d12 + Persuasão de PV e 5d8 de PE a todos em 22m. Fecha ferimentos graves.', acao: 'Turno Completo' },
+        { nome: 'Ajuda Temporária', nivel: 9, desc: 'Por 8 PE, concede 12 PV Temporários e +3 no próximo teste de resistência a aliados que escutam. Não acumulativo. Nível 13: 16 PV; nível 17: 28 PV.', acao: 'Ação Bônus', evo: 'Nível 13: 16 PV Temporários | Nível 17: 28 PV Temporários' },
+        { nome: 'Música de Ferro', nivel: 13, desc: 'Por 12 PE e 1 minuto, aliados em 15m recebem Resistência igual à sua Persuasão + 2 contra dano psíquico.', acao: 'Ação Padrão' },
+        { nome: 'Orquestra Sinfônica', nivel: 17, desc: 'Uma vez por descanso longo, todos em 22m recuperam 7d12 + Persuasão PV e 5d8 PE.', acao: 'Ação Completa' },
       ]
     },
     'Perdição': {
@@ -91,19 +92,19 @@ HABILIDADES.Bardo = {
       habs: [
         { nome: 'Onda Potente', nivel: 6, desc: 'Empurra alvos em 4,5m ao redor a 18m de distância, causando 2d8 trovejante.', acao: 'Ação Padrão' },
         { nome: 'Nota Aguda', nivel: 9, desc: 'Acorde agudo em área de 9m. Salvaguarda de Vigor: falha = 3d8 + Intimidação trovejante; passa = metade.', acao: 'Ação Padrão' },
-        { nome: 'Ressonância Despedaçante', nivel: 13, desc: 'Vibração em ponto a 18m, raio 4,5m. Salvaguarda de Vigor: falha = 6d6 + Intimidação psíquico + caído; passa = só dano. Objetos frágeis recebem dobro.', acao: 'Ação Padrão' },
-        { nome: 'Tremor Infundado', nivel: 17, desc: 'Onda sonora em 9m ao redor ou cone de 12m. Surge ruído do chão até 9m acima: 8d6 + Intimidação psíquico. Salvaguarda de Destreza: falha = dano total + jogado 9m acima; passa = metade + levantado 3m.', acao: 'Ação Padrão' },
-        { nome: 'Dó Extermínio', nivel: 20, desc: 'Onda sonora em 22m: 8d10 + Intimidação trovejante. Teste de Constituição: falha = dano total + Atordoado 1 min; passa = metade + Surdo 1 min.', acao: 'Turno Completo' },
+        { nome: 'Ressonância Despedaçante', nivel: 13, desc: 'Por 12 PE, ponto a até 18m com raio de 4,5m faz Vigor contra sua CD: 6d6 + Intimidação trovejante; falha também deixa Caído. Objetos frágeis e estruturas recebem dobro.', acao: 'Ação Padrão' },
+        { nome: 'Tremor Infundado', nivel: 17, desc: 'Por 16 PE, área de 9m no chão ou cone de 12m causa 8d6 + Intimidação trovejante. Destreza: falha = dano total e lançamento de 9m para cima; sucesso = metade e elevação de 3m.', acao: 'Ação Padrão' },
+        { nome: 'Dó Extermínio', nivel: 20, desc: 'Uma vez por descanso longo, todos em 22m sofrem 8d10 + Intimidação trovejante. Falha: dano total e Atordoado por 2 turnos; sucesso: metade e Surdo por 1 minuto.', acao: 'Ação Completa' },
       ]
     },
     'Soneto': {
-      proficiencias: 'Aptidão em Atuação; pode usar o mundo ao redor como instrumento',
+      proficiencias: 'Aptidão em Lábia; pode entoar sem instrumento com Alcance do Som de 9m',
       habs: [
-        { nome: 'Rima Certeira', nivel: 6, desc: 'Quando aliado que escuta falhar em ataque, gaste reação + 2 PE para ele rolar novamente. Deve aceitar o segundo resultado.', acao: 'Passiva' },
-        { nome: 'Via Sonora', nivel: 9, desc: 'Gaste ação de movimento para emitir onda sonora em 12m e se locomover junto a ela. Vantagem em ataques no mesmo turno.', acao: 'Ação de Movimento' },
-        { nome: 'Sinfonia Cadenciada', nivel: 13, desc: 'Ao conjurar magia de Bardo com ação, gaste 5 PE + ação bônus para conceder segundo turno a aliado que escuta. Turno extra não pode conjurar magias.', acao: 'Passiva' },
+        { nome: 'Rima Certeira', nivel: 6, desc: 'Reação de 2 PE quando um aliado que possa te ouvir falhar em uma salvaguarda. Ele repete o teste e deve aceitar o segundo resultado.', acao: 'Reação' },
+        { nome: 'Via Sonora', nivel: 9, desc: 'Por 8 PE e uma ação de Movimento, crie uma onda até 12m ao redor e mova-se junto dela. Se atacar no mesmo turno, tem vantagem.', acao: 'Ação de Movimento' },
+        { nome: 'Sinfonia Cadenciada', nivel: 13, desc: 'Ao conjurar uma canção de Bardo com Ação Padrão, gaste 5 PE e sua ação bônus. Um aliado pode usar sua reação imediatamente para atacar uma vez com arma ou se deslocar até metade do deslocamento.', acao: 'Ação Bônus' },
         { nome: 'Refrão Persistente', nivel: 17, desc: '1x por descanso longo: habilidade que afeta múltiplos aliados dura o dobro, ou se for instantânea, repete no início do próximo turno sem custo.', acao: 'Passiva' },
-        { nome: 'Canção Dominante', nivel: 20, desc: 'Alvos em 22m fazem teste de Vontade: falha = entram em dança rítmica por 2 min, só podendo imitar suas ações; ao fim entram em cansaço. Passa = perdem o turno.', acao: 'Ação Completa' },
+        { nome: 'Canção Dominante', nivel: 20, desc: 'Uma vez por descanso longo, inimigos em 22m que podem ouvir fazem Vontade contra sua CD por 1 minuto. Falha: só podem executar as mesmas ações que você ou sincronias musicais e ficam Cansados ao fim; sucesso: Desprevenidos até o início do próximo turno.', acao: 'Ação Completa' },
       ]
     },
   }
