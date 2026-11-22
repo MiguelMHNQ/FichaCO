@@ -12,15 +12,15 @@ function limparEquip(slot) {
 }
 
 const SLOTS_ACESSORIOS = [
-  { id: 'cabeca', nome: 'Cabeça', aceitos: ['coroa', 'tiara', 'óculos', 'monóculo'] },
-  { id: 'pescoco', nome: 'Pescoço', aceitos: ['colar', 'amuleto'] },
-  { id: 'costas', nome: 'Costas', aceitos: ['capa', 'manto'] },
-  { id: 'maos', nome: 'Mãos · 1 par', aceitos: ['luvas', 'dados', 'laço'] },
+  { id: 'cabeca', nome: 'Cabeça', aceitos: ['coroa', 'tiara', 'óculos', 'monóculo', 'máscara', 'brincos', 'espelho'] },
+  { id: 'pescoco', nome: 'Pescoço', aceitos: ['colar', 'amuleto', 'pingente'] },
+  { id: 'costas', nome: 'Costas', aceitos: ['capa', 'manto', 'aljava', 'asas'] },
+  { id: 'maos', nome: 'Mãos · 1 par', aceitos: ['luvas', 'manoplas', 'dados', 'laço'] },
   { id: 'dedo1', nome: 'Dedo · mão esquerda', aceitos: ['anel', 'anéis', 'dedo falso'] },
   { id: 'dedo2', nome: 'Dedo · mão direita', aceitos: ['anel', 'anéis', 'dedo falso'] },
-  { id: 'cintura', nome: 'Cintura', aceitos: ['bolsa', 'bússola'] },
+  { id: 'cintura', nome: 'Cintura', aceitos: ['bolsa', 'bússola', 'cinto', 'cinturão'] },
   { id: 'pes', nome: 'Pés · 1 par', aceitos: ['botas', 'sapatilhas'] },
-  { id: 'pulsos', nome: 'Pulsos · opcional', aceitos: ['bracelete'] }
+  { id: 'pulsos', nome: 'Pulsos · opcional', aceitos: ['bracelete', 'braçal', 'pulseira', 'relógio'] }
 ];
 
 function slotCompativelAcessorio(item, slot) {
