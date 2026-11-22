@@ -1517,12 +1517,598 @@ const ARMAS = [
     "nova": true
   }
 ];
+const ARMAS_MAGICAS = [
+  {
+    "nome": "Maracutaya",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Lendário",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "18+ / 1d",
+      "peso": "2,8 kg (Média)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma arma de uma mão conhecida como Maracutaya, envolta por uma distorção sutil do ambiente.",
+    "habilidade": "Ativa (Inverter o mundo): Recarga: descanso curto. Ação padrão. Até 2 alvos no seu campo de visão fazem salvaguarda de Sabedoria CD 17. Quem falhar, por 2 turnos, tem desvantagem em ataques que exijam teste e em testes de Percepção e Reflexo, deslocamento reduzido à metade e não pode fazer ataques de oportunidade. Sempre que tentar atacar uma criatura hostil, rola 1d4: com 1, acerta um aliado próximo por engano. O alvo refaz a salvaguarda no início de cada turno dele; você pode encerrar o efeito quando quiser."
+  },
+  {
+    "nome": "Cubo mágico",
+    "categoria": "Arma mágica",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Acategóricas",
+    "raridade": "Épico",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1 + For",
+      "tipo": "Impacto",
+      "alcance": "1,5m",
+      "critico": "17+ / 2d",
+      "peso": "0,3 kg",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Um pequeno cubo mágico cujas faces revelam efeitos de cores diferentes.",
+    "habilidade": "Passiva (Lançar o cubo): Recarga: descanso curto. 3 cargas. Ação padrão. Cada lançamento gasta 1 carga e gera um efeito aleatório pela face virada para cima (role 1d6). Depois dos 3 lançamentos, resolver o cubo exige 1 ação completa e só pode ser feito fora de combate. 1 Vermelho: explosão em 1,5m de raio, 2d8 de dano trovejante (Reflexos CD 15 para metade). 2 Azul: o alvo acertado faz Constituição CD 15. Falha: fica Imóvel por 1 turno (congelado) e sofre 2d6 de dano congelante. Sucesso: só o dano. 3 Amarelo: raios caem em 3m ao redor do cubo, 3d4 de dano elétrico (Reflexos CD 15 para metade). 4 Roxo: o cubo vira uma esfera de energia e voa contra o alvo (teste de ataque), causando 3d6 de dano psíquico. 5 Preto: alvos em 3m fazem Reflexos CD 15. Falha: flutuam 3m e ficam Desprevenidos e Imóveis até o início do próximo turno deles. Sucesso: nada acontece. 6 Branco: o alvo troca de lugar com um alvo aleatório em até 6m ao redor do cubo."
+  },
+  {
+    "nome": "Marreta gravitacional",
+    "categoria": "Martelo",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Martelos",
+    "raridade": "Épico",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "2d8 + For",
+      "tipo": "Impacto",
+      "alcance": "1,5m",
+      "critico": "19+ / 2d",
+      "peso": "10 kg (Pesado)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Uma marreta pesada concentra um núcleo de força gravitacional.",
+    "habilidade": "Ativa: Recarga: descanso curto. 1 uso. Ação livre ao acertar um golpe ou bater a marreta no chão. Todos num raio de 3m do ponto de impacto fazem Vigor CD 16. Falha: são puxados até o centro, ficam Caídos e sofrem 2d6 de dano psíquico. Sucesso: ficam onde estão e sofrem 1d6 de dano psíquico pela pressão."
+  },
+  {
+    "nome": "Lua de sangue",
+    "categoria": "Foice",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Foices",
+    "raridade": "Lendário",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "2d6 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 2d",
+      "peso": "5,4 kg (Média)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Uma foice de lâmina curva, marcada por uma lua rubra que se intensifica com o sangue.",
+    "habilidade": "Passiva: Para cada inimigo derrotado no mesmo combate, acumula 1 ponto de lua cheia (máximo 3). Para cada ponto: +2 no dano total da arma, +0,5m de alcance e o dano passa a ser Sangramento. Ativa (Modo Lua Cheia): 1 vez por combate. Ao atingir 3 pontos, entra no Modo Lua Cheia por 3 turnos: ganha +1 ataque adicional por turno com ação bônus, que causa apenas os dados da arma; seus críticos causam Sangramento (1d6 por 2 turnos); e você recupera 1d4 PV sempre que causar dano crítico."
+  },
+  {
+    "nome": "Martelo relâmpago",
+    "categoria": "Martelo",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Martelos",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d10 + For",
+      "tipo": "Impacto + Eletrizante",
+      "alcance": "1,5m",
+      "critico": "19+ / 2d",
+      "peso": "7 kg (Pesado)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Um martelo pesado percorre-se de descargas elétricas ao golpear.",
+    "habilidade": "Ativa: Recarga: descanso curto. Ação livre ao acertar um inimigo ou bater o martelo no chão. Um raio celestial se espalha em 3m ao redor do ponto de impacto. Inimigos na área fazem Destreza CD 14. Falha: 2d6 de dano eletrizante, perdem a reação e têm deslocamento reduzido à metade até o fim do próximo turno. Sucesso: metade do dano e nenhum efeito. Durante uma tempestade real ou mágica, a área sobe para 4,5m e o dano para 3d6."
+  },
+  {
+    "nome": "Lâmina eco",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Super raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d10 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma lâmina que vibra e deixa ondas de eco no ar.",
+    "habilidade": "Passiva (Onda de eco): Recarga: descanso curto. 3 cargas. Ao acertar um ataque corpo a corpo, gaste 1 carga para liberar uma onda cortante em linha reta de até 9m, que atravessa inimigos, paredes e objetos leves. Inimigos na linha fazem Destreza CD 15. Falha: 2d6 de dano sônico e Surdez por 1 turno. Sucesso: metade do dano. Ativa (Ressonância): Recarga: descanso longo. Ação padrão. Concentra a ressonância por 1 turno e dispara uma onda em cone de 9m. Inimigos na área fazem Constituição CD 16. Falha: 4d6 de dano sônico e perdem a reação até o próximo turno. Sucesso: metade do dano."
+  },
+  {
+    "nome": "Kensorazu",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Épico",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d10 + For",
+      "tipo": "Corte + Arcano",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2,5 kg (Média)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma espada arcana que rebate magias de alvo único contra seus conjuradores.",
+    "habilidade": "Passiva (Defletor): Recarga: descanso longo. 2 cargas. Reação. Quando for alvo de uma magia de alvo único, gaste 1 carga e faça um teste de Reflexos contra a CD da magia. Sucesso: a magia é refletida de volta ao conjurador, com os mesmos valores. Fracasso: a magia ainda acerta, mas o efeito é reduzido pela metade."
+  },
+  {
+    "nome": "Leve picadinha",
+    "categoria": "Adaga",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Adagas",
+    "raridade": "Épico",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d4 + Des",
+      "tipo": "Perfurante",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "0,5 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma agulha-seringa encantada, preparada para curar aliados ou injetar toxinas.",
+    "habilidade": "Passiva (Seringa): Recarga: descanso médio. 3 cargas. Ao acertar um aliado ou a si mesmo, gaste 1 carga para injetar uma mistura química avançada: cura 3d4 + Sabedoria e remove uma condição debilitante (Envenenado, Paralisado, Cego ou Sangramento). Ao acertar um inimigo, gaste 1 carga para injetar uma toxina: Constituição CD 15. Falha: não pode usar reações nem ações bônus por 1 turno. Sucesso: desvantagem em testes de Constituição por 1 turno. Ativa (Última dose): Recarga: descanso longo. Ação completa. Apenas 1 uso por batalha. Levanta um aliado a 0 PV com 1d8 + Sabedoria PV, remove todas as condições negativas dele e dá +2 em todos os testes por 1 turno. Não funciona em quem já morreu."
+  },
+  {
+    "nome": "Katana Espiral",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Épico",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d10 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma katana cuja lâmina espiralada conduz o sangue dos alvos.",
+    "habilidade": "Passiva: Cada vez que causar dano a uma criatura viva, o alvo sofre Sangramento (1d6 por 3 turnos) e você extrai uma porção do sangue dela. Enquanto um alvo sangra, 1 vez por turno, com uma ação bônus, escolha: lançar o sangue até 6m em outro inimigo (1d8 de dano perfurante mágico, sem ataque; Destreza CD 15 para evitar) ou prender o alvo (Força CD 15, ou fica Imóvel até o início do seu próximo turno). Ativa: Recarga: descanso longo. Com um giro da lâmina, todo o sangue derramado nos últimos 3 turnos numa área de 9m se levanta e envolve até 3 inimigos à sua escolha. Eles fazem Constituição CD 16. Falha: 4d8 de dano perfurante interno e ficam Imóveis por 1 turno. Sucesso: metade do dano e deslocamento reduzido à metade."
+  },
+  {
+    "nome": "Lâmina do horizonte negro",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Relíquia",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "2d8 + For",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "18+ / 2d",
+      "peso": "2,4 kg (Média)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma lâmina escura libera cortes de energia e sussurros arcanos.",
+    "habilidade": "Passiva: Você pode usar Vigor em vez de Força nos ataques e no dano com esta arma. Sempre que causar dano com ela, causa dano adicional igual à metade do seu nível (máximo +5). Ativa 1 (Corte Mágico): Recarga: descanso longo. 3 cargas. Ação padrão. Libera uma onda de energia em linha reta de 12m por 1,5m de largura. Os alvos na linha fazem Destreza CD 18. Falha: 5d8 de dano cortante. Sucesso: metade do dano. Ativa 2 (Sussurros): Recarga: descanso longo. Ação bônus. Só pode ser usada depois de gastar as 3 cargas do Corte Mágico. Duração: 3 turnos. Recupera 2 cargas do Corte Mágico, ganha +2 no acerto e no dano, +3m de deslocamento e não provoca ataques de oportunidade. Uma vez por turno, pode usar o Corte Mágico com ação bônus. Ao final da duração, mesmo que não esteja empunhando a espada, sofre 2d10 de dano psíquico (ignora resistências) e fica Exausto."
+  },
+  {
+    "nome": "Lâmina tempestade congelada",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Super raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d10 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma lâmina congelada envolta por uma tempestade de gelo.",
+    "habilidade": "Passiva: 1 vez por turno, ao acertar um inimigo, ele faz Constituição CD 15 ou tem o deslocamento reduzido à metade por 2 turnos. Se o deslocamento dele já estiver reduzido, falhar no teste o deixa Imóvel por 1 turno. Ativa (Dragão de gelo): Recarga: descanso longo. Libera um dragão de gelo em linha reta de 18m por 1,5m. Alvos na linha fazem Destreza CD 16. Falha: 5d8 de dano congelante e ficam Imóveis por 1 turno. Sucesso: metade do dano."
+  },
+  {
+    "nome": "Lâmina Fragmentada",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d6 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "1,5 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma espada que se fragmenta em pétalas cortantes quando atinge o alvo.",
+    "habilidade": "Passiva: Ao acertar um ataque, a lâmina se fragmenta em pétalas cortantes. Role 1d4: esse número de pétalas atinge inimigos a até 6m (podem ser alvos diferentes), cada uma causando 1d4 de dano cortante, sem teste de ataque e sem aplicar efeitos de acerto. Ativa (Milhares de pétalas): Recarga: descanso longo. Ao soltar a espada, ela flutua por 2 turnos e libera milhares de pétalas. No início de cada turno do portador, todos os inimigos em 6m fazem Destreza CD 15. Falha: 3d6 de dano cortante. Sucesso: metade do dano."
+  },
+  {
+    "nome": "Espada rosa sangrenta",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + For",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2 kg (Média)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma espada de tom rosado conjura uma lâmina de energia ou uma barreira vermelha.",
+    "habilidade": "Passiva: A cada 3 turnos, escolha um efeito. Lâmina vermelha: solta uma lâmina de energia a até 12m, causando 2d8 de dano cortante (Destreza CD 14 para metade). Barreira vermelha: cria uma barreira sobre você ou um aliado a até 6m, que absorve até 20 + seu nível de dano e dura 3 turnos ou até quebrar."
+  },
+  {
+    "nome": "Agulha da vingança",
+    "categoria": "Adaga",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Adagas",
+    "raridade": "Super raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d6 + Des",
+      "tipo": "Perfurante",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "1,3 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma agulha fina e veloz que recompensa ataques repetidos contra o mesmo alvo.",
+    "habilidade": "Passiva: Se acertar a mesma criatura duas vezes (em turnos seguidos ou no mesmo turno) ou acertar um contra-ataque, esse ataque dobra os dados de dano da arma (bônus fixos não dobram), 1 vez por turno. A contagem reinicia se errar ou atacar outro alvo. Enquanto estiver empunhando apenas esta arma, você tem vantagem em testes de Furtividade e +2 em Iniciativa."
+  },
+  {
+    "nome": "Dupla sombra divina",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Épico",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + Sab",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2 kg cada (Leve)",
+      "uso": "1 mão cada"
+    },
+    "descricaoVisual": "Duas lâminas complementares, uma longa e outra curta, ligadas por um tema de sombra divina.",
+    "habilidade": "Duas armas: espada (1d8 + Sab) e espada curta (1d6 + Sab). Descrição: duas lâminas que, em conjunto, se dão muito bem; exigem grande autoconhecimento. Passiva 1: Ao atingir com um ataque, pode gastar 1 PE para causar +1d6 de dano necrótico (máximo 1 vez por turno). Passiva 2: Enquanto empunhar as duas lâminas, pode realizar um ataque adicional com a outra lâmina como parte da mesma ação de ataque, sem precisar do talento Empunhadura Dupla. Passiva 3: Recarga: descanso longo. Ao cair a 0 PV, mantém-se de pé com 1 PV e recebe +2 de CA até o fim do próximo turno."
+  },
+  {
+    "nome": "GomuTengo",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + Des",
+      "tipo": "Perfurante + Corte",
+      "alcance": "4,5m",
+      "critico": "19+ / 1d",
+      "peso": "2 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma lâmina que se estende num piscar de olhos para atacar de longe.",
+    "habilidade": "Passiva: A lâmina se estende num piscar de olhos. Seus ataques corpo a corpo com ela alcançam até 4,5m. Além disso, o inimigo sofre -1 na CD das reações para esquivar ou se defender de ataques dessa arma, pois a velocidade do golpe é difícil de acompanhar."
+  },
+  {
+    "nome": "Lâmina flamejante",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Tesouro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "2d10 + For",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 2d",
+      "peso": "5 kg (Média)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Uma espada envolta em chamas místicas que se acumulam a cada golpe.",
+    "habilidade": "Passiva: A cada golpe bem-sucedido, o alvo sofre 1d6 de dano de fogo no início de cada turno dele durante 2 turnos (acumulativo até 3 vezes). Maldição (Explosão solar): Se a arma for selada ou tirada do portador enquanto ele estiver vivo, explode numa tempestade solar, causando 6d8 de dano de fogo num raio de 9m (Destreza CD 18 para metade)."
+  },
+  {
+    "nome": "Garras do Rei Pantera",
+    "categoria": "Adaga",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Adagas",
+    "raridade": "Épico",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "18+ / 1d",
+      "peso": "1,5 kg (Leve)",
+      "uso": "1 mão cada"
+    },
+    "descricaoVisual": "Um par de adagas em forma de garras, feito para perseguir inimigos feridos.",
+    "habilidade": "Passiva: Estando com as duas adagas empunhadas, ao atacar um inimigo ferido (abaixo da vida máxima), causa +1d8 de dano adicional, 1 vez por turno. Se o inimigo for abatido, recupera 5 PV. Ao acertar um ataque corpo a corpo, 1 vez por turno, pode se mover até 3m sem provocar ataques de oportunidade. Se estiver com menos da metade da própria vida, o movimento sobe para 4,5m e o dano adicional contra feridos passa para +2d6."
+  },
+  {
+    "nome": "Círculos ecoantes",
+    "categoria": "Disco",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Discos",
+    "raridade": "Super raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "Ld",
+      "dano": "1d8 + Int",
+      "tipo": "Arcano",
+      "alcance": "12m",
+      "critico": "19+ / 1d",
+      "peso": "1 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Discos arcanos ricocheteiam entre alvos e deixam círculos de energia no ar.",
+    "habilidade": "Passiva: Ao atingir um inimigo com esta arma, 1 vez por turno, o disco ricocheteia para até 2 alvos adicionais num raio de 6m, causando metade do dano inicial em cada um. Se só houver um alvo, o disco volta e atinge o mesmo inimigo de novo, causando metade do dano. Ativa: Recarga: descanso longo. Arremessa os discos, que se multiplicam em espiral. Todos os inimigos num cone de 9m fazem Destreza CD 15. Falha: 4d8 de dano arcano. Sucesso: metade do dano."
+  },
+  {
+    "nome": "Punhos Extremos",
+    "categoria": "Manopla",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Manoplas",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "Variável",
+      "dano": "1d8 + For",
+      "tipo": "Impacto (manopla) e Arcano (projétil)",
+      "alcance": "1,5m (manopla) e 12m (projétil)",
+      "critico": "19+ / 1d",
+      "peso": "2 kg (Média)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Manoplas que disparam projéteis mágicos depois de um golpe corpo a corpo.",
+    "habilidade": "Passiva: Após fazer um ataque corpo a corpo com a manopla, pode disparar um projétil mágico como ação bônus (1d8 + Des, sem custo de munição). Se causar dano com os dois ataques no mesmo turno, o inimigo fica Desprevenido (-2 CA) até o início do seu próximo turno."
+  },
+  {
+    "nome": "Arcada Tempestuosa",
+    "categoria": "Arco",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Arcos",
+    "raridade": "Lendário",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "Ld",
+      "dano": "1d12 + For",
+      "tipo": "Perfurante",
+      "alcance": "18m",
+      "critico": "19+ / 2d",
+      "peso": "2,3 kg (Média)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Um arco que convoca uma nuvem de flechas elétricas sobre o alvo.",
+    "habilidade": "Passiva (Chuva de flechas): 3 cargas; recarrega 1 carga por hora. Ao acertar uma flecha no alvo, gaste 1 carga para formar uma nuvem acima dele e fazer chover flechas elétricas num raio de 4,5m do ponto de impacto. Os alvos fazem Destreza CD 17. Falha: 3d6 de dano elétrico mais 3d6 de dano perfurante. Sucesso: metade do dano."
+  },
+  {
+    "nome": "Corta planar",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Super raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "2d6 + For",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "18+ / 1d",
+      "peso": "7 kg (Pesado)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Uma espada capaz de atingir criaturas em planos sobrepostos ao material.",
+    "habilidade": "Passiva: A Corta Planar permite atingir criaturas em qualquer plano sobreposto ao plano material (Plano das Sombras, planos espirituais, criaturas parcialmente banidas ou incorpóreas). Defesas ligadas ao plano, como resistência, imunidade, camuflagem ou intangibilidade por existirem em outro plano, não protegem contra esta arma. Além disso, causa +2d6 de dano cortante a criaturas extraplanares (como demônios, anjos, espectros ou viajantes dimensionais)."
+  },
+  {
+    "nome": "Luva de almas",
+    "categoria": "Manopla",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Manoplas",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + For",
+      "tipo": "Impacto",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "1,5 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma luva espiritual que rompe proteções físicas e mágicas.",
+    "habilidade": "Passiva: A Luva de Almas ignora o RD físico de criaturas cuja essência esteja ligada ao espiritual, extraplanar ou mágico (como mortos-vivos, elementais, aberrações, construtos e espectros). Sempre que acerta uma criatura com resistência mágica ou física, ela sofre -1 de CA contra ataques físicos do portador até o fim do próximo turno dele (cumulativo, máximo -3)."
+  },
+  {
+    "nome": "Faca Real",
+    "categoria": "Adaga",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Adagas",
+    "raridade": "Relíquia",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d6 + Des",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 2d",
+      "peso": "1,5 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma faca que acumula determinação com os ferimentos do portador.",
+    "habilidade": "Passiva: Quando o portador perde PV por uma fonte externa, acumula 1 carga de Determinação (máximo 5 e só 1 carga por rodada). Para cada carga, os ataques com a Faca Real causam +1d4 de dano psíquico. As cargas desaparecem 1 minuto depois do combate. Ativa (Determinado): Recarga: 1 vez por combate. Ao atingir 5 cargas, entra em estado Determinado por 3 turnos: ataques ignoram o RD do alvo, reflexos se apuram (+3 em esquivas), ataques passam de corte para psíquico e o crítico da arma sobe para 3d. Com uma ação bônus, 1 vez por turno, faz um corte flutuante em até 3 alvos a até 9m: cada um sofre 2d6 de dano psíquico (Destreza CD 16 para metade)."
+  },
+  {
+    "nome": "Abocanhador",
+    "categoria": "Machado",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Machados",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d12 + For",
+      "tipo": "Corte + Perfurante",
+      "alcance": "1,5m",
+      "critico": "19+ / 2d",
+      "peso": "7 kg (Pesado)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Um machado vivo que morde alvos feridos e se alimenta dos inimigos derrotados.",
+    "habilidade": "Passiva: 1 vez por turno, ao acertar um inimigo, causa +1d4 de dano perfurante, como se mordesse o alvo. Se o inimigo estiver com menos da metade da vida máxima, o dano extra sobe para +1d6 e o machado o prende por um instante, reduzindo o deslocamento dele à metade até o próximo turno. Para cada inimigo derrotado, concede ao portador 5 PV temporários (máximo 15 por combate)."
+  },
+  {
+    "nome": "Balanceador",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + For",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2 kg (Média)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma espada que equaliza atributos e resistências entre seu portador e o alvo.",
+    "habilidade": "Passiva: Ao atingir um inimigo, 1 vez a cada 2 turnos, o alvo faz Vigor CD 15. Falha: o Balanceador equaliza os atributos entre você e o alvo até o fim do próximo turno dele. Ambos usam o menor modificador entre os dois para ataques e testes de resistência, e ambos sofrem dano como se tivessem a menor resistência entre vocês (se um tem resistência e o outro não, os dois ficam sem). Não afeta criaturas inorgânicas ou sem mente."
+  },
+  {
+    "nome": "Sangue Maksu",
+    "categoria": "Arco",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Arcos",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "Ld",
+      "dano": "1d10 + Des",
+      "tipo": "Perfurante",
+      "alcance": "12m",
+      "critico": "19+ / 1d",
+      "peso": "1,5 kg (Leve)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Um arco cujos projéteis se ligam ao sangue e às feridas do alvo.",
+    "habilidade": "Passiva: Para cada 25% da vida máxima perdida pelo inimigo, causa +1d4 de dano adicional (máximo +3d4). Se o inimigo estiver sangrando, o dano adicional ignora resistências. Além disso, 1 vez por combate, se você estiver com menos de 25% da sua vida máxima, o arco dispara duas flechas com um só ataque."
+  },
+  {
+    "nome": "Espada do céu invertido",
+    "categoria": "Espada",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Espadas",
+    "raridade": "Super raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "2d4 + For",
+      "tipo": "Corte",
+      "alcance": "1,5m",
+      "critico": "18+ / 1d",
+      "peso": "1 kg (Leve)",
+      "uso": "1 mão"
+    },
+    "descricaoVisual": "Uma espada que enfraquece progressivamente a defesa dos inimigos.",
+    "habilidade": "Passiva: Sempre que o total dos dados de dano de um acerto for 7 ou mais, o inimigo perde 1 de CA. O efeito é cumulativo, até -5 de CA, e dura até o fim do combate."
+  },
+  {
+    "nome": "Bastão Triplo",
+    "categoria": "Bastão",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Bastões",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "CaC",
+      "dano": "1d8 + 1d6 + For",
+      "tipo": "Impacto + Psíquico",
+      "alcance": "1,5m",
+      "critico": "19+ / 1d",
+      "peso": "2,5 kg (Média)",
+      "uso": "2 mãos"
+    },
+    "descricaoVisual": "Um bastão que atinge simultaneamente corpo, mente e instinto.",
+    "habilidade": "Passiva: Cada ataque bem-sucedido acerta em três pontos simultâneos: corpo, mente e instinto. O dano psíquico não é reduzido por resistência física. Se o inimigo estiver Atordoado, Amedrontado ou Apavorado, o dano psíquico é dobrado."
+  },
+  {
+    "nome": "Livro Parceiro",
+    "categoria": "Arma mágica",
+    "categoriaLivro": "Armas mágicas",
+    "categoriaProficiencia": "Acategóricas",
+    "raridade": "Raro",
+    "magica": true,
+    "dadosLivro": {
+      "modo": "Ld",
+      "dano": "—",
+      "tipo": "Mágico",
+      "alcance": "—",
+      "critico": "—",
+      "peso": "1 kg (Leve)",
+      "uso": "Flutua ao lado do portador"
+    },
+    "descricaoVisual": "Um livro mágico que flutua ao lado do portador e auxilia na conjuração.",
+    "habilidade": "Passiva: O livro flutua ao lado do usuário, permitindo conjurar magias com uma das mãos livres ou sem precisar segurá-lo diretamente. Depois do 3º turno de um combate, a próxima magia que causar dano ganha +1d6 de dano mágico do mesmo tipo (1 vez por combate)."
+  }
+];
+ARMAS.push(...ARMAS_MAGICAS);
 ARMAS.forEach(arma => {
   const d = arma.dadosLivro;
   arma.tipo = arma.categoria + ' — ' + d.modo;
   arma.dano = d.dano + ' · ' + d.tipo;
-  arma.desc = 'Alcance ' + d.alcance + ' · Crítico ' + d.critico + ' · ' + d.peso + ' · ' + d.uso;
+  arma.desc = 'Alcance ' + d.alcance + ' · Crítico ' + d.critico + ' · ' + d.peso + ' · ' + d.uso + (arma.raridade ? ' · Mágica · ' + arma.raridade : '');
 });
+
+function analisarDanoArma(formula) {
+  const dados = [...formula.matchAll(/(\d+)d(\d+)/gi)].flatMap(([, quantidade, lados]) => Array(Number(quantidade)).fill(Number(lados)));
+  const atributos = [...formula.matchAll(/\+\s*(For|Des|Int|Sab|Vig)\b/gi)].map(([, atributo]) => ({
+    For: 'Força',
+    Des: 'Destreza',
+    Int: 'Inteligência',
+    Sab: 'Sabedoria',
+    Vig: 'Vigor'
+  })[atributo]);
+  const fixo = dados.length ? 0 : Number(formula.match(/^\s*(\d+)/)?.[1] || 0);
+  return { dados, atributos, fixo };
+}
 
 // ===== ARMADURAS =====
 const ARMADURAS = [

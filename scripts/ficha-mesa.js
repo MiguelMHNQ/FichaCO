@@ -11,9 +11,9 @@
   const attack=rolarAtaqueArma;
   window.rolarAtaqueArma=()=>{
     const item=ARMAS.find(i=>i.nome===estado.arma);if(!item||item.dano.startsWith('—'))return attack();
-    const m=item.dano.match(/(\d+)d(\d+)/i),attribute=item.dano.match(/\+\s*(For|Des)\b/i)?.[1],key=attribute==='For'?'Força':attribute==='Des'?'Destreza':null;
-    const bonus=key?calcBonus((estado.constancias[key]||0)+totalBonusRaca(key)+bonusAcessorioConstancia(key)):0;
-    request({title:item.nome,description:item.dano,range:Number.parseFloat(item.alcance?.replace(',','.'))||null,maxTargets:1,dice:m?Array(Number(m[1])).fill(Number(m[2])):[],bonus:bonus+(m?0:Number.parseInt(item.dano)||0)},()=>{});
+    const formula=analisarDanoArma(item.dadosLivro.dano);
+    const bonus=formula.atributos.reduce((total,key)=>total+calcBonus((estado.constancias[key]||0)+totalBonusRaca(key)+bonusAcessorioConstancia(key)),0);
+    request({title:item.nome,description:item.dano,range:Number.parseFloat(item.alcance?.replace(',','.'))||null,maxTargets:1,dice:formula.dados,bonus:bonus+formula.fixo},()=>{});
   };
   const spend=gastarPE;
   window.gastarPE=(cost,resource=nomeEnergiaClasse(),button=null)=>{

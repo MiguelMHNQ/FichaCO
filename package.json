@@ -33,6 +33,7 @@
     "test:mobile": "npm run build:client && npm run build:backend && node scripts/verificar-tabletop.cjs --mobile && node scripts/verificar-sessoes.cjs --mobile",
     "test:actions": "npm run build:client && npm run build:backend && node scripts/verificar-sessoes.cjs --actions",
     "test:grimoire": "npm run build:client && node scripts/verificar-tabletop.cjs --grimorio",
+    "test:weapons": "node scripts/verificar-armas-magicas.cjs",
     "test:areas": "npm run build:client && npm run build:backend && node scripts/verificar-regras-acoes.cjs && node scripts/verificar-dano-visual.cjs && node scripts/verificar-sessoes.cjs --areas",
     "test:vision": "npm run build:client && npm run build:backend && node scripts/verificar-sessoes.cjs --vision",
     "test:collision": "npm run build:client && npm run build:backend && node scripts/verificar-sessoes.cjs --collision",

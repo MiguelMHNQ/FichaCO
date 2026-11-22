@@ -425,7 +425,10 @@ const LIVRO_ARMAS_EXTRA = [];
     LIVRO_ARMAS_EXTRA.push({titulo,subtitulo:true,texto:''});
     for (const arma of armas) {
       const d=arma.dadosLivro;
-      const texto=[['Alcance',d.alcance],['Tipo',d.tipo],['Dano',d.dano],['Crítico',d.critico],['Peso',d.peso],['Uso',d.uso],['Modo',d.modo]].map(([label,valor])=>'<strong>'+label+':</strong> '+valor).join(' · ')+(arma.habilidade?'<br><br><em>Passiva:</em> '+arma.habilidade:'');
+      const campos=[['Alcance',d.alcance],['Tipo',d.tipo],['Dano',d.dano],['Crítico',d.critico],['Peso',d.peso],['Uso',d.uso],['Modo',d.modo]];
+      if (arma.magica) campos.push(['Raridade',arma.raridade]);
+      const rotuloHabilidade=arma.magica?'Habilidade':'Passiva';
+      const texto=campos.map(([label,valor])=>'<strong>'+label+':</strong> '+valor).join(' · ')+(arma.habilidade?'<br><br><em>'+rotuloHabilidade+':</em> '+arma.habilidade:'');
       LIVRO_ARMAS_EXTRA.push({titulo:arma.nome,texto});
     }
   }

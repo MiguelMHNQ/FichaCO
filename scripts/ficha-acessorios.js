@@ -384,7 +384,8 @@ function renderListaEquipamentos() {
     const ativo = estado[slot] === item.nome;
     const div   = document.createElement('div');
     div.className = 'item-linha' + (ativo ? ' ativo' : '');
-    div.innerHTML = `<div style="font-size:0.85rem;">${item.nome}</div><div style="font-size:0.72rem;color:#666;margin-top:2px;">${item.dano || item.tipo || ''}</div>`;
+    const detalhe=[item.dano || item.tipo || '',item.magica?'Arma mágica':'',item.raridade].filter(Boolean).join(' · ');
+    div.innerHTML = `<div style="font-size:0.85rem;">${item.nome}</div><div style="font-size:0.72rem;color:#666;margin-top:2px;">${detalhe}</div>`;
     div.onclick = () => { estado[slot] = item.nome; salvarEstado(); fecharPopupEquip(); renderFicha(); sincronizarPersonagem(); };
     cont.appendChild(div);
   });
@@ -403,28 +404,17 @@ function rolarAtaqueArma() {
     return;
   }
 
-  const formula = arma.dano.match(/(\d+)d(\d+)/i);
-  const atributoAbreviado = arma.dano.match(/\+\s*(For|Des)\b/i)?.[1];
-  const atributo = atributoAbreviado === 'For' ? 'Força' : atributoAbreviado === 'Des' ? 'Destreza' : null;
-  const bonus = atributo
-    ? calcBonus((estado.constancias[atributo] || 0) + totalBonusRaca(atributo) + bonusAcessorioConstancia(atributo))
-    : 0;
+  const formula = analisarDanoArma(arma.dadosLivro.dano);
+  const bonus = formula.atributos.reduce((total, atributo) => total + calcBonus((estado.constancias[atributo] || 0) + totalBonusRaca(atributo) + bonusAcessorioConstancia(atributo)), 0);
   const descricao = `Ataque: ${arma.nome} (${arma.dano})`;
 
-  if (formula) {
-    const quantidade = Number(formula[1]);
-    const lados = Number(formula[2]);
-    rolagemRapida(Array(quantidade).fill(lados), bonus, descricao);
+  if (formula.dados.length) {
+    rolagemRapida(formula.dados, bonus, descricao);
     return;
   }
 
-  const danoFixo = arma.dano.match(/^\s*(\d+)(?:\s*\+\s*(For|Des))?/i);
-  if (danoFixo) {
-    const atributoFixo = danoFixo[2] === 'For' ? 'Força' : danoFixo[2] === 'Des' ? 'Destreza' : null;
-    const bonusFixo = atributoFixo
-      ? calcBonus((estado.constancias[atributoFixo] || 0) + totalBonusRaca(atributoFixo) + bonusAcessorioConstancia(atributoFixo))
-      : 0;
-    rolagemRapida([], Number(danoFixo[1]) + bonusFixo, descricao);
+  if (formula.fixo || formula.atributos.length) {
+    rolagemRapida([], formula.fixo + bonus, descricao);
     return;
   }
 

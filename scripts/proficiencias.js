@@ -14,7 +14,7 @@
   }
   function categorias(){
     const groups=new Map();
-    for(const arma of typeof ARMAS==='undefined'?[]:ARMAS){const nome=arma.categoriaLivro;if(!nome)continue;if(!groups.has(nome))groups.set(nome,new Set());groups.get(nome).add(/^pesad/i.test(arma.dadosLivro.peso)?'Pesada':'Leve');}
+    for(const arma of typeof ARMAS==='undefined'?[]:ARMAS){const nome=arma.categoriaProficiencia||arma.categoriaLivro;if(!nome)continue;if(!groups.has(nome))groups.set(nome,new Set());groups.get(nome).add(/pesad/i.test(arma.dadosLivro.peso)?'Pesada':'Leve');}
     return [...groups].map(([nome,pesos])=>({nome,opcoes:[nome,...[...pesos].sort().map(p=>nome+' ('+p+')')]}));
   }
   function completas(){const e=escolhas();return e.conhecimentos.length===2&&!!e.familiaridade;}
