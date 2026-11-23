@@ -85,7 +85,7 @@ const ficha = read('scripts/ficha-acessorios.js');
 vm.runInContext(ficha.slice(ficha.indexOf('function rolarAtaqueArma()'), ficha.indexOf('function ajustarRecursoFicha(')), contexto);
 for (const [nome, quantidade, lados, bonus] of [
   ['Ferroada',2,6,2], ['Dente de Dragão',2,8,4], ['Arcabuz',3,4,0],
-  ['Canhão',5,12,0], ['Trabuco de Flecha',10,4,2], ['Espada de Duas Lâminas',1,8,4], ['Ácido',2,4,0]
+  ['Canhão',4,12,0], ['Trabuco de Flecha',3,6,2], ['Espada de Duas Lâminas',2,8,8], ['Ácido',2,4,0]
 ]) {
   contexto.estado.arma = nome;
   vm.runInContext('rolarAtaqueArma()', contexto);

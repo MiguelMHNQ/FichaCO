@@ -804,15 +804,32 @@
 
   function renderArmaduras(filtro) {
     const c = document.getElementById('livroConteudo');
-    const lista = ARMADURAS.filter(a => !filtro || buscaTexto([a.nome,a.tipo,a.dano,a.desc].join('<br>'), filtro));
-    if (!lista.length) { c.innerHTML = semResultado(); return; }
-    c.innerHTML = `<div class="livro-grid-itens">${lista.map(a => `
-      <div class="livro-card livro-card-item">
-        <div class="livro-card-titulo">${destacar(a.nome, filtro)}</div>
-        <div class="livro-tag livro-tag-tipo">${a.tipo}</div>
-        <div class="livro-item-dano">🛡 ${destacar(a.dano, filtro)}</div>
-        <div class="livro-card-texto">${destacar(a.desc, filtro)}</div>
-      </div>`).join('')}</div>`;
+    const comuns = ARMADURAS.filter(a => !a.raridade);
+    const magicas = ARMADURAS.filter(a => a.raridade && !a.tipo.startsWith('Escudo —'));
+    const escudos = ARMADURAS.filter(a => a.raridade && a.tipo.startsWith('Escudo —'));
+    const grupos = [
+      { titulo: 'Armaduras', itens: comuns },
+      { titulo: 'Armaduras mágicas', itens: magicas },
+      { titulo: 'Escudos mágicos', itens: escudos }
+    ];
+    const gruposFiltrados = grupos.map(grupo => ({
+      ...grupo,
+      itens: grupo.itens.filter(a => !filtro || buscaTexto([a.nome,a.tipo,a.dano,a.desc,a.raridade || '',a.recarga || '',a.acao || ''].join('<br>'), filtro))
+    })).filter(grupo => grupo.itens.length);
+    if (!gruposFiltrados.length) { c.innerHTML = semResultado(); return; }
+    c.innerHTML = gruposFiltrados.map(grupo => `
+      <div class="livro-secao-titulo">${destacar(grupo.titulo, filtro)}</div>
+      <div class="livro-grid-itens">${grupo.itens.map(a => `
+        <div class="livro-card livro-card-item">
+          <div class="livro-card-titulo">${destacar(a.nome, filtro)}</div>
+          <div class="livro-tags">
+            <span class="livro-tag livro-tag-tipo">${destacar(a.tipo, filtro)}</span>
+            ${a.raridade ? `<span class="livro-tag livro-tag-nivel">${destacar(a.raridade, filtro)}</span>` : ''}
+            ${a.acao ? `<span class="livro-tag livro-tag-acao">${destacar(a.acao, filtro)}</span>` : ''}
+          </div>
+          <div class="livro-item-dano">🛡 ${destacar(a.dano, filtro)}</div>
+          <div class="livro-card-texto">${destacar(a.desc, filtro)}</div>
+        </div>`).join('')}</div>`).join('');
   }
 
   function renderAcessorios(filtro) {

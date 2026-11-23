@@ -432,4 +432,5 @@ const LIVRO_ARMAS_EXTRA = [];
       LIVRO_ARMAS_EXTRA.push({titulo:arma.nome,texto});
     }
   }
+
 })();

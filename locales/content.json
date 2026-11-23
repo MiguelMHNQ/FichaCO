@@ -5246,7 +5246,21 @@
     "Uma orbe de aço com uma joia negra que obedece à vontade mental.": "Uma orbe de aço com uma joia negra que obedece à vontade mental.",
     "Uma pistola negra de aço com inscrições arcanas douradas.": "Uma pistola negra de aço com inscrições arcanas douradas.",
     "Uma vez a cada 3 turnos, pode carregar energia. No próximo ataque corpo a corpo que acertar, causa +2d6 de dano cinético e o alvo faz Constituição (CD 14). Falha: fica Caído até o início do próximo turno do usuário. Se errar, perde a carga e só pode tentar novamente após 3 turnos.": "Uma vez a cada 3 turnos, pode carregar energia. No próximo ataque corpo a corpo que acertar, causa +2d6 de dano cinético e o alvo faz Constituição (CD 14). Falha: fica Caído até o início do próximo turno do usuário. Se errar, perde a carga e só pode tentar novamente após 3 turnos.",
-    "Vestir": "Vestir"
+    "Vestir": "Vestir",
+    "Armadura negra com asas de fumaça sombria. Concede RD 3 necrótico, RD 2 cortante/perfurante/impacto e vantagem contra medo, paralisia e encanto. Ao eliminar um inimigo, teleporta até 9m em sombra ou linha de visão uma vez por turno; o próximo ataque ganha vantagem.": "Armadura negra com asas de fumaça sombria. Concede RD 3 necrótico, RD 2 cortante/perfurante/impacto e vantagem contra medo, paralisia e encanto. Ao eliminar um inimigo, teleporta até 9m em sombra ou linha de visão uma vez por turno; o próximo ataque ganha vantagem.",
+    "Ação:": "Ação:",
+    "Carga:": "Carga:",
+    "Concede Destreza +2 além do limite, vantagem em Furtividade e Esquivar e voo de 9m em sombra. Ataques ocultos causam +2d8 necrótico 1 vez por turno. Salto Sombrio teleporta 12m (1 carga); Morte Silenciosa dá +2d6 a alvos isolados por 3 turnos (2 cargas); Abraço da Noite dá invisibilidade e intangibilidade por 2 turnos (3 cargas).": "Concede Destreza +2 além do limite, vantagem em Furtividade e Esquivar e voo de 9m em sombra. Ataques ocultos causam +2d8 necrótico 1 vez por turno. Salto Sombrio teleporta 12m (1 carga); Morte Silenciosa dá +2d6 a alvos isolados por 3 turnos (2 cargas); Abraço da Noite dá invisibilidade e intangibilidade por 2 turnos (3 cargas).",
+    "Dano:": "Dano:",
+    "Descanso longo ou 1 hora em sombra total": "Descanso longo ou 1 hora em sombra total",
+    "Habilidade:": "Habilidade:",
+    "Manto tecido pela própria escuridão. Gastando 1 carga fica invisível até atacar ou conjurar magia e intangível por 1 turno. Enquanto invisível, +3m de deslocamento e o primeiro ataque causa +2d6 perfurante. O primeiro golpe sofrido em cada combate tem dano reduzido à metade.": "Manto tecido pela própria escuridão. Gastando 1 carga fica invisível até atacar ou conjurar magia e intangível por 1 turno. Enquanto invisível, +3m de deslocamento e o primeiro ataque causa +2d6 perfurante. O primeiro golpe sofrido em cada combate tem dano reduzido à metade.",
+    "Passiva e Bônus": "Passiva e Bônus",
+    "Raridade:": "Raridade:",
+    "Recarga:": "Recarga:",
+    "Tipo:": "Tipo:",
+    "Escudo —": "Escudo —",
+    "Escudos mágicos": "Escudos mágicos"
   },
   "es": {
     "Configurações": "Configuración",
@@ -10494,6 +10508,20 @@
     "Uma orbe de aço com uma joia negra que obedece à vontade mental.": "Uma orbe de aço com uma joia negra que obedece à vontade mental.",
     "Uma pistola negra de aço com inscrições arcanas douradas.": "Uma pistola negra de aço com inscrições arcanas douradas.",
     "Uma vez a cada 3 turnos, pode carregar energia. No próximo ataque corpo a corpo que acertar, causa +2d6 de dano cinético e o alvo faz Constituição (CD 14). Falha: fica Caído até o início do próximo turno do usuário. Se errar, perde a carga e só pode tentar novamente após 3 turnos.": "Uma vez a cada 3 turnos, pode carregar energia. No próximo ataque corpo a corpo que acertar, causa +2d6 de dano cinético e o alvo faz Constituição (CD 14). Falha: fica Caído até o início do próximo turno do usuário. Se errar, perde a carga e só pode tentar novamente após 3 turnos.",
-    "Vestir": "Vestir"
+    "Vestir": "Vestir",
+    "Armadura negra com asas de fumaça sombria. Concede RD 3 necrótico, RD 2 cortante/perfurante/impacto e vantagem contra medo, paralisia e encanto. Ao eliminar um inimigo, teleporta até 9m em sombra ou linha de visão uma vez por turno; o próximo ataque ganha vantagem.": "Armadura negra com asas de fumaça sombria. Concede RD 3 necrótico, RD 2 cortante/perfurante/impacto e vantagem contra medo, paralisia e encanto. Ao eliminar um inimigo, teleporta até 9m em sombra ou linha de visão uma vez por turno; o próximo ataque ganha vantagem.",
+    "Ação:": "Ação:",
+    "Carga:": "Carga:",
+    "Concede Destreza +2 além do limite, vantagem em Furtividade e Esquivar e voo de 9m em sombra. Ataques ocultos causam +2d8 necrótico 1 vez por turno. Salto Sombrio teleporta 12m (1 carga); Morte Silenciosa dá +2d6 a alvos isolados por 3 turnos (2 cargas); Abraço da Noite dá invisibilidade e intangibilidade por 2 turnos (3 cargas).": "Concede Destreza +2 além do limite, vantagem em Furtividade e Esquivar e voo de 9m em sombra. Ataques ocultos causam +2d8 necrótico 1 vez por turno. Salto Sombrio teleporta 12m (1 carga); Morte Silenciosa dá +2d6 a alvos isolados por 3 turnos (2 cargas); Abraço da Noite dá invisibilidade e intangibilidade por 2 turnos (3 cargas).",
+    "Dano:": "Dano:",
+    "Descanso longo ou 1 hora em sombra total": "Descanso longo ou 1 hora em sombra total",
+    "Habilidade:": "Habilidade:",
+    "Manto tecido pela própria escuridão. Gastando 1 carga fica invisível até atacar ou conjurar magia e intangível por 1 turno. Enquanto invisível, +3m de deslocamento e o primeiro ataque causa +2d6 perfurante. O primeiro golpe sofrido em cada combate tem dano reduzido à metade.": "Manto tecido pela própria escuridão. Gastando 1 carga fica invisível até atacar ou conjurar magia e intangível por 1 turno. Enquanto invisível, +3m de deslocamento e o primeiro ataque causa +2d6 perfurante. O primeiro golpe sofrido em cada combate tem dano reduzido à metade.",
+    "Passiva e Bônus": "Passiva e Bônus",
+    "Raridade:": "Raridade:",
+    "Recarga:": "Recarga:",
+    "Tipo:": "Tipo:",
+    "Escudo —": "Escudo —",
+    "Escudos mágicos": "Escudos mágicos"
   }
 }
