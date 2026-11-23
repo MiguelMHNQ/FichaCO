@@ -27,7 +27,13 @@ const expectedNames = [
   'Dupla sombra divina', 'GomuTengo', 'Lâmina flamejante', 'Garras do Rei Pantera',
   'Círculos ecoantes', 'Punhos Extremos', 'Arcada Tempestuosa', 'Corta planar', 'Luva de almas',
   'Faca Real', 'Abocanhador', 'Balanceador', 'Sangue Maksu', 'Espada do céu invertido',
-  'Bastão Triplo', 'Livro Parceiro'
+  'Bastão Triplo', 'Livro Parceiro', 'Ceifadora de almas', 'Mofo Eminente', 'Cabeça da Medusa',
+  'Bandolim dos Mil toques', 'Luvas de vórtice', 'Caos sedento', 'Cortador Descontínuo',
+  'Orbe caótica', 'Pistola do Engenheiro Sombrio', 'Arco do Juramento', 'Lamento Carmesim',
+  'Mãos do Deus da Guerra', 'Armadura da Rainha Sombria', 'Manto do Reino Caído',
+  'Manto da Sombra Eterna', 'Adaga do Aprendiz', 'Espada Brilhante', 'Maça do Peregrino',
+  'Bastão do Viajante', 'Arco Sussurrante', 'Lança Vigilante', 'Machadinha Retornante',
+  'Lâmina Faiscante', 'Martelo Quebra-Escudo', 'Besta Certeira', 'Lâmina do Crepúsculo'
 ];
 
 assert.deepEqual(result.names, expectedNames);
@@ -42,4 +48,4 @@ assert.ok(result.categories.some(category => category.opcoes.includes('Espadas')
 assert.ok(result.categories.some(category => category.opcoes.includes('Martelos (Pesada)')));
 assert.ok(!result.categories.some(category => category.nome === 'Armas mágicas'));
 
-console.log('OK: 30 armas mágicas únicas, detalhes do livro, raridades, proficiências e rolagens.');
+console.log('OK: 56 armas mágicas únicas, detalhes do livro, raridades, proficiências e rolagens.');

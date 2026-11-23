@@ -986,7 +986,7 @@ const ARMAS = [
       "uso": "2 Mãos"
     },
     "descricaoVisual": "Uma grande lâmina sem fio aparente, com núcleo segmentado e contrapesos de metal. Trilhos e anéis concêntricos percorrem sua espinha.",
-    "habilidade": " Uma vez a cada 3 turnos, pode carregar energia. No próximo ataque corpo a corpo que acertar, causa +2d6 de dano cinético e o alvo faz teste de Constituição (CD 15). O efeito da falha não foi definido. Se errar, perde a carga; só pode tentar carregar novamente após 3 turnos.",
+    "habilidade": " Uma vez a cada 3 turnos, pode carregar energia. No próximo ataque corpo a corpo que acertar, causa +2d6 de dano cinético e o alvo faz Constituição (CD 14). Falha: fica Caído até o início do próximo turno do usuário. Se errar, perde a carga e só pode tentar novamente após 3 turnos.",
     "nova": true
   },
   {
@@ -998,7 +998,7 @@ const ARMAS = [
       "dano": "2d8 + For",
       "tipo": "Corte",
       "alcance": "1,5m",
-      "critico": "19-20/1d8",
+      "critico": "18-20/1d8",
       "peso": "Pesada",
       "uso": "2 Mãos"
     },
@@ -1015,12 +1015,12 @@ const ARMAS = [
       "dano": "2d8 + For",
       "tipo": "Corte",
       "alcance": "1,5m",
-      "critico": "19-20/1d8",
+      "critico": "18-20/1d8",
       "peso": "Pesada",
       "uso": "2 Mãos"
     },
     "descricaoVisual": "Um bloco de ferro grosseiramente afiado forma a lâmina, preso por rebites enormes a um cabo de madeira nodosa. Marcas de martelo cobrem suas faces.",
-    "habilidade": " Em acerto crítico, o alvo faz teste de Constituição (CD 14). Em falha, é arremessado 16m e sofre dano adicional igual ao modificador de Força. Criaturas Grandes ou maiores têm vantagem no teste, mas ainda sofrem metade do dano adicional e são arremessadas 13m.",
+    "habilidade": " Em acerto crítico, o alvo faz Constituição (CD 14). Falha: é arremessado 6m, fica Caído e sofre dano adicional igual ao modificador de Força. Criaturas Grandes ou maiores têm vantagem no teste; em falha, são arremessadas 3m e sofrem metade do dano adicional.",
     "nova": true
   },
   {
@@ -1114,11 +1114,11 @@ const ARMAS = [
     "categoriaLivro": "Bestas e balestras",
     "dadosLivro": {
       "modo": "Ld",
-      "dano": "1d10 + Des",
+      "dano": "1d8 + Des",
       "tipo": "Perfurante",
       "alcance": "18m",
-      "critico": "19-20/1d10",
-      "peso": "Pesada",
+      "critico": "19-20/1d8",
+      "peso": "4,5 kg",
       "uso": "2 Mãos"
     },
     "descricaoVisual": "Besta de madeira clara com um carregador estreito sobre o trilho. Uma alavanca lateral acompanha a coronha e conecta pequenas engrenagens.",
@@ -1131,15 +1131,15 @@ const ARMAS = [
     "categoriaLivro": "Bestas e balestras",
     "dadosLivro": {
       "modo": "Ld",
-      "dano": "1d12 + Des",
+      "dano": "1d10 + Des",
       "tipo": "Perfurante",
       "alcance": "24m",
-      "critico": "19-20/1d12",
-      "peso": "Pesada",
+      "critico": "19-20/1d10",
+      "peso": "4,5 kg",
       "uso": "2 Mãos"
     },
     "descricaoVisual": "Uma besta larga, de braços espessos e carregador superior de metal. Duas hastes reforçam a coronha ao redor de um mecanismo de alavanca robusto.",
-    "habilidade": " Após 6 disparos, exige ação padrão para recarregar. Se não se mover durante o turno, pode realizar 1 disparo adicional com ação bônus. Esse disparo causa 1d10 de dano e pode causar crítico.",
+    "habilidade": " Após 6 disparos, exige ação padrão para recarregar. Se não se mover durante o turno, pode realizar 1 disparo adicional com ação bônus. Esse disparo causa 1d6 de dano e pode causar crítico.",
     "nova": true
   },
   {
@@ -1151,7 +1151,7 @@ const ARMAS = [
       "dano": "3d4",
       "tipo": "Balístico",
       "alcance": "18m",
-      "critico": "19-20/1d4",
+      "critico": "18-20/1d4",
       "peso": "Pesada",
       "uso": "2 Mãos"
     },
@@ -1233,15 +1233,15 @@ const ARMAS = [
     "categoriaLivro": "Armas de cerco",
     "dadosLivro": {
       "modo": "Ld",
-      "dano": "5d8 + Des",
+      "dano": "4d8 + Des",
       "tipo": "Perfurante",
-      "alcance": "90m",
-      "critico": "20/1d8",
+      "alcance": "45m",
+      "critico": "19-20/1d8",
       "peso": "Pesada",
       "uso": "2 Mãos (arma fixa)"
     },
     "descricaoVisual": "Um enorme arco horizontal repousa sobre um cavalete de madeira reforçado. Cabos grossos, catracas e um trilho largo cercam a haste do virote.",
-    "habilidade": "",
+    "habilidade": " Recarregar exige 1 ação padrão.",
     "nova": true
   },
   {
@@ -1250,15 +1250,15 @@ const ARMAS = [
     "categoriaLivro": "Armas de cerco",
     "dadosLivro": {
       "modo": "Ld",
-      "dano": "5d12",
+      "dano": "4d12",
       "tipo": "Impacto",
-      "alcance": "120m",
-      "critico": "20/1d12 (acerto direto)",
-      "peso": "Pesada",
+      "alcance": "60m",
+      "critico": "19-20/1d12 (acerto direto)",
+      "peso": "200 kg",
       "uso": "2 Mãos (arma fixa)"
     },
     "descricaoVisual": "Um tubo maciço de ferro escurecido se apoia em uma carreta de rodas largas. A boca espessa e os aros de reforço preservam manchas de fuligem.",
-    "habilidade": " Requer 3 turnos para recarregar. A explosão de choque atinge raio de 10m. Inimigos na área fazem teste de Constituição (CD 18): falha = 5d12 de dano e ficam caídos; sucesso = metade do dano, sem cair. Estruturas na área recebem dano dobrado e podem ser destruídas. O crítico se aplica apenas ao acerto direto.",
+    "habilidade": " Requer 3 turnos para recarregar. A explosão de choque atinge raio de 6m. Inimigos na área fazem Constituição (CD 16): falha = 4d12 de dano e ficam caídos; sucesso = metade do dano e não caem. Estruturas recebem dano dobrado.",
     "nova": true
   },
   {
@@ -1267,15 +1267,15 @@ const ARMAS = [
     "categoriaLivro": "Armas de cerco",
     "dadosLivro": {
       "modo": "Ld",
-      "dano": "10d4 + Des",
+      "dano": "3d6 + Des",
       "tipo": "Perfurante",
-      "alcance": "30m",
-      "critico": "20/1d4",
-      "peso": "Pesada",
+      "alcance": "15m",
+      "critico": "19-20/1d6",
+      "peso": "4 kg (Média)",
       "uso": "2 Mãos"
     },
     "descricaoVisual": "Uma arma larga de madeira e metal reúne vários trilhos paralelos para flechas. A coronha espessa contrasta com o conjunto de bocas estreitas na frente.",
-    "habilidade": "",
+    "habilidade": " Recarregar exige 1 ação de movimento.",
     "nova": true
   },
   {
@@ -1284,15 +1284,15 @@ const ARMAS = [
     "categoriaLivro": "Explosivos e armas de área",
     "dadosLivro": {
       "modo": "Ld",
-      "dano": "12d6",
+      "dano": "6d6",
       "tipo": "Impacto",
-      "alcance": "3m",
+      "alcance": "4,5m",
       "critico": "— (explosão em área)",
-      "peso": "Pesada",
-      "uso": "2 Mãos"
+      "peso": "10 kg",
+      "uso": "Explosivo"
     },
     "descricaoVisual": "Um barril de aduelas escuras cercadas por aros de ferro. Grãos de pólvora marcam a tampa, fechada por um pequeno tampão de madeira.",
-    "habilidade": " Efeito: Fogo e esmagamento. Explosivo de cenário; o acionamento e a área da explosão não foram definidos.",
+    "habilidade": " Ao explodir, todas as criaturas num raio de 4,5m fazem Destreza CD 15. Falha: sofrem 6d6 de dano. Sucesso: sofrem metade. Estruturas na área sofrem dano dobrado.",
     "nova": true
   },
   {
@@ -1335,15 +1335,15 @@ const ARMAS = [
     "categoriaLivro": "Explosivos e armas de área",
     "dadosLivro": {
       "modo": "Ld",
-      "dano": "10d8",
+      "dano": "5d8",
       "tipo": "Impacto",
       "alcance": "30m",
-      "critico": "20/1d8 (acerto direto)",
+      "critico": "19-20/1d8 (acerto direto)",
       "peso": "Pesada",
       "uso": "2 Mãos"
     },
     "descricaoVisual": "Um tubo comprido de metal com boca larga, apoio de ombro e empunhaduras inferiores. Uma mira simples se ergue ao lado do cano.",
-    "habilidade": " Explosão de Fogo. O ponto de impacto explode em raio de 3m. Criaturas na área fazem teste de Destreza (CD 15): falha = ficam caídas; sucesso = mantêm o equilíbrio. Requer uma rodada inteira para recarregar. O crítico se aplica apenas ao acerto direto.",
+    "habilidade": " Explosão de Fogo. O ponto de impacto explode em raio de 3m. Criaturas na área fazem Destreza (CD 15): falha = sofrem o dano total e ficam Caídas; sucesso = sofrem metade e mantêm o equilíbrio. Recarregar exige 1 rodada inteira com novo projétil.",
     "nova": true
   },
   {
@@ -2089,6 +2089,37 @@ const ARMAS_MAGICAS = [
     "habilidade": "Passiva: O livro flutua ao lado do usuário, permitindo conjurar magias com uma das mãos livres ou sem precisar segurá-lo diretamente. Depois do 3º turno de um combate, a próxima magia que causar dano ganha +1d6 de dano mágico do mesmo tipo (1 vez por combate)."
   }
 ];
+ARMAS_MAGICAS.push(
+  {nome:"Ceifadora de almas",categoria:"Foice",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Foices",raridade:"Épico",magica:true,dadosLivro:{modo:"CaC",dano:"1d12 + For",tipo:"Corte",alcance:"3m",critico:"19+ / 1d",peso:"6 kg (Pesada)",uso:"2 mãos"},descricaoVisual:"Uma foice necromântica que drena a vitalidade dos derrotados.",habilidade:"Passiva: Ao derrotar um inimigo com ela, escolha ganhar 5 PV temporários ou +2d4 de dano no próximo ataque. Ativa (Colheita): 1 vez por combate. Ao derrotar 3 inimigos, todos até 6m fazem Constituição CD 16. Falha: 4d6 de dano necrótico. Sucesso: metade do dano."},
+  {nome:"Mofo Eminente",categoria:"Martelo",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Martelos",raridade:"Raro",magica:true,dadosLivro:{modo:"CaC",dano:"1d10 + For",tipo:"Impacto + Químico",alcance:"1,5m",critico:"19+ / 1d",peso:"3 kg (Média)",uso:"1 mão"},descricaoVisual:"Um martelo venenoso coberto de mofo e resíduos corrosivos.",habilidade:"Passiva: Ao atingir um inimigo, ele faz Constituição CD 14. Falha: fica Envenenado e toda cura recebida é reduzida à metade por 3 turnos, sem acumular. Se já estiver Envenenado, sofre 1d6 de dano químico no fim de cada turno até a condição acabar."},
+  {nome:"Cabeça da Medusa",categoria:"Manopla",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Manoplas",raridade:"Épico",magica:true,dadosLivro:{modo:"CaC",dano:"1d8 + Car",tipo:"Impacto",alcance:"1,5m",critico:"19+ / 1d",peso:"2 kg (Média)",uso:"1 mão"},descricaoVisual:"Uma cabeça petrificada cuja visão transforma inimigos em pedra.",habilidade:"Passiva (Olhar petrificante): 1 vez por combate, ao acertar um inimigo, ele faz Sabedoria CD 15. Falha: fica Petrificado por 2 turnos (Incapacitado e Imóvel; ataques contra ele têm vantagem). Sucesso: nada acontece. Criaturas imunes são imunes. Se estiver Petrificado, o próximo acerto é crítico e encerra a petrificação."},
+  {nome:"Bandolim dos Mil toques",categoria:"Instrumento",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Acategóricas",raridade:"Raro",magica:true,dadosLivro:{modo:"Mágico",dano:"1d6 + Car",tipo:"Trovejante",alcance:"12m",critico:"19+ / 1d",peso:"1,5 kg (Leve)",uso:"2 mãos"},descricaoVisual:"Um instrumento mágico que assume três formas musicais.",habilidade:"Passiva (Mil toques): Descanso curto, 3 cargas. Cada forma gasta 1 carga. Bandolim: raio de 6m, 1d6 trovejante e Sabedoria CD 14; falha causa Surdez e desvantagem no próximo ataque até o fim do próximo turno. Violão: barreira por 3 turnos em você ou aliado, +2 CA e RD 2 físico. Piano: 12m, 2d6 trovejante a todos (Constituição CD 14 para metade) e destrói obstáculos frágeis."},
+  {nome:"Luvas de vórtice",categoria:"Manopla",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Manoplas",raridade:"Raro",magica:true,dadosLivro:{modo:"CaC",dano:"1d12 + For",tipo:"Impacto",alcance:"1,5m",critico:"19+ / 2d",peso:"10 kg (Pesado)",uso:"2 mãos"},descricaoVisual:"Luvas pesadas que canalizam ventos giratórios.",habilidade:"Ativa (Redemoinho): Descanso curto, ação padrão. Escolha um local visível a até 12m e crie um redemoinho de 3m de raio. Alvos fazem Força CD 14. Falha: deslocados até 6m numa direção à sua escolha. Sucesso: deslocados 3m."},
+  {nome:"Caos sedento",categoria:"Espada",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Espadas",raridade:"Raro",magica:true,dadosLivro:{modo:"CaC",dano:"2d6 + For",tipo:"Perfurante + Corte",alcance:"1,5m",critico:"19+ / 2d",peso:"6 kg (Pesada)",uso:"2 mãos"},descricaoVisual:"Uma lâmina brutal que acumula força em ataques consecutivos.",habilidade:"Passiva 1: Cada turno consecutivo em que acertar ganha +1 de dano, até +3; errar ou parar reinicia. Passiva 2: Com menos da metade dos PV, recebe +1 nos ataques. Passiva 3: Pode não usar a Reação ou reduzir CA em 2 até seu próximo turno para causar +1d6; 1 vez por turno."},
+  {nome:"Cortador Descontínuo",categoria:"Espada",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Espadas",raridade:"Super raro",magica:true,dadosLivro:{modo:"CaC",dano:"1d10 + Des",tipo:"Corte",alcance:"1,5m",critico:"19+ / 2d",peso:"2,3 kg (Leve)",uso:"1 mão"},descricaoVisual:"Uma espada branca com adornos roxos que parece atacar cinco segundos atrasada.",habilidade:"Passiva: Oponentes têm -3 nas reações contra ela e não podem contra-atacar. Com empunhadura dupla, o alvo fica com -2 de CA contra seus ataques corpo a corpo até o início do seu próximo turno. Ativa (Atraso ampliado): Descanso longo. Por 2 minutos, o atraso passa a 1 turno; os locais por onde você passou recebem corte que causa o dano da arma +2d6 cortante (Destreza CD 15 para metade)."},
+  {nome:"Orbe caótica",categoria:"Orbe",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Acategóricas",raridade:"Raro",magica:true,dadosLivro:{modo:"Ld",dano:"1d8 + Sab",tipo:"Impacto",alcance:"18m",critico:"19+ / 2d",peso:"3 kg (Leve)",uso:"Controlada pela mente"},descricaoVisual:"Uma orbe de aço com uma joia negra que obedece à vontade mental.",habilidade:"Passiva: Ao começar o dia, estabeleça vínculo mental. Ataque com ela usando ação bônus e arremesse até 18m. Fora de alcance, perde o vínculo até se aproximar. Como reação, contra-ataca após acerto inimigo ou bloqueia contra si/aliado, adicionando 1d8 à redução do dano e +1 de CA."},
+  {nome:"Pistola do Engenheiro Sombrio",categoria:"Pistola",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Armas de fogo",raridade:"Relíquia",magica:true,dadosLivro:{modo:"Ld",dano:"2d8 + 1d6",tipo:"Perfurante + Sombrio",alcance:"—",critico:"—",peso:"—",uso:"1 mão"},descricaoVisual:"Uma pistola negra de aço com inscrições arcanas douradas.",habilidade:"Passiva: Cada disparo causa 2d8 perfurante e 1d6 necrose. Crítico: ignore Armadura/Escudo ou faça segundo disparo imediato sem ação, carga ou munição; o segundo não pode ser crítico. Não usa munição física. Disparos especiais: 4 cargas; descanso curto ou meditação média+. Estripador: 2d8 perfurante adicional em 3m (Destreza CD 18 para metade). Fantasma: atravessa cobertura fina, parede de 30cm e barreiras mágicas de Volume 2 ou menor. Corvo: Vontade CD 18; falha recebe +2d6 necrótico dos seus ataques até o próximo turno. Silencioso: sem som, luz, fumaça ou rastreamento de Volume 3 ou menor."},
+  {nome:"Arco do Juramento",categoria:"Arco",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Arcos",raridade:"Lendário",magica:true,dadosLivro:{modo:"Ld",dano:"2d8 + 1d6",tipo:"Perfurante + Radiante",alcance:"18m",critico:"19+ / 2d",peso:"2 kg (Média)",uso:"2 mãos"},descricaoVisual:"Um arco negro adornado com prata celestial e runas azuis.",habilidade:"Passiva (Juramento): Escolha um aliado protegido até trocá-lo após descanso. Ataques contra quem causar dano diretamente ao protegido ganham +1d6 radiante. Ignora vantagem por furtividade e metade da cobertura. Ativa (3 cargas; descanso longo): Anular fuga (2 cargas), Vontade CD 17; Disparo Vínculo (1 carga), próximo ataque contra alvo marcado ganha +2d6 contra quem atacar o protegido; Flecha da Promessa (2 cargas), vantagem contra o agressor direto do protegido e Destrexa CD 17; falha 4d8 radiante +2d8 perfurante, sucesso metade. Só funciona com juramento verdadeiro."},
+  {nome:"Lamento Carmesim",categoria:"Espada",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Espadas",raridade:"Relíquia",magica:true,dadosLivro:{modo:"CaC",dano:"2d8 + For",tipo:"Corte + Necrótico",alcance:"1,5m",critico:"18+ / 1d",peso:"3 kg (Média)",uso:"1 mão"},descricaoVisual:"Uma espada negra com veios vermelhos que pulsa como um coração.",habilidade:"Passiva: A arma causa +1d8 necrótico por golpe e cura metade desse dano. Visão no escuro 12m, RD 3 necrótico e vantagem contra medo. Corte Vampírico (1 carga): 2d8 necrótico em linha atrás do alvo. Abraço dos Briarwood (2 cargas): prende até 3 inimigos em 6m; Vontade CD 18, falha ficam Imóveis por 1 turno e sofrem 3d10 necrótico, sucesso metade. Ao derrotar com ela, recupera 5 PV e 5 PE. Maldição exige vontade para não atacar criatura viva a 12m e ameaça perda de PV máximos sem alimento."},
+  {nome:"Mãos do Deus da Guerra",categoria:"Manopla",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Manoplas",raridade:"Lendário",magica:true,dadosLivro:{modo:"CaC",dano:"2d8 + For",tipo:"Impacto",alcance:"1,5m",critico:"19+ / 2d",peso:"6 kg (Pesada)",uso:"2 mãos"},descricaoVisual:"Imensas manoplas de bronze ancestral com gemas vermelhas pulsantes.",habilidade:"Passiva: Ataques desarmados usam 2d8 + For; Força +2 além do limite e ignora metade da RD de impacto. Soco Sísmico (1 carga): cone de 6m, Reflexos CD 17, falha Caído, empurrado 3m e 3d10 dano, sucesso metade. Fúria dos Titãs (2 cargas): por 3 turnos +1d10 em ataques e imune a derrubar, empurrar, agarrar e controle de movimento. Soco Saltador (1 carga): salta até 9m e cai em área de 3m; Reflexos CD 17, falha 2d10 impacto e Caído. Restringe o uso a ataques desarmados."},
+  {nome:"Armadura da Rainha Sombria",categoria:"Armadura",categoriaLivro:"Armaduras mágicas",categoriaProficiencia:"Armaduras",raridade:"Lendário",magica:true,dadosLivro:{modo:"Vestir",dano:"CA +3",tipo:"Necrótico/Cortante/Impacto/Perfurante",alcance:"—",critico:"—",peso:"—",uso:"Corpo"},descricaoVisual:"Uma armadura negra com asas de fumaça sombria.",habilidade:"Passiva: concede +3 de CA, RD 3 necrótico, RD 2 cortante/perfurante/impacto e vantagem contra medo, paralisia e encanto. Ao eliminar um inimigo, teleporta até 9m para sombra ou linha de visão uma vez por turno; o próximo ataque neste turno ganha vantagem."},
+  {nome:"Manto do Reino Caído",categoria:"Manto",categoriaLivro:"Armaduras mágicas",categoriaProficiencia:"Armaduras",raridade:"Lendário",magica:true,dadosLivro:{modo:"Vestir",dano:"—",tipo:"Sombrio",alcance:"—",critico:"—",peso:"—",uso:"Corpo"},descricaoVisual:"Um manto do tecido da própria escuridão.",habilidade:"Recarga descanso longo, 3 cargas, ação bônus. Gaste 1 carga e fique invisível até atacar ou conjurar magia. No turno da ativação, intangível por 1 turno e atravessa paredes finas/barreiras não mágicas. Enquanto invisível, deslocamento +3m e o primeiro ataque causa +2d6 perfurante. O primeiro golpe sofrido em cada combate é reduzido à metade."},
+  {nome:"Manto da Sombra Eterna",categoria:"Manto",categoriaLivro:"Armaduras mágicas",categoriaProficiencia:"Armaduras",raridade:"Lendário",magica:true,dadosLivro:{modo:"Vestir",dano:"—",tipo:"Sombrio/Necrótico",alcance:"—",critico:"—",peso:"—",uso:"Corpo"},descricaoVisual:"Um manto negro que absorve a luz e se funde às sombras.",habilidade:"Passiva: Destreza +2 além do limite, vantagem em Furtividade e Esquivar, invisível a magias de localização de Volume 6 ou menor e voo de 9m em penumbra/escuridão. Ataque oculto ou surpresa causa +2d8 necrótico 1 vez por turno. Salto Sombrio (1 carga): teleporte até 12m em sombra/penumbra e vantagem no primeiro ataque. Morte Silenciosa (2 cargas): por 3 turnos, alvo isolado recebe +2d6 dos seus ataques. Abraço da Noite (3 cargas): intangível e invisível por 2 turnos, atravessa objetos e só sofre área ou efeito divino; ataques ignoram RD e têm vantagem."}
+);
+
+ARMAS_MAGICAS.push(
+  {nome:"Adaga do Aprendiz",categoria:"Adaga",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Adagas",raridade:"Comum",magica:true,dadosLivro:{modo:"CaC",dano:"1d4 + Des",tipo:"Perfurante",alcance:"1,5m",critico:"19-20 / 1d",peso:"0,5 kg (Leve)",uso:"1 mão"},descricaoVisual:"Uma adaga simples com uma runa de pontaria no cabo.",habilidade:"Passiva: concede +1 nos testes de ataque."},
+  {nome:"Espada Brilhante",categoria:"Espada",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Espadas",raridade:"Comum",magica:true,dadosLivro:{modo:"CaC",dano:"1d6 + For",tipo:"Corte",alcance:"1,5m",critico:"19-20 / 1d",peso:"1,2 kg (Leve)",uso:"1 mão"},descricaoVisual:"Uma lâmina encantada que emite uma luz suave.",habilidade:"Passiva: ação livre acende ou apaga a lâmina. Acesa, ilumina 6m ao redor."},
+  {nome:"Maça do Peregrino",categoria:"Maça",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Maças",raridade:"Comum",magica:true,dadosLivro:{modo:"CaC",dano:"1d8 + For",tipo:"Impacto",alcance:"1,5m",critico:"18-20 / 1d",peso:"2 kg (Leve)",uso:"1 mão"},descricaoVisual:"Uma maça abençoada por viajantes das estradas.",habilidade:"Passiva: causa +1 de dano contra mortos-vivos."},
+  {nome:"Bastão do Viajante",categoria:"Bastão",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Bastões",raridade:"Comum",magica:true,dadosLivro:{modo:"CaC",dano:"1d6 + For",tipo:"Impacto",alcance:"1,5m",critico:"20 / 1d",peso:"1,5 kg (Leve)",uso:"2 mãos"},descricaoVisual:"Uma madeira lisa e firme feita para apoiar viajantes.",habilidade:"Passiva: concede +1 em reações de Bloquear e +1 em Sobrevivência."},
+  {nome:"Arco Sussurrante",categoria:"Arco",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Arcos",raridade:"Incomum",magica:true,dadosLivro:{modo:"Ld",dano:"1d6 + For",tipo:"Perfurante",alcance:"9m",critico:"19-20 / 1d",peso:"1 kg (Leve)",uso:"2 mãos"},descricaoVisual:"Um arco cujas flechas cortam o ar sem fazer som.",habilidade:"Passiva: ao atirar escondido, o disparo não revela sua posição, salvo se o alvo passar em Percepção CD 15."},
+  {nome:"Lança Vigilante",categoria:"Lança",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Lanças",raridade:"Incomum",magica:true,dadosLivro:{modo:"CaC",dano:"1d6 + For",tipo:"Perfurante",alcance:"3m",critico:"18-20 / 2d",peso:"2 kg (Leve)",uso:"2 mãos"},descricaoVisual:"Uma lança vigilante que pode reagir por conta própria.",habilidade:"Passiva: descanso médio ou meditação média, 2 cargas. Ação livre. Gaste 1 carga para fazer ataque de oportunidade sem gastar sua Reação."},
+  {nome:"Machadinha Retornante",categoria:"Machado",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Machados",raridade:"Incomum",magica:true,dadosLivro:{modo:"CaC/Arremesso",dano:"1d6 + For",tipo:"Corte",alcance:"1,5m",critico:"19-20 / 2d",peso:"1,5 kg (Leve)",uso:"1 mão"},descricaoVisual:"Uma machadinha leve com encantamento de retorno.",habilidade:"Passiva: ao arremessar, retorna à sua mão no fim do ataque, acertando ou errando."},
+  {nome:"Lâmina Faiscante",categoria:"Espada",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Espadas",raridade:"Incomum",magica:true,dadosLivro:{modo:"CaC",dano:"1d8/1d10 + For",tipo:"Corte",alcance:"1,5m",critico:"19-20 / 1d",peso:"1,5 kg (Leve)",uso:"Versátil"},descricaoVisual:"Uma lâmina que acumula faíscas elétricas ao receber comando.",habilidade:"Ativa: descanso médio ou meditação média, 2 cargas, ação bônus. Faíscas percorrem a lâmina por 1 minuto e ataques causam +1d4 elétrico."},
+  {nome:"Martelo Quebra-Escudo",categoria:"Martelo",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Martelos",raridade:"Incomum",magica:true,dadosLivro:{modo:"CaC",dano:"1d8 + For",tipo:"Impacto",alcance:"1,5m",critico:"19-20 / 2d",peso:"2,5 kg (Leve)",uso:"1 mão"},descricaoVisual:"Um martelo de ferro frio feito para amassar escudos.",habilidade:"Passiva: seus acertos ignoram 1 ponto do bônus de CA do Escudo do alvo."},
+  {nome:"Besta Certeira",categoria:"Besta",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Bestas",raridade:"Incomum",magica:true,dadosLivro:{modo:"Ld",dano:"1d6 + Des",tipo:"Perfuração",alcance:"9m",critico:"19-20 / 1d",peso:"1 kg (Leve)",uso:"1 mão"},descricaoVisual:"Uma besta de mão com mira de cristal.",habilidade:"Passiva: concede +1 no teste de ataque e ignora a penalidade de cobertura parcial."},
+  {nome:"Lâmina do Crepúsculo",categoria:"Espada",categoriaLivro:"Armas mágicas",categoriaProficiencia:"Espadas",raridade:"Incomum",magica:true,dadosLivro:{modo:"CaC",dano:"1d6 + Des",tipo:"Corte",alcance:"1,5m",critico:"19-20 / 1d",peso:"1 kg (Leve)",uso:"1 mão"},descricaoVisual:"Uma espada curta azul-escura que parece beber a luz.",habilidade:"Passiva: ao acertar em penumbra ou escuridão, causa +1d4 necrótico 1 vez por turno."}
+);
 ARMAS.push(...ARMAS_MAGICAS);
 ARMAS.forEach(arma => {
   const d = arma.dadosLivro;
@@ -2123,6 +2154,19 @@ const ARMADURAS = [
   { nome: 'Escudo de Torre',         tipo: 'Escudo — Pesado',   dano: 'CA +3', desc: 'Escudo de corpo inteiro. Pode ser usado para cobrir aliados adjacentes.' },
   { nome: 'Armadura Espectral',      tipo: 'Armadura — Leve',   dano: 'CA +3', desc: 'Forjada com essência do vazio. Semitransparente e leve como névoa.' },
   { nome: 'Armadura de Couro Batido',tipo: 'Armadura — Leve',   dano: 'CA +3', desc: 'Couro endurecido por técnica artesanal de batimento. Mais resistente que o couro comum, sem perder a leveza.' },
+  { nome: 'Gibão Silencioso', tipo: 'Armadura — Leve', dano: 'CA +3', raridade: 'Incomum', recarga: '—', carga: null, acao: 'Passiva', desc: 'Couro tratado com cera, macio como tecido. Concede +2 em Furtividade e não faz ruído ao se mover.' },
+  { nome: 'Cota de Malha Flexível', tipo: 'Armadura — Média', dano: 'CA +3', raridade: 'Incomum', recarga: '—', carga: null, acao: 'Passiva', desc: 'Elos finos que se movem como tecido. Não sofre a penalidade de deslocamento desta armadura, mesmo sem proficiência.' },
+  { nome: 'Colete de Escamas de Serpente', tipo: 'Armadura — Leve', dano: 'CA +4', raridade: 'Raro', recarga: '—', carga: null, acao: 'Passiva', desc: 'Escamas verdes sobrepostas pingam veneno fraco. Quando um inimigo erra um ataque corpo a corpo contra você, faz Constituição CD 14 ou fica Envenenado por 1 turno (1 vez por turno).' },
+  { nome: 'Armadura de Madeira Viva', tipo: 'Armadura — Média', dano: 'CA +4', raridade: 'Raro', recarga: '—', carga: null, acao: 'Passiva', desc: 'Placas de madeira de uma árvore que ainda respira. Concede +2 em Furtividade em florestas. No início do turno, se ferido e em contato com terra ou vegetação, recupera 2 PV.' },
+  { nome: 'Couraça Espelhada', tipo: 'Armadura — Média', dano: 'CA +4', raridade: 'Raro', recarga: 'Descanso curto', carga: 2, acao: 'Reação', desc: 'Bronze polido como espelho. Ao ser alvo de dano radiante, queimante ou eletrizante, o dano é reduzido em 2 × seu Bônus de Classe.' },
+  { nome: 'Placas de Ferro Negro', tipo: 'Armadura — Pesada', dano: 'CA +5', raridade: 'Raro', recarga: '—', carga: null, acao: 'Passiva', desc: 'Placas pesadas de ferro enegrecido que parecem sugar o impacto. Concede RD 2 contra ataques à distância não mágicos.' },
+  { nome: 'Armadura do Guardião', tipo: 'Armadura — Pesada', dano: 'CA +5', raridade: 'Super raro', recarga: '—', carga: null, acao: 'Passiva', desc: 'Uma armadura gravada com o símbolo de quem protege os outros. Ao usar Ajudar para receber o ataque no lugar de um aliado, o dano recebido é reduzido em 2 × seu Bônus de Classe.' },
+  { nome: 'Couraça de Dragão Menor', tipo: 'Armadura — Pesada', dano: 'CA +6', raridade: 'Épico', recarga: 'Descanso longo', carga: 1, acao: 'Padrão', desc: 'Escamas de dragão jovem sobre aço. Ao ser criada, escolha fogo, gelo, eletrizante, químico ou veneno; você tem RD 6 contra esse tipo. Ativa (Sopro): cone de 4,5m, Destreza CD 16. Falha: 3d6 do tipo escolhido. Sucesso: metade.' },
+  { nome: 'Escudo do Vigia', tipo: 'Escudo — Leve', dano: 'CA +1', raridade: 'Incomum', recarga: '—', carga: null, acao: 'Passiva', desc: 'Escudo redondo com um olho gravado no centro. Concede +2 em reações de Bloquear.' },
+  { nome: 'Escudo Espinhoso', tipo: 'Escudo — Leve', dano: 'CA +1', raridade: 'Incomum', recarga: '—', carga: null, acao: 'Passiva', desc: 'Escudo com espinhos de aço na face. Ao bloquear com sucesso um ataque corpo a corpo, o atacante sofre 1d4 perfurante.' },
+  { nome: 'Escudo Arcano', tipo: 'Escudo — Pesado', dano: 'CA +1', raridade: 'Raro', recarga: '—', carga: null, acao: 'Passiva', desc: 'Escudo de ferro com runas azuis que brilham perto de magia. Concede +2 em salvaguardas contra magias e efeitos mágicos.' },
+  { nome: 'Escudo Ancorado', tipo: 'Escudo — Pesado', dano: 'CA +1', raridade: 'Raro', recarga: 'Descanso curto', carga: 2, acao: 'Bônus', desc: 'Passiva: ao bloquear com sucesso, não pode ser empurrado nem derrubado pelo ataque. Ativa (Fincar): até o início do próximo turno, +2 em Bloquear e não pode ser movido contra sua vontade.' },
+  { nome: 'Escudo da Muralha', tipo: 'Escudo — Pesado', dano: 'CA +2', raridade: 'Épico', recarga: 'Descanso longo', carga: 1, acao: 'Reação', desc: 'Quando você ou aliado a até 3m for alvo de ataque, cria barreira luminosa que absorve até 20 + seu nível de dano por 3 turnos ou até quebrar.' },
 ];
 
 // ===== ACESSÓRIOS =====
