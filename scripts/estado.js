@@ -358,6 +358,25 @@ const CLASSES_PREVIEW = {
     armaduras: ["Leves"],
     especificacoes: 'Começa com um grimório e escolhe 3 magias de volume 1. O limite de magias anotadas é Arcanismo + nível. Só pode conjurar magias transcritas e traduzidas no grimório; transcrever uma magia leva 2 horas menos o bônus de Arcanismo. Magias controladas podem ser guardadas: limite de 1 + modificador de Inteligência, lançando até uma por ação bônus. Dano mágico pode somar Inteligência.',
     famosos: []
+  },
+  Druida: {
+    desc: 'Cultiva Sementes que crescem durante o combate e transformam natureza, aliados e feras em poder vivo.',
+    dadoVida: '1d8', dadoVidaNum: 8,
+    vidaBase: 8, vidaAtributo: 'Vigor',
+    vidaInicial: '8 + Vigor',
+    vidaNivel: '1d8 (ou 5) + Vigor',
+    energiaInicial: 'Sabedoria + Inteligência',
+    energiaNivel: 'Bônus de classe + Sabedoria',
+    energiaAtributos: ['Sabedoria', 'Inteligência'],
+    energiaNivelAtributo: 'Sabedoria',
+    constanciasFixas: ['Natureza', 'Medicina'],
+    constanciasEscolha: ['Acrobacia', 'Intuição', 'Percepção', 'Conjurar', 'Sobrevivência', 'Arcanismo'],
+    constanciasEscolhaQtd: 2,
+    conhecimento: ['Armas simples'],
+    familiaridade: [],
+    armaduras: ['Leves', 'Armadura de Madeira (sem metal)'],
+    especificacoes: 'CD de Druida: 8 + CS de Natureza + Bônus de Classe. Usa Natureza no lugar de Arcanismo em ataques mágicos e na CD das magias naturais.',
+    famosos: []
   }
 };
 

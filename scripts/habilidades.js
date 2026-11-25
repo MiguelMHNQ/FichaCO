@@ -199,6 +199,52 @@ HABILIDADES.Obscuro = {
   }
 };
 
+HABILIDADES.Druida = {
+  base: [
+    { nome: 'Chamado da Natureza', nivel: 1, desc: 'Comunica-se instintivamente com plantas e animais e fala Primordial. Evolução no nível 4: faz perguntas simples a pequenos espíritos da natureza.', acao: 'Passiva', evo: 'Nível 4: pode perguntar a espíritos de florestas, rios e pedras, que respondem brevemente.' },
+    { nome: 'Magia Natural', nivel: 1, desc: 'Usa magias de Flora, Água, Terra e Essência e gasta PE no lugar de Mana. Conhece 2 magias de Volume 1 e usa Natureza no lugar de Arcanismo em ataques mágicos e CDs. Aprende +1 magia nos níveis 3, 6, 9 e 12, podendo subir o volume máximo. Pode trocar 1 magia conhecida por outra do mesmo volume após um descanso longo.', acao: 'Passiva' },
+    { nome: 'Sementes', nivel: 1, pe: 1, desc: 'Ação Bônus, 1 PE, alcance 6m. Carrega Natureza, mínimo 2 Sementes, e recupera todas após descanso curto ou longo. Plante até 3 Sementes simultâneas em um ponto ou criatura disposta. Elas passam de Semente a Broto e Flor no início dos seus próximos turnos e duram 4 turnos. Espinheira cria terreno difícil e dano/agarramento; Folhagem concede cobertura parcial e cura aliados; Esporos revelam ocultos e enfraquecem inimigos.', acao: 'Ação Bônus', evo: 'Cultivar (Interlúdio): recebe +2 Sementes extras até o próximo Interlúdio.' },
+    { nome: 'Toque Revitalizante', nivel: 2, desc: 'Ação Bônus e toque em criatura orgânica: cura 1d4 + Sabedoria em PV, uma vez por rodada. Custos: 2 PE (níveis 2–4), 3 PE (5–8), 4 PE (9–11) e 5 PE (12+). Não funciona em mortos-vivos ou construtos.', acao: 'Ação Bônus', evo: 'Dado sobe para 1d6 no nível 3, 1d8 no 5, 1d10 no 9 e 1d12 no 12.' },
+    { nome: 'Benção Natural', nivel: 3, desc: 'Escolha 1 benefício enquanto estiver a até 12m de área viva, solo fértil, água natural ou uma Semente: Pele de Casca (RD 3 elementar), Seiva Vital (cura 1d4 a cada 2 turnos), Raízes Atentas (+3 Iniciativa e sensação de criaturas no solo), ou Camuflagem Verde (+3 Furtividade e sem rastros). Pode trocar em descanso longo.', acao: 'Passiva', evo: 'Nível 9: escolhe um segundo benefício e Seiva Vital cura 1d6.' },
+    { nome: 'Companheiro Animal', nivel: 5, desc: 'No Interlúdio, firma um Laço com um animal natural de ND até metade do seu nível, arredondado para cima. Teste de Sobrevivência ou Natureza contra 10 + 2 × ND; comida preparada favorita concede +2. A fera age no seu turno, obedece comandos simples e pode hospedar suas Sementes. Soma seu Bônus de Classe ao ataque e Sabedoria ao dano.', acao: 'Interlúdio', evo: 'Nível 12: a fera ganha +10 PV máximos e pode hospedar 2 Sementes.' },
+    { nome: 'Transformação Feral', nivel: 7, pe: 6, desc: 'Ação Bônus, 6 PE, 4 turnos. Escolha 2 Traços: Garras (1d8 cortante e crítico 19–20), Presas (1d6 perfurante e agarrar com Sabedoria), Couro Grosso (+2 CA e RD 2 físico), Patas Velozes (+4,5m), Membrana (queda controlada), Sentidos Apurados (visão no escuro 12m e +3 em Percepção/Sobrevivência), Nadadeiras (natação terrestre e respiração aquática) ou Espinhos (1d6 perfurante a quem atacar você corpo a corpo). Não conjura magias, mas planta Sementes e usa Toque.', acao: 'Ação Bônus', evo: 'Nível 12: escolhe 3 Traços, dura 6 turnos e custa 10 PE.' },
+    { nome: 'Fruto Maduro', nivel: 9, desc: 'Livre, uma vez por turno, ao lado de uma Semente sua em Flor: colhe 1 Espinheira, Folhagem ou Esporos, até o limite de Natureza de Frutos. Espinheira explode e causa seu dado de Semente; Folhagem cura 2d8 + Sabedoria; Esporos deixam a criatura Desprevenida. Dá-se ou arremessa-se como ação bônus até 6m. Cultivar pode gerar 1d4 Frutos à escolha. Frutos são ingredientes nobres (+2).', acao: 'Livre / Ação Bônus', evo: 'Frutos duram até o próximo Interlúdio.' },
+    { nome: 'Bosque Vivo', nivel: 12, pe: 10, desc: 'Ação Padrão, 10 PE, área circular de 15m por 4 turnos, 1 vez por descanso curto. Inimigos enfrentam terreno difícil; no início do seu turno todas as suas Sementes avançam 1 estágio; planta 1 Semente por turno como ação livre; aliados curam 1d6 no início do turno deles. Termina se você sair da área ou ficar inconsciente.', acao: 'Ação Padrão' },
+  ],
+  caminhos: {
+    'Micélio': {
+      proficiencias: 'Rede de suporte, mobilidade e cura entre Sementes.',
+      habs: [
+        { nome: 'Rede de Fios', nivel: 6, pe: 2, desc: 'Ação de Movimento, 1 vez por turno. Teleporta-se para um espaço livre ao lado de uma Semente sua a até 12m, sem provocar ataques de oportunidade.', acao: 'Ação de Movimento' },
+        { nome: 'Pulso do Micélio', nivel: 9, pe: 8, desc: 'Ação Padrão. Aliados a até 3m de qualquer Semente sua recuperam 2d8 + Sabedoria PV e perdem 1 condição leve à sua escolha: Cegueira, Surdez, Enfraquecido ou Desprevenido.', acao: 'Ação Padrão' },
+        { nome: 'Elos Vivos', nivel: 13, pe: 4, desc: 'Reação quando aliado a até 6m de uma Semente sua sofrer dano. Divide o dano igualmente entre ele e até 2 aliados próximos a outras Sementes suas. O dano total não diminui.', acao: 'Reação' },
+        { nome: 'Caminho Profundo', nivel: 17, pe: 16, desc: 'Ação Padrão, 1 vez por descanso curto. Você e até 4 aliados a até 3m de uma Semente teleportam-se ao lado de outra Semente sua a até 36m da primeira.', acao: 'Ação Padrão', uso: '1x por descanso curto' },
+        { nome: 'Organismo Único', nivel: 20, desc: 'Ação Completa, 1 vez por descanso longo, 3 turnos. Aliados a até 15m de uma Semente recebem RD 5 contra todo dano, ignoram terreno difícil e recuperam 3d8 PV no início do turno. Todas as suas Sementes passam diretamente para Flor.', acao: 'Ação Completa', uso: '1x por descanso longo' },
+      ]
+    },
+    'Enxame': {
+      proficiencias: 'Insetos, controle de área e dano perfurante.',
+      habs: [
+        { nome: 'Nuvem de Insetos', nivel: 6, pe: 4, desc: 'Ação Padrão, 9m, cubo de 3m por 3 turnos. Criaturas fazem Destreza contra sua CD ao entrar uma vez por turno e no início do turno: falha causa 2d6 perfurante, sucesso metade. Ataques à distância contra quem está fora e visão através da nuvem têm desvantagem. Move-se com ação de movimento até 6m.', acao: 'Ação Padrão' },
+        { nome: 'Peçonha', nivel: 9, desc: 'Passiva, 1 vez por turno. Quando causar dano a uma criatura dentro de seu Enxame, ela faz Constituição contra sua CD; falha fica Envenenada por 3 turnos. Pode manter 2 Enxames simultaneamente.', acao: 'Passiva' },
+        { nome: 'Colmeia', nivel: 13, pe: 12, desc: 'Ação Padrão, 12m, objeto de 1,5m com CA 12 e 40 PV por 4 turnos. No seu turno, inimigos em 3m fazem Destreza contra sua CD e sofrem 3d6 perfurante ou metade. Aliados na área recebem cobertura parcial.', acao: 'Ação Padrão' },
+        { nome: 'Praga', nivel: 17, pe: 16, desc: 'Ação Padrão, círculo de 9m de raio por 3 turnos. No início do turno de cada inimigo, Constituição contra sua CD: falha sofre 5d6 perfurante, sucesso metade e fica Cego enquanto estiver na nuvem.', acao: 'Ação Padrão' },
+        { nome: 'Rainha do Enxame', nivel: 20, desc: 'Ação Completa, 1 vez por descanso longo, 3 turnos. Seu corpo vira insetos: RD 8 físico, voo 12m e área de 3m. Inimigos adjacentes no início do turno fazem Constituição: falha sofre 4d8, sucesso metade. Não conjura nem usa Toque.', acao: 'Ação Completa', uso: '1x por descanso longo' },
+      ]
+    },
+    'Caçada': {
+      proficiencias: 'Marca, instinto predador e transformação feral.',
+      habs: [
+        { nome: 'Presa', nivel: 6, pe: 2, desc: 'Ação Bônus, alcance 18m, até o fim do combate. Marca uma criatura e sabe direção e distância dela. Uma vez por turno, o primeiro ataque que acertar causa dano extra igual a 1 dado de Semente.', acao: 'Ação Bônus' },
+        { nome: 'Instinto Adquirido', nivel: 9, desc: 'Ao derrotar sua Presa, escolha uma característica natural dela. O mestre transforma-a em Traço e você pode escolhê-lo na Transformação Feral até o próximo Interlúdio. Guarda apenas 1 Traço adquirido por vez.', acao: 'Passiva' },
+        { nome: 'Matança em Cadeia', nivel: 13, desc: 'Passiva, 1 vez por turno. Ao reduzir uma criatura a 0 PV com Transformação Feral ativa, mova-se até 4,5m sem provocar ataques de oportunidade e faça 1 ataque contra outra criatura, tudo sem gastar ação.', acao: 'Passiva' },
+        { nome: 'Predador Alfa', nivel: 17, desc: 'Na Transformação Feral pode escolher 4 Traços. Contra sua Presa, a margem de crítico aumenta em 1 e você faz 1 ataque adicional por turno.', acao: 'Passiva' },
+        { nome: 'Besta Primordial', nivel: 20, desc: 'Ação Completa, 1 vez por descanso longo, 3 turnos. Assume forma primordial Grande, ganha +2 CA e RD 5 e seus ataques desarmados causam +2d8. Ao reduzir sua Presa a 0 PV na forma, recebe 15 PV temporários.', acao: 'Ação Completa', uso: '1x por descanso longo' },
+      ]
+    }
+  }
+};
+
 HABILIDADES.Guerreiro = {
   base: [
     { nome: 'Controle', nivel: 1, desc: 'Você respira fundo e foca na precisão do golpe. Concede +2 no próximo ataque com arma neste turno e +2 nas reações de Bloquear por 1 minuto. (Custo: 3 PE)', acao: 'Ação Bônus', evo: 'Nível 9: bônus em Bloquear sobe para +4 | Nível 11: +6' },
@@ -274,6 +320,16 @@ const TALENTOS_GERAIS = [
 
 // ===== TALENTOS =====
 const TALENTOS = {
+  Druida: [
+    { nome: 'Jardineiro de Bolso', desc: 'Carrega +2 Sementes. A primeira Semente que plantar em cada combate não custa PE.' },
+    { nome: 'Estufa', desc: 'Uma vez por combate, uma Semente que plantar nasce já como Broto.' },
+    { nome: 'Raiz Profunda', desc: 'Suas Sementes duram até o fim da cena, em vez de 4 turnos.' },
+    { nome: 'Semente Dupla', desc: 'Pagando 2 PE adicionais, planta 2 Sementes do mesmo tipo na mesma ação.' },
+    { nome: 'Veneno de Estufa', desc: 'Frutos de Espinheira também Envenenam o alvo por 1 turno, salvo se ele passar em Constituição contra sua CD.' },
+    { nome: 'Casca Dura', desc: 'Restrito à Transformação Feral: Couro Grosso passa a dar +3 CA e RD 3, e você não fica Cansado ao fim da transformação.' },
+    { nome: 'Laço Forte', desc: 'Restrito ao Companheiro Animal: enxerga pelos olhos da fera sem gastar ação e ela soma seu bônus de Natureza em Reflexos e Iniciativa.' },
+    { nome: 'Toque Constante', desc: 'Toque Revitalizante pode ser usado como Reação por 2 PE adicionais e seu alcance passa a ser 6m.' },
+  ],
   Espadachim: [
     { nome: 'Contra Perfeito', desc: 'Quando realizar um contra-ataque em combate, você recebe +2 no teste de ataque e rolagem de dano.' },
     { nome: 'Defesa Compacta', desc: 'Enquanto empunhar apenas uma arma, sem escudo ou arma adicional, recebe +2 em CA.' },
