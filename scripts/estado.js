@@ -264,6 +264,25 @@ function slotsDisponiveis() {
 
 // ===== DADOS DAS CLASSES =====
 const CLASSES_PREVIEW = {
+  Bárbaro: {
+    desc: 'Sobrevive à dor e transforma feridas em poder com a Brasa.',
+    dadoVida: '1d10', dadoVidaNum: 10,
+    vidaBase: 10, vidaAtributo: 'Vigor',
+    vidaInicial: '10 + Vigor',
+    vidaNivel: '1d10 (ou 6) + Vigor',
+    energiaInicial: 'Atributo de Força + Atributo de Vigor',
+    energiaNivel: 'Bônus de classe + Atributo de Vigor',
+    energiaAtributos: ['Força', 'Vigor'],
+    energiaNivelAtributo: 'Vigor',
+    constanciasFixas: ['Combate', 'Atletismo'],
+    constanciasEscolha: ['Constituição', 'Intimidação', 'Percepção', 'Sobrevivência', 'Natureza', 'Reflexo', 'Vontade'],
+    constanciasEscolhaQtd: 2,
+    conhecimento: ['Armas simples', 'Machados', 'Martelos', 'Maças', 'Bastões', 'Lanças', 'Foices'],
+    familiaridade: [],
+    armaduras: ['Leves', 'Médias'],
+    especificacoes: 'CD de Bárbaro: 8 + CS de Atletismo + Bônus de Classe. Possui Aptidão em Atletismo. A Brasa máxima é 2 + Bônus de Classe. Caminhos: Baluarte, Frenesi e Quebra-Colosso.',
+    famosos: []
+  },
   Guerreiro: {
     desc: 'Um combatente nato, forjado em batalha.',
     dadoVida: '1d10', dadoVidaNum: 10,
@@ -622,6 +641,40 @@ const RACAS = {
 
 // ===== INFORMAÇÕES EXTRAS POR CLASSE =====
 const CLASSES_INFO_EXTRA = {
+  Bárbaro: {
+    secoes: [
+      {
+        titulo: 'DADO DE FÚRIA E BRASA',
+        tabela: [
+          ['Nível', 'Dado de Fúria', 'Brasa máxima'],
+          ['1–4', '1d4', '4'],
+          ['5–8', '1d6', '5'],
+          ['9', '1d8', '5'],
+          ['10–12', '1d8', '6'],
+          ['13–14', '1d10', '6'],
+          ['15–16', '1d10', '7'],
+          ['17–20', '1d12', '7'],
+        ]
+      },
+      {
+        titulo: 'ESTÁGIOS DA BRASA',
+        tabela: [
+          ['Brasa', 'Estágio', 'Efeito'],
+          ['1+', 'Faísca', '+ Bônus de Classe de dano em ataques corpo a corpo com arma ou desarmado'],
+          ['2+', 'Pele Rija', 'RD 1 físico; RD 2 com 4+; RD 3 com 6+'],
+          ['3+', 'Chama', 'O primeiro acerto por turno causa +1 Dado de Fúria'],
+        ]
+      },
+      {
+        titulo: 'CAMINHOS',
+        lista: [
+          'Baluarte — protege o grupo.',
+          'Frenesi — velocidade e risco.',
+          'Quebra-Colosso — caça criaturas grandes e chefes.'
+        ]
+      }
+    ]
+  },
   Artífice: {
     secoes: [
       {

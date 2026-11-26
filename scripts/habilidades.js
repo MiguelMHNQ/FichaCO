@@ -310,6 +310,33 @@ HABILIDADES.Artífice = {
   }
 };
 
+HABILIDADES.Bárbaro = {
+  base: [
+    { nome: 'Brasa', nivel: 1, desc: 'Contador de combate que começa em 0 e vai até 2 + Bônus de Classe. Zera ao fim do combate. Ganha 1 Brasa ao sofrer dano (máximo 2 por rodada), ao acertar crítico ou reduzir uma criatura a 0 PV (1 vez por turno), ou no início do turno com menos de 2 Brasa. Faísca: com 1+ Brasa, ataques corpo a corpo causam + Bônus de Classe de dano. Pele Rija: com 2+ Brasa, RD 1 físico; RD 2 com 4+ e RD 3 com 6+. Chama: com 3+, o primeiro acerto por turno causa +1 Dado de Fúria.', acao: 'Passiva' },
+    { nome: 'Dor Devolvida', nivel: 1, desc: 'Ao acertar um ataque corpo a corpo, gaste 1 ou 2 Brasa à sua escolha para causar +1 Dado de Fúria de dano por Brasa gasta, do mesmo tipo do ataque. Declare após acertar e antes de rolar o dano. Dados somam em críticos, mas não são multiplicados.', acao: 'Ação Livre' },
+    { nome: 'Cauterizar', nivel: 2, desc: 'Gaste 1 PE e 2 Brasa para recuperar 2 Dados de Fúria + seu bônus de Vigor em PV, sem passar do máximo, e encerra um Sangramento ou reduz uma Hemorragia a Sangramento.', acao: 'Ação Bônus', pe: 1, uso: '1 vez por rodada' },
+    { nome: 'Brado de Guerra', nivel: 3, desc: 'Gaste 2 PE para afetar inimigos que possam te ouvir em 4,5m ao redor. Cada alvo faz Vontade contra sua CD. Na falha fica Amedrontado até o início do seu próximo turno: desvantagem para te atacar e deslocamento pela metade ao se aproximar. Na evolução do nível 13, o alcance passa a 9m e o efeito dura até o fim do próximo turno do alvo.', acao: 'Ação Bônus', pe: 2, uso: '1 vez por combate', evo: 'Nível 13: alcance de 9m; duração até o fim do próximo turno do alvo.' },
+    { nome: 'Ataque Extra', nivel: 5, desc: 'Enquanto tiver 2+ Brasa e usar a ação Atacar com arma corpo a corpo ou desarmado, faz 1 ataque extra. A Brasa é conferida ao declarar a ação. No nível 9, com 4+ faz 2 extras. No nível 15, com 6+ faz 3 extras. Não se acumula com outras fontes; vale o maior.', acao: 'Passiva', evo: 'Nível 9: 2 ataques extras com 4+ Brasa | Nível 15: 3 ataques extras com 6+ Brasa.' },
+    { nome: 'Cicatrizes', nivel: 7, desc: 'Na primeira vez por cena em que sofrer dano de um tipo, ganha RD 2 contra esse tipo até o fim da cena. Guarda até 3 tipos por cena. A RD soma com a Pele Rija em dano físico. Tipos incluem corte, perfurante, impacto, queimante, congelante, eletrizante e químico.', acao: 'Passiva', evo: 'Nível 15: RD 3 contra cada tipo protegido.' },
+    { nome: 'Última Brasa', nivel: 9, desc: 'Como reação, ao gastar 3 Brasa, quando um ataque ou efeito fosse reduzir seus PV a 0 e não causar morte instantânea, você fica com 1 PV, ganha PV temporários iguais ao seu nível + bônus de Vigor até o fim do combate e ignora Dano Brutal desse golpe. Uso 1 vez por descanso longo; no nível 17 passa a 1 vez por descanso curto.', acao: 'Reação', uso: '1 vez por descanso longo', evo: 'Nível 17: passa a 1 vez por descanso curto.' },
+    { nome: 'Rompante', nivel: 12, desc: 'Gaste 10 PE e 4 Brasa para pisar e liberar a dor em raio de 4,5m. Cada inimigo faz Reflexos contra sua CD; na falha sofre 5d8 de dano de impacto e fica Caído, na sucesso sofre metade e não cai.', acao: 'Ação Padrão', pe: 10, uso: '1 vez por combate' },
+  ],
+  caminhos: {
+    'Baluarte': {
+      proficiencias: 'Caminho dedicado à proteção do grupo',
+      habs: []
+    },
+    'Frenesi': {
+      proficiencias: 'Caminho dedicado à velocidade e ao risco',
+      habs: []
+    },
+    'Quebra-Colosso': {
+      proficiencias: 'Caminho dedicado a criaturas grandes e chefes',
+      habs: []
+    }
+  }
+};
+
 HABILIDADES.Guerreiro = {
   base: [
     { nome: 'Controle', nivel: 1, desc: 'Você respira fundo e foca na precisão do golpe. Concede +2 no próximo ataque com arma neste turno e +2 nas reações de Bloquear por 1 minuto. (Custo: 3 PE)', acao: 'Ação Bônus', evo: 'Nível 9: bônus em Bloquear sobe para +4 | Nível 11: +6' },
