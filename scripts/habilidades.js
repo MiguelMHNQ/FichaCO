@@ -245,6 +245,26 @@ HABILIDADES.Druida = {
   }
 };
 
+HABILIDADES.Cozinheiro = {
+  base: [
+    { nome: 'Domínio de Facas', nivel: 1, desc: 'Com facas — Adagas, Neko-te e Sai — usa Destreza no lugar de Força nos ataques e no dano. Ganha +1 no ataque e +1 no dano. Uma faca de cozinha comum conta como Adaga. Evolução no nível 6: os bônus sobem para +2.', acao: 'Passiva', evo: 'Nível 6: bônus de +2 no ataque e no dano.' },
+    { nome: 'Alimento Preciso', nivel: 1, desc: 'Na ação de Interlúdio Comer/Cozinhar, pode refazer o teste de cozinhar 1 vez e ficar com o melhor resultado. Pode fazer Comer/Cozinhar 2 vezes no mesmo Interlúdio. Com uma ação bônus e 1 PE, passa um Tempero em uma faca sua por 1 minuto: Pimenta causa +1 dado de Tempero de dano queimante no primeiro golpe de faca por turno; Sal impede recuperação de PV no alvo até seu próximo turno; Limão reduz a CA do alvo em 1, acumulável até -3, até seu próximo turno.', acao: 'Passiva', evo: 'Os dados de Tempero crescem por faixa de nível: 1d4, 1d6, 1d8, 1d10 ou 1d12.' },
+    { nome: 'Extrair Empecilho', nivel: 2, pe: 0, desc: 'Ação de Movimento, alcance toque, em criatura abatida há no máximo 1 minuto. Faça Natureza contra CD 10 + 2 × o ND. Sucesso: recebe 1 Ingrediente do grau da criatura (Comum, Nobre, Raro ou Lendário) e a carne fica segura. Falha: não recebe Ingrediente; veneno ou ácido causa 1d6 de dano químico. Carrega até 6 Ingredientes; estragam no fim do próximo Interlúdio. Ao cozinhar, cada Ingrediente soma ao teste: +1, +2, +3 ou +4.', acao: 'Ação de Movimento' },
+    { nome: 'Paladar Aguçado', nivel: 3, desc: 'Ao provar ou cheirar alimento ou bebida desconhecido, identifica sem teste veneno, droga, remédio ou estrago. Veneno mágico ou muito forte exige Natureza CD 15. Vantagem em salvaguardas contra veneno ingerido. Ganha +3 em testes de Percepção que usem olfato ou paladar.', acao: 'Passiva' },
+    { nome: 'Comida Energética', nivel: 4, desc: 'Carrega Porções iguais ao bônus de Sobrevivência, mínimo 2, recuperadas ao fim de descanso curto ou longo em que possa cozinhar, com fogo e utensílios. Comer ou dar uma Porção exige ação bônus. Marmita Energética devolve PE igual a 2 + 2 × seu Bônus de Classe, sem ultrapassar o máximo do alvo.', acao: 'Ação Bônus' },
+    { nome: 'Prato Cheio', nivel: 5, desc: 'Uma Porção pode recuperar 2 Dados de Prato + bônus de Sabedoria em PV. Uma criatura não pode comer mais de 1 Porção por rodada. Em Descanso, conta como Comida preparada (Prato cheio) com resultado 14 + seu Bônus de Classe.', acao: 'Ação Bônus' },
+    { nome: 'Cozinha Móvel', nivel: 6, desc: 'Não precisa de fogo nem utensílios para recuperar Porções em descanso curto; basta ter ingredientes comuns. Uma vez por Descanso, gasta 1 minuto e 1 Ingrediente para ganhar 1 Porção extra durante uma cena.', acao: 'Passiva' },
+    { nome: 'Acerto Letal', nivel: 6, desc: 'A margem de crítico das facas aumenta em 1. Um crítico com faca aplica Sangramento de 1d6 por 2 turnos.', acao: 'Passiva' },
+    { nome: 'Desmantelar', nivel: 7, pe: 6, desc: 'Ação Padrão, alcance da faca. Faça um ataque com faca. Se acertar, causa dano normal e o alvo faz Constituição contra sua CD; em falha, perde 2 de CA e 3 de RD contra dano físico até o fim do próximo turno dele. Uma vez por combate, ao acertar, extrai 1 Ingrediente sem precisar abatê-lo.', acao: 'Ação Padrão' },
+    { nome: 'Corte Fatal', nivel: 9, pe: 8, desc: 'Ação Padrão, 1 vez por combate, contra criatura com menos da metade dos PV. Ataque com faca; em acerto, o alvo faz Constituição contra sua CD. Falha: cai a 0 PV. Sucesso: sofre 4d6 de dano. Teto para chefes: se o ND for maior que seu nível menos 2, não cai a 0 PV e sofre 6d6 sem salvaguarda.', acao: 'Ação Padrão', uso: '1 vez por combate' },
+    { nome: 'Tempero Secreto', nivel: 11, pe: 1, desc: 'Pode manter 2 Temperos na mesma faca, pagando 1 PE por cada um. Mel: no primeiro golpe de faca por turno, cura você ou aliado a até 3m em 1 Dado de Prato + bônus de Sabedoria. Alho: você e aliados a até 3m têm vantagem contra medo; golpes de faca causam +1 Dado de Tempero contra mortos-vivos e aberrações.', acao: 'Ação Bônus' },
+    { nome: 'Banquete de Guerra', nivel: 13, pe: 12, desc: 'Ação Completa, custa 1 Porção e 1 vez por descanso curto. Você e aliados a até 6m recuperam 3 Dados de Prato + bônus de Sabedoria em PV e recebem +1 em ataques e salvaguardas por 4 turnos.', acao: 'Ação Completa', uso: '1 vez por descanso curto' },
+    { nome: 'Receita Proibida', nivel: 17, pe: 16, desc: 'Ação de 1 minuto, custa 1 Ingrediente Raro ou Lendário e 1 vez por descanso longo. Com o mestre, preserva no Prato uma resistência, sentido, movimento ou ataque da criatura. Quem come ganha a característica por 1 hora; o efeito não pode superar uma habilidade de nível 9 de classe, RD máxima 5 e área máxima de 6d6.', acao: 'Ação de 1 minuto', uso: '1 vez por descanso longo' },
+    { nome: 'Menu Degustação', nivel: 20, pe: 0, desc: 'Ação Completa, 1 vez por descanso longo, você e aliados a até 9m recebem três etapas: Entrada ao ativar — 2d10 + Sabedoria em PV e remoção de 1 condição negativa; Prato Principal no início do próximo turno — 2d10 + Sabedoria em PV e 10 PE; Sobremesa no turno seguinte — 3d8 PV temporários e +3 em ataques e salvaguardas até o fim do próximo turno.', acao: 'Ação Completa', uso: '1 vez por descanso longo' },
+  ],
+  caminhos: {}
+};
+
 HABILIDADES.Guerreiro = {
   base: [
     { nome: 'Controle', nivel: 1, desc: 'Você respira fundo e foca na precisão do golpe. Concede +2 no próximo ataque com arma neste turno e +2 nas reações de Bloquear por 1 minuto. (Custo: 3 PE)', acao: 'Ação Bônus', evo: 'Nível 9: bônus em Bloquear sobe para +4 | Nível 11: +6' },
@@ -320,6 +340,16 @@ const TALENTOS_GERAIS = [
 
 // ===== TALENTOS =====
 const TALENTOS = {
+  Cozinheiro: [
+    { nome: 'Estoque Farto', desc: 'Carrega +2 Porções e +2 Ingredientes.' },
+    { nome: 'Mise en Place', desc: 'O primeiro Tempero de cada combate não custa PE.' },
+    { nome: 'Tempero Dobrado', desc: 'Usa o Dado de Tempero do nível seguinte.' },
+    { nome: 'Receita Antiga', desc: 'O Prato Cheio cura +1 Dado de Prato.' },
+    { nome: 'Panela de Pressão', desc: 'A Porção extra da Cozinha Móvel leva 1 turno para ficar pronta, em vez de 1 minuto.' },
+    { nome: 'Prova do Monstro', desc: 'Ao provar um Ingrediente recém-extraído, o mestre revela resistências e fraquezas da criatura.' },
+    { nome: 'Faca Afiada', desc: 'Sua faca ganha +1 de dano em todos os golpes. Soma-se ao bônus de Domínio de Facas.' },
+    { nome: 'Mão Leve', desc: 'Pode dar uma Porção a um aliado a até 6m, sem precisar estar ao lado dele.' },
+  ],
   Druida: [
     { nome: 'Jardineiro de Bolso', desc: 'Carrega +2 Sementes. A primeira Semente que plantar em cada combate não custa PE.' },
     { nome: 'Estufa', desc: 'Uma vez por combate, uma Semente que plantar nasce já como Broto.' },

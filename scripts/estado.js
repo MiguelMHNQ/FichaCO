@@ -377,6 +377,25 @@ const CLASSES_PREVIEW = {
     armaduras: ['Leves', 'Armadura de Madeira (sem metal)'],
     especificacoes: 'CD de Druida: 8 + CS de Natureza + Bônus de Classe. Usa Natureza no lugar de Arcanismo em ataques mágicos e na CD das magias naturais.',
     famosos: []
+  },
+  Cozinheiro: {
+    desc: 'Uma boa aventura precisa de um bom acompanhamento. Combina facas de precisão com temperos e porções capazes de sustentar seus aliados.',
+    dadoVida: '1d8', dadoVidaNum: 8,
+    vidaBase: 8, vidaAtributo: 'Vigor',
+    vidaInicial: '8 + Vigor',
+    vidaNivel: '1d8 (ou 5) + Vigor',
+    energiaInicial: 'Sabedoria + Destreza',
+    energiaNivel: 'Bônus de classe + Destreza',
+    energiaAtributos: ['Sabedoria', 'Destreza'],
+    energiaNivelAtributo: 'Destreza',
+    constanciasFixas: ['Combate', 'Natureza', 'Sobrevivência'],
+    constanciasEscolha: ['Medicina', 'Percepção', 'Reflexo', 'Prestidigitação', 'Atletismo', 'Constituição'],
+    constanciasEscolhaQtd: 1,
+    conhecimento: ['Armas simples', 'Facas (Adagas, Neko-te e Sai)', 'Aptidão em Sobrevivência'],
+    familiaridade: [],
+    armaduras: ['Leves'],
+    especificacoes: 'CD de Cozinheiro: 8 + CS de Sobrevivência + Bônus de Classe. Você começa com 1 série de treino em Sobrevivência.',
+    famosos: []
   }
 };
 
