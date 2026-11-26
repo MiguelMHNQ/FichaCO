@@ -5491,7 +5491,9 @@
     "Uma vez por turno, quando Engenho feito com Joia atinge ou afeta inimigo, aliado escolhido a até 9m recebe PV temporários iguais a 2 × Bônus de Classe: 8 no nível 13, 10 do nível 15 em diante.": "Uma vez por turno, quando Engenho feito com Joia atinge ou afeta inimigo, aliado escolhido a até 9m recebe PV temporários iguais a 2 × Bônus de Classe: 8 no nível 13, 10 do nível 15 em diante.",
     "Usa um Aparato com Encaixes iguais ao Bônus de Classe. Monta 5 Núcleos disponíveis — Ígneo, Gélido, Voltaico, Cinético e Protetor — podendo repetir tipos em Encaixes diferentes. Um Núcleo usado fica Quente até o fim do próximo turno. Disparo: ação padrão, 12m, 1d20 + Investigação contra a CA; causa o Dano de Engenho do tipo e a salvaguarda do Núcleo. Protetor concede PV temporários iguais ao Dano de Engenho.": "Usa um Aparato com Encaixes iguais ao Bônus de Classe. Monta 5 Núcleos disponíveis — Ígneo, Gélido, Voltaico, Cinético e Protetor — podendo repetir tipos em Encaixes diferentes. Um Núcleo usado fica Quente até o fim do próximo turno. Disparo: ação padrão, 12m, 1d20 + Investigação contra a CA; causa o Dano de Engenho do tipo e a salvaguarda do Núcleo. Protetor concede PV temporários iguais ao Dano de Engenho.",
     "Voltaico — Eletrizante; falha perde Reação até o início do próximo turno.": "Voltaico — Eletrizante; falha perde Reação até o início do próximo turno.",
-    "Ígneo — Queimante; falha deixa Queimando (baixo).": "Ígneo — Queimante; falha deixa Queimando (baixo)."
+    "Ígneo — Queimante; falha deixa Queimando (baixo).": "Ígneo — Queimante; falha deixa Queimando (baixo).",
+    "Artífice": "Artífice",
+    "Monta Engenhos a partir de Núcleos e Cascas, alternando mecanismos quentes e engendrando obras, joias e armamentos tecnológicos.": "Monta Engenhos a partir de Núcleos e Cascas, alternando mecanismos quentes e engendrando obras, joias e armamentos tecnológicos."
   },
   "es": {
     "Configurações": "Configuración",
@@ -10984,6 +10986,8 @@
     "Uma vez por turno, quando Engenho feito com Joia atinge ou afeta inimigo, aliado escolhido a até 9m recebe PV temporários iguais a 2 × Bônus de Classe: 8 no nível 13, 10 do nível 15 em diante.": "Uma vez por turno, quando Engenho feito com Joia atinge ou afeta inimigo, aliado escolhido a até 9m recebe PV temporários iguais a 2 × Bônus de Classe: 8 no nível 13, 10 do nível 15 em diante.",
     "Usa um Aparato com Encaixes iguais ao Bônus de Classe. Monta 5 Núcleos disponíveis — Ígneo, Gélido, Voltaico, Cinético e Protetor — podendo repetir tipos em Encaixes diferentes. Um Núcleo usado fica Quente até o fim do próximo turno. Disparo: ação padrão, 12m, 1d20 + Investigação contra a CA; causa o Dano de Engenho do tipo e a salvaguarda do Núcleo. Protetor concede PV temporários iguais ao Dano de Engenho.": "Usa um Aparato com Encaixes iguais ao Bônus de Classe. Monta 5 Núcleos disponíveis — Ígneo, Gélido, Voltaico, Cinético e Protetor — podendo repetir tipos em Encaixes diferentes. Um Núcleo usado fica Quente até o fim do próximo turno. Disparo: ação padrão, 12m, 1d20 + Investigação contra a CA; causa o Dano de Engenho do tipo e a salvaguarda do Núcleo. Protetor concede PV temporários iguais ao Dano de Engenho.",
     "Voltaico — Eletrizante; falha perde Reação até o início do próximo turno.": "Voltaico — Eletrizante; falha perde Reação até o início do próximo turno.",
-    "Ígneo — Queimante; falha deixa Queimando (baixo).": "Ígneo — Queimante; falha deixa Queimando (baixo)."
+    "Ígneo — Queimante; falha deixa Queimando (baixo).": "Ígneo — Queimante; falha deixa Queimando (baixo).",
+    "Artífice": "Artífice",
+    "Monta Engenhos a partir de Núcleos e Cascas, alternando mecanismos quentes e engendrando obras, joias e armamentos tecnológicos.": "Monta Engenhos a partir de Núcleos e Cascas, alternando mecanismos quentes e engendrando obras, joias e armamentos tecnológicos."
   }
 }
