@@ -378,6 +378,25 @@ const CLASSES_PREVIEW = {
     especificacoes: 'CD de Druida: 8 + CS de Natureza + Bônus de Classe. Usa Natureza no lugar de Arcanismo em ataques mágicos e na CD das magias naturais.',
     famosos: []
   },
+  Artífice: {
+    desc: 'Quem monta mecanismos a partir de Núcleos e Cascas, alternando engenhocas entre turnos pelo ritmo do Rodízio.',
+    dadoVida: '1d8', dadoVidaNum: 8,
+    vidaBase: 8, vidaAtributo: 'Vigor',
+    vidaInicial: '8 + Vigor',
+    vidaNivel: '1d8 (ou 5) + Vigor',
+    energiaInicial: 'Inteligência + Destreza',
+    energiaNivel: 'Bônus de classe + Inteligência',
+    energiaAtributos: ['Inteligência', 'Destreza'],
+    energiaNivelAtributo: 'Inteligência',
+    constanciasFixas: ['Investigação', 'Prestidigitação'],
+    constanciasEscolha: ['Arcanismo', 'História', 'Atletismo', 'Pontaria', 'Reflexo', 'Percepção', 'Natureza'],
+    constanciasEscolhaQtd: 2,
+    conhecimento: ['Armas simples', 'Bestas leves', 'Armas Tecnológicas'],
+    familiaridade: [],
+    armaduras: ['Leves', 'Médias'],
+    especificacoes: 'CD de Artífice: 8 + CS de Investigação + Bônus de Classe. Ataques de Engenho: 1d20 + Investigação. Investigação é a Aptidão da classe. O Aparato começa com Encaixes iguais ao Bônus de Classe.',
+    famosos: []
+  },
   Cozinheiro: {
     desc: 'Uma boa aventura precisa de um bom acompanhamento. Combina facas de precisão com temperos e porções capazes de sustentar seus aliados.',
     dadoVida: '1d8', dadoVidaNum: 8,
@@ -603,6 +622,39 @@ const RACAS = {
 
 // ===== INFORMAÇÕES EXTRAS POR CLASSE =====
 const CLASSES_INFO_EXTRA = {
+  Artífice: {
+    secoes: [
+      {
+        titulo: 'DANO E ENCAIXES',
+        tabela: [
+          ['Nível', 'Engenho', 'Campo', 'Custo', 'Encaixes'],
+          ['1–4', '2d6', '1d6', '2 PE', '2'],
+          ['5–8', '3d6', '2d6', '3 PE', '3'],
+          ['9–12', '4d6', '3d6', '4 PE', '4'],
+          ['13–16', '5d6', '4d6', '5 PE', '5'],
+          ['17–20', '6d6', '5d6', '6 PE', '5'],
+        ]
+      },
+      {
+        titulo: 'NÚCLEOS',
+        lista: [
+          'Ígneo — Queimante; falha deixa Queimando (baixo).',
+          'Gélido — Congelante; falha reduz deslocamento em 3m até o fim do próximo turno.',
+          'Voltaico — Eletrizante; falha perde Reação até o início do próximo turno.',
+          'Cinético — Impacto; falha empurra 3m e fica Caído ao atingir obstáculo.',
+          'Protetor — aliados recebem PV temporários; não causa dano.'
+        ]
+      },
+      {
+        titulo: 'CASCAS',
+        lista: [
+          'Disparo — ação padrão, 12m, ataque 1d20 + Investigação.',
+          'Mina — ação bônus, 6m, detona em área de 3m.',
+          'Campo — ação padrão, 9m, esfera de 3m por 3 turnos.'
+        ]
+      }
+    ]
+  },
   Obscuro: {
     secoes: [
       {

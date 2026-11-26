@@ -265,6 +265,51 @@ HABILIDADES.Cozinheiro = {
   caminhos: {}
 };
 
+HABILIDADES.Artífice = {
+  base: [
+    { nome: 'Engenhos', nivel: 1, desc: 'Usa um Aparato com Encaixes iguais ao Bônus de Classe. Monta 5 Núcleos disponíveis — Ígneo, Gélido, Voltaico, Cinético e Protetor — podendo repetir tipos em Encaixes diferentes. Um Núcleo usado fica Quente até o fim do próximo turno. Disparo: ação padrão, 12m, 1d20 + Investigação contra a CA; causa o Dano de Engenho do tipo e a salvaguarda do Núcleo. Protetor concede PV temporários iguais ao Dano de Engenho.', acao: 'Depende da Casca', evo: 'Nível 5: aprimoramento da Oficina de Campo. Nível 12: Engenharia Avançada.' },
+    { nome: 'Mina', nivel: 2, desc: 'Ação bônus, 6m, custo do Engenho. Crava uma Mina que detona ao entrar inimigo, ao começar o turno dele a até 1,5m ou no início do seu próximo turno. Área de 3m: falha sofre dano pleno e efeito; sucesso sofre metade sem efeito. Só existe uma Mina. Protetor concede PV temporários a aliados.', acao: 'Ação Bônus' },
+    { nome: 'Campo', nivel: 3, desc: 'Ação padrão, 9m, esfera de 3m por 3 turnos. Inimigos que entram ou iniciam turno dentro fazem salvaguarda contra sua CD: falha sofre Dano de Campo e efeito; sucesso não sofre dano. Só existe um Campo. Protetor concede Dano de Campo em PV temporários no início do turno dos aliados.', acao: 'Ação Padrão' },
+    { nome: 'Oficina de Campo', nivel: 1, desc: 'Tudo é Investigação: Refinar usa Prestidigitação no lugar da constância normal, enquanto Forjar usa Investigação em vez de Atletismo, Reforçar em vez de História e Consertar usa Investigação. Calibrar concede 1 Encaixe extra até o próximo Interlúdio. Reparo Rápido: bônus, 1 PE, toque; recupera Dano de Campo + Inteligência em objeto ou construto e restaura item quebrado pela metade dos PV.', acao: 'Passiva / Bônus', evo: 'Nível 5: pode Encantar com Investigação mesmo sem treino em Arcanismo.' },
+    { nome: 'Choque de Núcleos', nivel: 5, desc: 'Passiva. Uma criatura que sofre dano de dois tipos diferentes seus no mesmo round sofre dano extra do segundo Engenho: +1d6 nos níveis 5–8, +2d6 nos níveis 9–16 e +3d6 nos níveis 17–20. Vale uma vez por criatura por round. Disparo, Mina, Campo, Torreta e Gravar contam.', acao: 'Passiva' },
+    { nome: 'Sobrecarga', nivel: 7, desc: 'Ação livre ao usar um Engenho, dobro do custo e 1 vez por combate. Carga Total dobra os dados de dano; Núcleo Quente permite usar Núcleo que já esteja Quente. Em ambos os casos, o Núcleo usado fica Esgotado até o fim do próximo Descanso curto.', acao: 'Ação Livre', uso: '1 vez por combate' },
+    { nome: 'Recarregar', nivel: 9, desc: 'Ação padrão ou reação para salvar Joia, custo 8 PE, toque em 1 item com Cargas seu ou aliado. Recupera 1 Carga até o máximo e limita o item a 1 recarga por descanso longo. Não afeta itens Épicos, Lendários, Tesouros ou Relíquias. Uma Joia a até 3m que chegaria a 0 Cargas recebe 1 Carga e não quebra.', acao: 'Ação Padrão / Reação', uso: '8 PE' },
+    { nome: 'Engenharia Avançada', nivel: 12, desc: 'Seu Aparato ganha +1 Encaixe permanente. Projeto, ação de Interlúdio: um item seu ou aliado ganha +2 pontos de Capacidade Mágica até o próximo Interlúdio, usados apenas para engastar Joias; no próximo Interlúdio, essas Joias saem sem quebrar. Limite de 1 Projeto por Interlúdio.', acao: 'Passiva / Interlúdio' },
+  ],
+  caminhos: {
+    'Armeiro': {
+      proficiencias: 'Armas de fogo de mão e ombro',
+      habs: [
+        { nome: 'Cano Gravado', nivel: 6, desc: 'Aprende Pistola, Pistola Fecho-de-roda, Mosquete, Mosquetão e Arcabuz. Gravar é ação livre uma vez por turno ao acertar arma de fogo ou Tecnológica: paga o custo do Engenho e gasta um Núcleo disponível, ficando Quente. O golpe causa Dano de Campo do Núcleo e aplica sua salvaguarda.', acao: 'Ação Livre' },
+        { nome: 'Rajada de Calibre', nivel: 9, desc: 'Ação padrão, 8 PE. Faz 3 ataques com arma de fogo, cada um com seu teste, contra 1 a 3 alvos a até 6m uns dos outros. Pode aplicar Gravar a 1 deles pagando seu custo.', acao: 'Ação Padrão', uso: '8 PE' },
+        { nome: 'Sobrepressão', nivel: 13, desc: 'Margem de crítico das armas de fogo e Tecnológicas aumenta em 1. Num crítico com Gravar, o efeito do Núcleo atinge todos os inimigos a até 3m do alvo, com a mesma salvaguarda, sem dano extra.', acao: 'Passiva' },
+        { nome: 'Barragem', nivel: 17, desc: 'Ação padrão, 16 PE, 36m, círculo de 6m, 1 vez por descanso curto. Usa 1 Núcleo disponível, que fica Quente. Falha sofre 8d8 e efeito; sucesso sofre metade sem efeito.', acao: 'Ação Padrão', uso: '1 vez por descanso curto' },
+        { nome: 'Modo Cerco', nivel: 20, desc: 'Ação completa, 0 PE, 1 vez por descanso longo, por 3 turnos. Ignora Quente, faz 1 ataque extra com arma de fogo ou Tecnológica por turno sem gastar ação e Gravar não custa PE.', acao: 'Ação Completa', uso: '1 vez por descanso longo' },
+      ]
+    },
+    'Construtor': {
+      proficiencias: 'Nenhuma adicional',
+      habs: [
+        { nome: 'Torreta', nivel: 6, desc: 'Ação padrão, 4 PE, 6m, duração 4 turnos. Monta uma Obra Pequena com CA 12 e PV 10 + 2 × nível. Usa 1 Núcleo seu; no início de cada turno seu faz Disparo grátis a até 12m com 1d20 + Investigação e Dano de Campo. Só existe uma Torreta.', acao: 'Ação Padrão', uso: '4 PE' },
+        { nome: 'Muralha', nivel: 9, desc: 'Ação padrão, 8 PE, 9m, linha de 6m por 3m de altura por 4 turnos. Obra com CA 13 e PV igual a 10 × Bônus de Classe. Bloqueia passagem e visão. Ataque corpo a corpo contra ela causa Dano de Campo ao agressor uma vez por round. Protetor concede RD 3 a aliados a até 1,5m.', acao: 'Ação Padrão', uso: '8 PE' },
+        { nome: 'Autômato', nivel: 13, desc: 'Ação padrão, 12 PE, 6m, 1 vez por descanso curto, duração 4 turnos. Monta Obra Média com CA 14, PV 40 e deslocamento 9m. Seu turno move e faz 1 ataque corpo a corpo 1d20 + Investigação, Dano de Engenho do Núcleo e salvaguarda. Protetor cura temporariamente aliado adjacente em Dano de Campo.', acao: 'Ação Padrão', uso: '1 vez por descanso curto' },
+        { nome: 'Linha de Montagem', nivel: 17, desc: 'Pode manter 2 Obras ao mesmo tempo, cada uma ocupando 1 Encaixe. Torreta e Muralha passam a ser montadas com ação bônus.', acao: 'Passiva' },
+        { nome: 'Fortaleza', nivel: 20, desc: 'Ação completa, 0 PE, 12m, cúpula de 15m de diâmetro por 3 turnos, 1 vez por descanso longo. Usa 1 Núcleo seu. Aliados têm RD 5 e cobertura parcial. No início do turno de cada inimigo dentro, o alvo faz salvaguarda: falha sofre 6d6 e efeito; sucesso sofre metade.', acao: 'Ação Completa', uso: '1 vez por descanso longo' },
+      ]
+    },
+    'Joalheiro': {
+      proficiencias: 'Nenhuma adicional',
+      habs: [
+        { nome: 'Engaste Vivo', nivel: 6, desc: 'Engasta Joia Rara, Avançada ou Complexa em um Encaixe sem gastar Cargas. O Engenho recebe +1d6, +2d6 ou +3d6; Protetor recebe o mesmo bônus em PV temporários. Emprestar prende uma Joia na arma ou armadura de aliado por 4 turnos: arma adiciona 1d4, 1d6 ou 1d8 do tipo da Joia no primeiro acerto por turno; armadura concede RD 2, 3 ou 4.', acao: 'Ação Bônus / Passiva' },
+        { nome: 'Facetas', nivel: 9, desc: 'Ação padrão, 8 PE, você e aliados a até 6m por 4 turnos. Escolhe Ígneo, Gélido, Voltaico ou Cinético presente em Encaixe seu. Alvos recebem RD 3 ao tipo e, uma vez por turno, o primeiro ataque que acertar causa +1d6 do mesmo tipo.', acao: 'Ação Padrão', uso: '8 PE' },
+        { nome: 'Refração', nivel: 13, desc: 'Uma vez por turno, quando Engenho feito com Joia atinge ou afeta inimigo, aliado escolhido a até 9m recebe PV temporários iguais a 2 × Bônus de Classe: 8 no nível 13, 10 do nível 15 em diante.', acao: 'Passiva' },
+        { nome: 'Resplendor', nivel: 17, desc: 'Ação padrão, 16 PE, 1 vez por descanso curto, você e aliados a até 9m recebem 8d6 PV temporários e perdem 1 condição negativa leve à sua escolha: Cegueira, Surdez, Enfraquecido ou Desprevenido.', acao: 'Ação Padrão', uso: '1 vez por descanso curto' },
+        { nome: 'Coração Prismático', nivel: 20, desc: 'Ação completa, 0 PE, 1 vez por descanso longo, você e aliados a até 9m por 3 turnos recebem RD 5 a todo dano. Uma vez por turno, o primeiro ataque ou Engenho que acertar causa +2d6 do tipo de um Núcleo seu à escolha. Ignora a regra de Quente.', acao: 'Ação Completa', uso: '1 vez por descanso longo' },
+      ]
+    },
+  }
+};
+
 HABILIDADES.Guerreiro = {
   base: [
     { nome: 'Controle', nivel: 1, desc: 'Você respira fundo e foca na precisão do golpe. Concede +2 no próximo ataque com arma neste turno e +2 nas reações de Bloquear por 1 minuto. (Custo: 3 PE)', acao: 'Ação Bônus', evo: 'Nível 9: bônus em Bloquear sobe para +4 | Nível 11: +6' },
@@ -340,6 +385,16 @@ const TALENTOS_GERAIS = [
 
 // ===== TALENTOS =====
 const TALENTOS = {
+  Artífice: [
+    { nome: 'Mecânica Reforçada', desc: 'Seu Aparato recebe +2 PV por nível e não pode ser desmontado por um único acerto até gastar uma Reação.' },
+    { nome: 'Núcleo Reservado', desc: 'Ao terminar um descanso curto, escolha 1 Núcleo que não esteja Esgotado; ele pode ser usado uma vez sem ficar Quente.' },
+    { nome: 'Calibração Dupla', desc: 'Calibrar concede 2 Encaixes extras até o próximo Interlúdio, em vez de 1.' },
+    { nome: 'Gatilho Seguro', desc: 'Quando um Disparo errar, o Núcleo usado não fica Quente até o início do seu próximo turno.' },
+    { nome: 'Campo Condensado', desc: 'Sua esfera de Campo aumenta em 1,5m de raio ou seus efeitos duram 1 turno adicional.' },
+    { nome: 'Mina Precisiva', desc: 'A Mina pode ser acionada à sua escolha e seus inimigos afetados ficam Desprevenidos até o fim do próximo turno.' },
+    { nome: 'Afastamento Cinético', desc: 'O efeito Cinético empurra 1,5m adicionais e ainda causa 1d4 de dano de impacto ao atingir um obstáculo.' },
+    { nome: 'Reparo Compartilhado', desc: 'Reparo Rápido pode atingir um aliado além de objeto ou construto e restaura 1d6 PV adicionais.' },
+  ],
   Cozinheiro: [
     { nome: 'Estoque Farto', desc: 'Carrega +2 Porções e +2 Ingredientes.' },
     { nome: 'Mise en Place', desc: 'O primeiro Tempero de cada combate não custa PE.' },
