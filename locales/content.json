@@ -5674,7 +5674,9 @@
     "Você e aliados a 6m têm RD igual à metade do seu Bônus de Classe, arredondada para cima: RD 2 entre níveis 9 e 14 e RD 3 entre 15 e 20. Ao curar aliado na aura com Palavra Restauradora, ele ganha PV temporários iguais à sua Sabedoria. A aura some enquanto você estiver inconsciente.": "Você e aliados a 6m têm RD igual à metade do seu Bônus de Classe, arredondada para cima: RD 2 entre níveis 9 e 14 e RD 3 entre 15 e 20. Ao curar aliado na aura com Palavra Restauradora, ele ganha PV temporários iguais à sua Sabedoria. A aura some enquanto você estiver inconsciente.",
     "Você mantém +1 Prece ativa ao mesmo tempo.": "Você mantém +1 Prece ativa ao mesmo tempo.",
     "Voz Distante": "Voz Distante",
-    "Égide — reduz o dano de um ataque ou salvaguarda contra dano.": "Égide — reduz o dano de um ataque ou salvaguarda contra dano."
+    "Égide — reduz o dano de um ataque ou salvaguarda contra dano.": "Égide — reduz o dano de um ataque ou salvaguarda contra dano.",
+    "Clérigo": "Clérigo",
+    "Reza antes do perigo e deixa Preces armadas que respondem sozinhas quando aliados feridos ou ameaçados precisam de ajuda.": "Reza antes do perigo e deixa Preces armadas que respondem sozinhas quando aliados feridos ou ameaçados precisam de ajuda."
   },
   "es": {
     "Configurações": "Configuración",
@@ -11350,6 +11352,8 @@
     "Você e aliados a 6m têm RD igual à metade do seu Bônus de Classe, arredondada para cima: RD 2 entre níveis 9 e 14 e RD 3 entre 15 e 20. Ao curar aliado na aura com Palavra Restauradora, ele ganha PV temporários iguais à sua Sabedoria. A aura some enquanto você estiver inconsciente.": "Você e aliados a 6m têm RD igual à metade do seu Bônus de Classe, arredondada para cima: RD 2 entre níveis 9 e 14 e RD 3 entre 15 e 20. Ao curar aliado na aura com Palavra Restauradora, ele ganha PV temporários iguais à sua Sabedoria. A aura some enquanto você estiver inconsciente.",
     "Você mantém +1 Prece ativa ao mesmo tempo.": "Você mantém +1 Prece ativa ao mesmo tempo.",
     "Voz Distante": "Voz Distante",
-    "Égide — reduz o dano de um ataque ou salvaguarda contra dano.": "Égide — reduz o dano de um ataque ou salvaguarda contra dano."
+    "Égide — reduz o dano de um ataque ou salvaguarda contra dano.": "Égide — reduz o dano de um ataque ou salvaguarda contra dano.",
+    "Clérigo": "Clérigo",
+    "Reza antes do perigo e deixa Preces armadas que respondem sozinhas quando aliados feridos ou ameaçados precisam de ajuda.": "Reza antes do perigo e deixa Preces armadas que respondem sozinhas quando aliados feridos ou ameaçados precisam de ajuda."
   }
 }
