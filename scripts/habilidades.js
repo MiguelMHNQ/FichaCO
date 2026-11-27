@@ -310,6 +310,51 @@ HABILIDADES.Artífice = {
   }
 };
 
+HABILIDADES.Clérigo = {
+  base: [
+    { nome: 'Preces', nivel: 1, desc: 'Ação bônus em combate ou ritual de 1 minuto fora dele. Paga o Custo de Graça por Prece e escolhe uma criatura em 9m: Amparo cura 1 Dado de Graça + Sabedoria ao cair abaixo da metade dos PV; Égide reduz dano de ataque ou efeito em 2 × Bônus de Classe + Sabedoria; Pureza remove uma condição leve na hora e dá imunidade até o fim do próximo turno. Você mantém 2 Preces ativas no nível 1, 3 no 5, 4 no 9, 5 no 13 e 6 no 17. Cada criatura só pode ter uma Prece de cada vez; uma respondida some, pode ser rezada novamente desde o próximo turno, não gasta reação e permanece até ser respondida ou o fim da cena, máximo 1 hora. Se você cair a 0 PV elas continuam; se morrer somem.', acao: 'Ação Bônus / 1 minuto', evo: 'Nível 9 Fé Inabalável: Amparo cura 2 Dados de Graça abaixo de 1/4 dos PV; Égide converte crítico em acerto normal antes da redução; Pureza também cobre condições avançadas.' },
+    { nome: 'Centelha Sagrada', nivel: 1, desc: 'Ação padrão, custa o Custo de Graça, alcance 12m: ataque mágico com Conjurar contra a CA. Acerto causa 1 Dado de Graça + Sabedoria de dano radiante. Com ação livre e sem custo, seu símbolo sagrado brilha em área de 9m até você apagá-lo.', acao: 'Ação Padrão' },
+    { nome: 'Palavra Restauradora', nivel: 2, desc: 'Ação padrão, custo Custo de Graça + 1 PE, alcance 9m: cura 1 Dado de Graça + Sabedoria em PV de uma criatura orgânica visível ou audível e a acorda se estiver Morrendo. Não funciona em mortos-vivos ou construtos. O mesmo alvo só recebe a Palavra uma vez por rodada.', acao: 'Ação Padrão', evo: 'Nível 12: pode usar como ação bônus uma vez por turno.', pe: 2 },
+    { nome: 'Repelir Profano', nivel: 3, desc: 'Ação padrão, custo Custo de Graça + 1 PE, raio de 9m: mortos-vivos e criaturas profanas fazem Vontade contra sua CD. Na falha ficam Amedrontados por 2 turnos e sofrem 1 Dado de Graça de dano radiante; sucesso sofre metade e não fica Amedrontado.', acao: 'Ação Padrão', evo: 'Nível 9: dano sobe para 2 Dados de Graça, duração para 3 turnos e mortos-vivos de ND menor ou igual à metade do seu nível são destruídos ao falhar.', pe: 2 },
+    { nome: 'Bênção', nivel: 5, desc: 'Ação bônus, custo Custo de Graça + 1 PE, alcance 9m: até 3 criaturas, você incluído, recebem +1 em ataques e salvaguardas por 4 turnos. Só pode haver uma Bênção sua ativa por vez.', acao: 'Ação Bônus', pe: 3, evo: 'Nível 13: o bônus sobe para +2.' },
+    { nome: 'Santuário', nivel: 7, desc: 'Ação bônus por 6 PE, alcance 9m: protege uma criatura por 2 turnos. Um inimigo que tentar atacá-la ou usar efeito de alvo único nela faz Vontade contra sua CD uma vez por turno; falha escolhe outro alvo ou perde a ação se não houver outro. Sucesso age normalmente. Termina se o protegido atacar ou causar dano e não protege efeitos em área.', acao: 'Ação Bônus', pe: 6 },
+    { nome: 'Fé Inabalável', nivel: 9, desc: 'Torna suas Preces mais fortes: Amparo cura 2 Dados de Graça + Sabedoria se o alvo ficar abaixo de 1/4 dos PV; Égide converte acerto crítico em acerto normal antes da redução; Pureza também remove Apavorado, Atordoado, Paralisado, Imóvel e Hemorragia.', acao: 'Passiva' },
+    { nome: 'Milagre', nivel: 12, desc: 'Ação completa por 10 PE, alcance 9m ao seu redor, uma vez por descanso longo. Escolha Graça Derramada: todos os aliados recuperam 3 Dados de Graça + Sabedoria em PV e removem 1 condição leve, acordando quem estiver Morrendo; ou Muralha de Fé: por 3 turnos aliados têm RD igual ao seu Bônus de Classe e vantagem em salvaguardas contra medo.', acao: 'Ação Completa', pe: 10, uso: '1 vez por descanso longo' },
+  ],
+  caminhos: {
+    'Aurora': {
+      proficiencias: 'Dano radiante e luz solar',
+      habs: [
+        { nome: 'Prece de Fulgor', nivel: 6, desc: 'Prece de Custo de Graça. Gatilho: um inimigo acerta corpo a corpo na criatura protegida. O atacante faz Constituição contra sua CD; falha sofre 1 Dado de Graça de dano radiante e fica Cego até o fim do próximo turno, sucesso sofre metade sem Cegueira.', acao: 'Prece', custo: 'Custo de Graça' },
+        { nome: 'Domo de Luz', nivel: 9, desc: 'Ação padrão por 8 PE, uma vez por descanso curto: esfera de 6m de raio a até 18m por 4 turnos. Remove escuridão não-mágica, impede esconderijo com invisibilidade, penumbra ou escuridão e conta como luz solar. Mortos-vivos e profanos que iniciam turno fazem Constituição; falha sofre 1 Dado de Graça + Sabedoria de dano radiante, sucesso metade. Aliados ganham vantagem contra Cegueira e +2 em Percepção.', acao: 'Ação Padrão', pe: 8, uso: '1 vez por descanso curto' },
+        { nome: 'Alvorecer', nivel: 13, desc: 'Ação padrão por 12 PE, uma vez por descanso curto: esfera de 4,5m de raio a até 18m. Inimigos fazem Reflexos; falha sofre 2 Dados de Graça de dano radiante e Cegueira até o fim do próximo turno, sucesso metade sem Cegueira. Aliados na área recuperam 1 Dado de Graça + Sabedoria em PV.', acao: 'Ação Padrão', pe: 12, uso: '1 vez por descanso curto' },
+        { nome: 'Auréola', nivel: 17, desc: 'Ação bônus por 16 PE, uma vez por descanso longo, por 4 turnos: Centelha Sagrada pode ser usada como bônus uma vez por turno pelo custo normal; suas Centelhas ignoram cobertura parcial e RD radiante; no início de seu turno, inimigos a 3m fazem Constituição contra sua CD, ficando Cegos até o fim do turno na falha.', acao: 'Ação Bônus', pe: 16, uso: '1 vez por descanso longo' },
+        { nome: 'Aurora Eterna', nivel: 20, desc: 'Ação completa, 0 PE, 1 vez por descanso longo, área de 18m que acompanha você por 3 turnos. No início de cada turno seu, aliados recuperam 1 Dado de Graça + Sabedoria em PV e recebem +2 em ataques até o início do próximo turno seu. Inimigos fazem Constituição; falha sofre 2 Dados de Graça de dano radiante e Cegueira, sucesso metade sem Cegueira. Mortos-vivos e profanos fazem com desvantagem e sofrem +1 Dado de Graça extra na falha.', acao: 'Ação Completa', uso: '1 vez por descanso longo' },
+      ]
+    },
+    'Rebanho': {
+      proficiencias: 'Proteção e cura coletiva',
+      habs: [
+        { nome: 'Prece de Renovo', nivel: 6, desc: 'Prece de Custo de Graça. Gatilho: início de cada turno da criatura enquanto estiver abaixo da metade dos PV máximos. Resposta: recupera 1 Dado de Graça em PV. Responde até 3 vezes, uma por turno da criatura, e só então some.', acao: 'Prece', custo: 'Custo de Graça' },
+        { nome: 'Aura do Rebanho', nivel: 9, desc: 'Você e aliados a 6m têm RD igual à metade do seu Bônus de Classe, arredondada para cima: RD 2 entre níveis 9 e 14 e RD 3 entre 15 e 20. Ao curar aliado na aura com Palavra Restauradora, ele ganha PV temporários iguais à sua Sabedoria. A aura some enquanto você estiver inconsciente.', acao: 'Passiva' },
+        { nome: 'Oração Comunal', nivel: 13, desc: 'Ação padrão por 12 PE, uma vez por descanso curto: você e aliados em raio de 9m recuperam 2 Dados de Graça + Sabedoria em PV e removem 1 condição leve. Alvos Morrendo acordam.', acao: 'Ação Padrão', pe: 12, uso: '1 vez por descanso curto' },
+        { nome: 'Prece Coletiva', nivel: 17, desc: 'Ação padrão por 2 × Custo de Graça, alcance 9m, uma vez por descanso curto: reza Amparo, Égide, Pureza ou Renovo em até 4 criaturas de uma vez, pagando apenas o preço de 2 Preces. Essas Preces não contam no limite ativo.', acao: 'Ação Padrão', uso: '1 vez por descanso curto' },
+        { nome: 'Graça Plena', nivel: 20, desc: 'Ação completa, 0 PE, uma vez por descanso longo: você e aliados a até 15m por 3 turnos têm RD 5 contra todo dano. No início do turno de cada um, recuperam 1 Dado de Graça + Sabedoria em PV e removem 1 condição leve.', acao: 'Ação Completa', uso: '1 vez por descanso longo' },
+      ]
+    },
+    'Limiar': {
+      proficiencias: 'Vida, morte e ressurreição',
+      habs: [
+        { nome: 'Prece de Retorno', nivel: 6, desc: 'Prece por 2 × Custo de Graça. Gatilho: a criatura é reduzida a 0 PV. Resposta: volta com 1 Dado de Graça + Sabedoria em PV e não entra em Morrendo. Cada criatura recebe esta resposta apenas 1 vez por cena.', acao: 'Prece', custo: '2 × Custo de Graça' },
+        { nome: 'Vigília do Limiar', nivel: 9, desc: 'Aura de 9m enquanto você estiver consciente. Aliados Morrendo dentro já começam com 2 sucessos na salvaguarda contra a morte e fazem os testes seguintes com vantagem. Inimigo que tente Finalizar aliado Morrendo na aura faz Vontade contra sua CD: falha perde o ataque, sucesso finaliza normalmente.', acao: 'Passiva' },
+        { nome: 'Coro dos Ancestrais', nivel: 13, desc: 'Ação padrão por 12 PE: aura de 4,5m ao seu redor por 4 turnos. Ao entrar na aura e no início do turno de cada inimigo nela, no máximo uma vez por turno, o alvo faz Vontade. Falha sofre 1 Dado de Graça de dano necrótico e deslocamento pela metade até o fim do turno; sucesso sofre metade sem lentidão.', acao: 'Ação Padrão', pe: 12, uso: 'Só pode haver 1 Coro ativo' },
+        { nome: 'Chamado de Volta', nivel: 17, desc: 'Ação completa por 16 PE e toque, uma vez por descanso longo: traz de volta criatura morta há no máximo 1 minuto e com corpo inteiro. Vem com metade dos PV máximos e fica Cansada até o próximo descanso longo. A alma precisa aceitar; não funciona em mortos-vivos, Decomposição total ou corpo destruído.', acao: 'Ação Completa', pe: 16, uso: '1 vez por descanso longo' },
+        { nome: 'Passagem Aberta', nivel: 20, desc: 'Ação completa, 0 PE, uma vez por descanso longo: área de 15m acompanha você por 3 turnos. Todo aliado que cair a 0 PV volta imediatamente com 1 Dado de Graça + Sabedoria em PV, sem Morrendo, uma vez por aliado. Inimigos não recuperam PV e fazem Vontade no início de cada turno; falha sofre 2 Dados de Graça de dano necrótico e fica Enfraquecido até o fim do turno, sucesso sofre metade sem Enfraquecido.', acao: 'Ação Completa', uso: '1 vez por descanso longo' },
+      ]
+    }
+  }
+};
+
 HABILIDADES.Bárbaro = {
   base: [
     { nome: 'Brasa', nivel: 1, desc: 'Contador de combate que começa em 0 e vai até 2 + Bônus de Classe. Zera ao fim do combate. Ganha 1 Brasa ao sofrer dano (máximo 2 por rodada), ao acertar crítico ou reduzir uma criatura a 0 PV (1 vez por turno), ou no início do turno com menos de 2 Brasa. Faísca: com 1+ Brasa, ataques corpo a corpo causam + Bônus de Classe de dano. Pele Rija: com 2+ Brasa, RD 1 físico; RD 2 com 4+ e RD 3 com 6+. Chama: com 3+, o primeiro acerto por turno causa +1 Dado de Fúria.', acao: 'Passiva' },
@@ -324,15 +369,33 @@ HABILIDADES.Bárbaro = {
   caminhos: {
     'Baluarte': {
       proficiencias: 'Caminho dedicado à proteção do grupo',
-      habs: []
+      habs: [
+        { nome: 'Tomar o Golpe', nivel: 6, desc: 'Reação por 2 PE, uma vez por rodada: quando um aliado a até 6m for alvo de um ataque, antes de saber o resultado você se move até 3m, sem provocar ataques de oportunidade, para um espaço ao lado dele. O ataque passa a ter você como alvo e usa o mesmo teste contra sua CA. Se acertar, você sofre o dano reduzido em 1 Dado de Fúria, antes da RD.', acao: 'Reação', pe: 2, uso: '1 vez por rodada' },
+        { nome: 'Grito de Desafio', nivel: 9, desc: 'Ação bônus por 8 PE: até 3 inimigos em 12m que possam te ouvir fazem Vontade contra sua CD por 2 turnos. Na falha, têm desvantagem em ataques contra criaturas que não sejam você. Você ganha 1 Brasa por alvo que falhar, até 2.', acao: 'Ação Bônus', pe: 8, uso: '2 turnos' },
+        { nome: 'Muralha Viva', nivel: 13, desc: 'Aliados a até 3m de você recebem +1 de CA e a mesma RD física que sua Pele Rija está concedendo no momento. Se você gastar ou perder a Brasa necessária, a RD deles cai junto.', acao: 'Passiva' },
+        { nome: 'Rochedo', nivel: 17, desc: 'Ação bônus por 16 PE, uma vez por descanso curto, por 3 turnos: RD 4 contra todo dano, imunidade a Caído, Empurrado e Agarrado, e quem acertar você em corpo a corpo sofre 1 Dado de Fúria de dano de impacto. A RD soma com Pele Rija e Cicatrizes nos danos físicos.', acao: 'Ação Bônus', pe: 16, uso: '1 vez por descanso curto', duracao: '3 turnos' },
+        { nome: 'Último a Cair', nivel: 20, desc: 'Ação completa, uma vez por descanso longo: você e aliados a até 12m por 3 turnos. Na primeira vez em que cada criatura afetada cair a 0 PV durante a duração, fica com 1 PV e ganha 20 PV temporários; o dano excedente é ignorado. Cada vez que isso acontecer, você ganha 2 Brasa.', acao: 'Ação Completa', uso: '1 vez por descanso longo', duracao: '3 turnos' },
+      ]
     },
     'Frenesi': {
       proficiencias: 'Caminho dedicado à velocidade e ao risco',
-      habs: []
+      habs: [
+        { nome: 'Chama Alta', nivel: 6, desc: 'Seu máximo de Brasa sobe em 2. Com 4 ou mais Brasa, você ganha +3m de deslocamento. Fúria Cega: no início do seu turno, se estiver com mais Brasa que o máximo normal da classe, faça Vontade CD 14. Na falha, até o fim do turno precisa se mover até o inimigo mais próximo e atacá-lo, nunca um aliado, e não pode usar habilidades que gastem PE.', acao: 'Passiva' },
+        { nome: 'Cobrar em Sangue', nivel: 9, desc: 'Ação livre, uma vez por turno: perde PV iguais a 2 × seu Bônus de Classe e ganha 1 Brasa. O dano não é reduzido por RD e não pode deixá-lo abaixo de 1 PV.', acao: 'Ação Livre', uso: '1 vez por turno' },
+        { nome: 'Dança de Cinzas', nivel: 13, desc: 'Ação padrão por 12 PE, uma vez por combate: mova-se até 9m sem provocar ataques de oportunidade e faça até 3 ataques corpo a corpo contra alvos diferentes que fiquem ao alcance da arma durante o movimento. Se acertar pelo menos 2 alvos diferentes, ganha 2 Brasa. Não soma com Ataque Extra nesta ação.', acao: 'Ação Padrão', pe: 12, uso: '1 vez por combate' },
+        { nome: 'Combustão', nivel: 17, desc: 'Ação bônus por 16 PE, uma vez por descanso longo, por 2 turnos: ganha 1 Ação Padrão adicional em cada turno, sem Ações Bônus ou Reações extras. Ao fim, fica Cansado até o fim do próximo turno.', acao: 'Ação Bônus', pe: 16, uso: '1 vez por descanso longo', duracao: '2 turnos' },
+        { nome: 'Pira Viva', nivel: 20, desc: 'Ação completa, uma vez por descanso longo, por 3 turnos: a Brasa vai ao máximo. No início de cada turno seu, ganha 2 Brasa além do Pavio. Seus golpes corpo a corpo causam +1 Dado de Fúria de dano queimante e deixam o alvo Queimando (baixo). Você é imune a Amedrontado e Apavorado e não faz salvaguarda da Fúria Cega. Ao fim, a Brasa cai a 0 e você fica Cansado.', acao: 'Ação Completa', uso: '1 vez por descanso longo', duracao: '3 turnos' },
+      ]
     },
     'Quebra-Colosso': {
       proficiencias: 'Caminho dedicado a criaturas grandes e chefes',
-      habs: []
+      habs: [
+        { nome: 'Medir o Gigante', nivel: 6, desc: 'Você sempre sabe se uma criatura é Alvo Maior. Alvo Maior é criatura Grande ou maior, ou com ND maior que seu nível menos 2. Contra um Alvo Maior, seu primeiro acerto de cada turno causa +1 Dado de Fúria de dano sem gastar Brasa. Soma-se à Chama.', acao: 'Passiva' },
+        { nome: 'Escalar o Colosso', nivel: 9, desc: 'Ação de Movimento, sem custo de PE: escolha 1 Alvo Maior ao seu lado e role Atletismo contra a Força dele. Na falha, nada acontece e você perde apenas a ação de movimento. No sucesso, agarra-se ao alvo até 3 turnos ou até se soltar; você tem vantagem nos ataques contra ele e ele tem desvantagem nos ataques contra você. Se ele se mover, você vai junto. Ele pode gastar ação padrão e Força contra seu Atletismo para sacudi-lo; na falha nada acontece, no sucesso você cai Caído ao lado dele sem dano.', acao: 'Ação de Movimento' },
+        { nome: 'Quebra-Casco', nivel: 13, desc: 'Seus ataques contra Alvo Maior ignoram RD igual ao seu Bônus de Classe. Contra Alvo Maior, Dor Devolvida pode gastar até 3 Brasa por golpe, em vez de 2.', acao: 'Passiva' },
+        { nome: 'Derrubar o Gigante', nivel: 17, desc: 'Ação completa por 16 PE, uma vez por descanso curto: faça um ataque com vantagem. Se acertar, causa o dano normal + 6d10 do mesmo tipo, ou +8d10 se o alvo for Alvo Maior. Depois o alvo faz Força contra sua CD. Na falha fica Caído e perde a reação até o próximo turno dele; no sucesso sofre apenas o dano.', acao: 'Ação Completa', pe: 16, uso: '1 vez por descanso curto' },
+        { nome: 'Matador de Titãs', nivel: 20, desc: 'Ação completa, uma vez por descanso longo, por 3 turnos: contra Alvo Maior seus ataques têm vantagem e ignoram toda RD. Os Dados de Fúria da Chama e de Medir o Gigante valem o máximo no seu primeiro acerto de cada turno. Quando reduzir um Alvo Maior a 0 PV nesse período, recupera PV iguais ao seu nível.', acao: 'Ação Completa', uso: '1 vez por descanso longo', duracao: '3 turnos' },
+      ]
     }
   }
 };
@@ -412,6 +475,26 @@ const TALENTOS_GERAIS = [
 
 // ===== TALENTOS =====
 const TALENTOS = {
+  Clérigo: [
+    { nome: 'Fé Dobrada', desc: 'Você mantém +1 Prece ativa ao mesmo tempo.' },
+    { nome: 'Prece Antecipada', desc: 'A primeira Prece que você rezar em cada combate não custa PE.' },
+    { nome: 'Voz Distante', desc: 'Palavra Restauradora passa a ter alcance de 18m e soma seu Bônus de Classe à cura.' },
+    { nome: 'Luz Marcante', desc: 'Quando Centelha Sagrada acertar, o alvo fica marcado: o próximo ataque de um aliado contra ele ganha +1 no acerto até o início do seu próximo turno.' },
+    { nome: 'Banimento Firme', desc: 'Repelir Profano ganha +2 na CD e seu Amedrontado dura +1 turno.' },
+    { nome: 'Bênção Numerosa', desc: 'Bênção afeta +2 criaturas.' },
+    { nome: 'Santuário Duradouro', desc: 'Santuário dura 3 turnos, em vez de 2.' },
+    { nome: 'Amparo Precoce', desc: 'A Prece de Amparo dispara quando a criatura fica com menos de 3/4 dos PV máximos, em vez de menos da metade.' },
+  ],
+  Bárbaro: [
+    { nome: 'Pavio Longo', desc: 'O Pavio acende até 3 Brasa, em vez de 2.' },
+    { nome: 'Dor que Alimenta', desc: 'A Dor rende até 3 Brasa por rodada, em vez de 2.' },
+    { nome: 'Cicatriz Funda', desc: 'As Cicatrizes guardam até 5 tipos de dano por cena e sua RD aumenta em +1.' },
+    { nome: 'Fôlego de Fornalha', desc: 'Cauterizar cura +1 Dado de Fúria e pode ser usado até 2 vezes por rodada.' },
+    { nome: 'Rugido Longo', desc: 'Brado de Guerra pode ser usado 2 vezes por combate e seu alcance aumenta em +3m.' },
+    { nome: 'Arremesso Furioso', desc: 'A Faísca, a Chama e a Dor Devolvida também valem para ataques de arremesso, e a distância de arremesso aumenta em +3m.' },
+    { nome: 'Passo de Brasa', desc: 'Uma vez por turno, ao gastar Brasa numa Dor Devolvida, você se move até 3m sem provocar ataques de oportunidade.' },
+    { nome: 'Ombro Pesado', desc: 'Ao acertar um ataque corpo a corpo, você pode gastar 1 Brasa para fazer a manobra Derrubar ou Empurrar contra o alvo sem gastar ação, usando o teste normal da manobra.' },
+  ],
   Artífice: [
     { nome: 'Mecânica Reforçada', desc: 'Seu Aparato recebe +2 PV por nível e não pode ser desmontado por um único acerto até gastar uma Reação.' },
     { nome: 'Núcleo Reservado', desc: 'Ao terminar um descanso curto, escolha 1 Núcleo que não esteja Esgotado; ele pode ser usado uma vez sem ficar Quente.' },

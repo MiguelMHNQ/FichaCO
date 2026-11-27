@@ -264,6 +264,25 @@ function slotsDisponiveis() {
 
 // ===== DADOS DAS CLASSES =====
 const CLASSES_PREVIEW = {
+  Clérigo: {
+    desc: 'Reza antes do perigo e deixa Preces armadas que respondem sozinhas quando o aliado precisa.',
+    dadoVida: '1d8', dadoVidaNum: 8,
+    vidaBase: 8, vidaAtributo: 'Vigor',
+    vidaInicial: '8 + Vigor',
+    vidaNivel: '1d8 (ou 5) + Vigor',
+    energiaInicial: 'Atributo de Sabedoria + Atributo de Carisma',
+    energiaNivel: 'Bônus de classe + Atributo de Sabedoria',
+    energiaAtributos: ['Sabedoria', 'Carisma'],
+    energiaNivelAtributo: 'Sabedoria',
+    constanciasFixas: ['Conjurar', 'Vontade'],
+    constanciasEscolha: ['Medicina', 'Intuição', 'Persuasão', 'História', 'Percepção', 'Combate', 'Constituição'],
+    constanciasEscolhaQtd: 2,
+    conhecimento: ['Armas simples', 'Maças', 'Bastões'],
+    familiaridade: [],
+    armaduras: ['Leves', 'Médias'],
+    especificacoes: 'CD de Clérigo: 8 + CS de Conjurar + Bônus de Classe. Ataques mágicos usam Conjurar no lugar de Arcanismo. Idioma adicional: Celestial.',
+    famosos: []
+  },
   Bárbaro: {
     desc: 'Sobrevive à dor e transforma feridas em poder com a Brasa.',
     dadoVida: '1d10', dadoVidaNum: 10,
@@ -641,6 +660,40 @@ const RACAS = {
 
 // ===== INFORMAÇÕES EXTRAS POR CLASSE =====
 const CLASSES_INFO_EXTRA = {
+  Clérigo: {
+    secoes: [
+      {
+        titulo: 'GRAÇA E PRECES',
+        tabela: [
+          ['Nível', 'Dado de Graça', 'Custo de Graça', 'Preces ativas'],
+          ['1–4', '1d6', '1 PE', '2'],
+          ['5–8', '2d6', '2 PE', '3'],
+          ['9–12', '3d6', '3 PE', '4'],
+          ['13–16', '4d6', '4 PE', '5'],
+          ['17–20', '5d6', '5 PE', '6'],
+        ]
+      },
+      {
+        titulo: 'TIPOS DE PRECE',
+        lista: [
+          'Amparo — cura ao cair abaixo da metade dos PV.',
+          'Égide — reduz o dano de um ataque ou salvaguarda contra dano.',
+          'Pureza — remove uma condição leve.',
+          'Fulgor — retaliar com dano radiante e Cegueira.',
+          'Renovo — cura periódica abaixo da metade dos PV.',
+          'Retorno — devolve o aliado a 1 PV ou mais ao cair a 0 PV.'
+        ]
+      },
+      {
+        titulo: 'CAMINHOS',
+        lista: [
+          'Aurora — luz, dano radiante e cura.',
+          'Rebanho — proteção e cura coletiva.',
+          'Limiar — domínio sobre vida e morte.'
+        ]
+      }
+    ]
+  },
   Bárbaro: {
     secoes: [
       {
